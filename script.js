@@ -1,959 +1,451 @@
-const navButtons = document.querySelectorAll(".nav")
-const pages = document.querySelectorAll(".page")
+const translations = {
+  en: {
+    prototypeLabel: "Course Registration Support",
+    navDashboard: "Dashboard",
+    navSearch: "Course Search",
+    navTimetable: "Visual Timetable",
+    navEvaluation: "Course Evaluation",
+    navPathway: "Course Pathway",
+    navAdvisor: "Advisor Report",
+    navAssistant: "AI Assistant",
+    dashboardTitle: "Dashboard",
+    dashboardSubtitle: "A redesigned SOLAR experience for safer, clearer, and more connected course registration.",
+    needOneTitle: "Integrated Academic Information",
+    needOneText: "Course search, evaluation data, grade distribution, workload comments, and schedule information are shown in one place.",
+    needTwoTitle: "Personalized Decision Support",
+    needTwoText: "ZOLAR checks major requirements, selected courses, degree sequence, schedule pressure, and possible advisor support.",
+    needThreeTitle: "Clear Visual Feedback",
+    needThreeText: "Students can see conflicts, workload pressure, course risk, and backup options before making a final registration decision.",
+    keyFeaturesTitle: "Key Features Included",
+    startSearch: "Start Course Search",
+    searchTitle: "Course Search",
+    searchSubtitle: "Search courses and review registration status, evaluation data, course risk, and planning support in one screen.",
+    searchCourseLabel: "Search course",
+    departmentLabel: "Department",
+    levelLabel: "Course Level",
+    termLabel: "Term",
+    searchButton: "Search",
+    clearFilters: "Clear all",
+    searchResultsTitle: "Search Results",
+    emptySearchTitle: "Search for a course",
+    emptySearchText: "Enter a course code or name to view evaluation data, pathway risk, timetable options, and advisor support.",
+    timetableTitle: "Visual Timetable Builder",
+    timetableSubtitle: "Add and drop courses directly from the weekly timetable.",
+    simulateDrag: "Simulate Drag and Drop",
+    returnSearch: "Return to Course Search",
+    schedulePanelTitle: "Schedule Summary",
+    stressTitle: "Schedule Stress Heatmap",
+    evaluationTitle: "Course Evaluation Preview",
+    evaluationSubtitle: "View evaluation scores, grade distribution, workload information, and student comment patterns by semester.",
+    pathwayTitle: "Course Pathway",
+    pathwaySubtitle: "Review past, current, and future course decisions before enrollment.",
+    advisorTitle: "Advisor Ready Evidence Pack",
+    advisorSubtitle: "Create a short advisor report with the blocked course, detected rule, degree risk, alternatives, and an email draft.",
+    assistantTitle: "AI Course Planning Assistant",
+    assistantSubtitle: "Identify the problem, explain the risk, suggest alternatives, and connect the student to human support."
+  },
+  ko: {
+    prototypeLabel: "수강신청 지원 시스템",
+    navDashboard: "대시보드",
+    navSearch: "과목 검색",
+    navTimetable: "시각 시간표",
+    navEvaluation: "강의 평가",
+    navPathway: "수강 경로",
+    navAdvisor: "어드바이저 보고서",
+    navAssistant: "AI 도우미",
+    dashboardTitle: "대시보드",
+    dashboardSubtitle: "더 안전하고 명확하며 연결된 수강신청 경험을 위한 SOLAR 개선 프로토타입입니다.",
+    needOneTitle: "통합 학업 정보",
+    needOneText: "과목 검색, 강의 평가, 성적 분포, 과제량 의견, 시간표 정보를 한 화면에서 보여줍니다.",
+    needTwoTitle: "개인화된 의사결정 지원",
+    needTwoText: "전공 요건, 선택 과목, 졸업 순서, 시간표 부담, 어드바이저 지원 가능성을 함께 확인합니다.",
+    needThreeTitle: "명확한 시각 피드백",
+    needThreeText: "수강 확정 전에 충돌, 과제량 부담, 과목 위험, 대체 선택지를 시각적으로 확인할 수 있습니다.",
+    keyFeaturesTitle: "포함된 주요 기능",
+    startSearch: "과목 검색 시작",
+    searchTitle: "과목 검색",
+    searchSubtitle: "수강 상태, 강의 평가, 과목 위험, 학업 계획 지원을 한 화면에서 확인합니다.",
+    searchCourseLabel: "과목 검색",
+    departmentLabel: "학과",
+    levelLabel: "과목 레벨",
+    termLabel: "학기",
+    searchButton: "검색",
+    clearFilters: "초기화",
+    searchResultsTitle: "검색 결과",
+    emptySearchTitle: "과목을 검색하세요",
+    emptySearchText: "과목 코드나 이름을 입력하면 강의 평가, 경로 위험, 시간표 옵션, 어드바이저 지원을 볼 수 있습니다.",
+    timetableTitle: "시각 시간표",
+    timetableSubtitle: "주간 시간표에서 직접 과목을 추가하고 삭제할 수 있습니다.",
+    simulateDrag: "드래그 앤 드롭 시뮬레이션",
+    returnSearch: "과목 검색으로 돌아가기",
+    schedulePanelTitle: "시간표 요약",
+    stressTitle: "시간표 부담 히트맵",
+    evaluationTitle: "강의 평가 미리보기",
+    evaluationSubtitle: "학기별 평가 점수, 성적 분포, 과제량 정보, 학생 의견 패턴을 확인합니다.",
+    pathwayTitle: "수강 경로",
+    pathwaySubtitle: "수강 전 과거, 현재, 미래의 과목 결정을 검토합니다.",
+    advisorTitle: "어드바이저 제출용 요약 보고서",
+    advisorSubtitle: "막힌 과목, 감지된 규칙, 졸업 경로 위험, 대안, 이메일 초안을 생성합니다.",
+    assistantTitle: "AI 수강 계획 도우미",
+    assistantSubtitle: "문제를 파악하고 위험을 설명하며 대안을 제시하고 사람의 도움으로 연결합니다."
+  }
+}
 
-let selectedCourseId = "MAT 123"
+let currentLang = "en"
+let currentPage = "dashboard"
+let selectedCourseId = null
 let selectedTerm = "Fall 2026"
+let plannedCourses = []
 let moved = false
 
 const courses = {
-  "BIO 201": {
-    code: "BIO 201",
-    title: "Biology I",
-    level: "200",
-    location: "Life Sciences Building 038",
-    credits: "4 credits",
-    category: "Structured science requirement",
-    statusByTerm: {
-      "Fall 2026": "Available",
-      "Spring 2026": "Available",
-      "Summer 2026": "Limited Seats"
-    },
-    offerings: {
-      "Fall 2026": {
-        section: "Section 01",
-        days: "Mon Wed Fri",
-        start: "9:00 AM",
-        end: "9:50 AM",
-        evaluation: { enrolled: 220, responses: 86, rating: 4.2, A: 84, B: 70, C: 42, DF: 24 },
-        dna: {
-          workload: "Workload: Moderate",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Positive",
-          group: "Group Work: Low",
-          clarity: "Clarity: High",
-          usefulness: "Usefulness: Strong for science foundation",
-          comment: "Students mention clear lectures, weekly quizzes, and manageable workload."
-        }
-      },
-      "Spring 2026": {
-        section: "Section 02",
-        days: "Tue Thu",
-        start: "11:00 AM",
-        end: "12:20 PM",
-        evaluation: { enrolled: 198, responses: 74, rating: 4.0, A: 69, B: 61, C: 44, DF: 24 },
-        dna: {
-          workload: "Workload: High",
-          exam: "Exam Difficulty: Medium High",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: Strong but time consuming",
-          comment: "Students mention heavier weekly workload, more reading, and some unclear exam preparation."
-        }
-      },
-      "Summer 2026": {
-        section: "Section 90",
-        days: "Mon Tue Wed Thu",
-        start: "10:00 AM",
-        end: "11:15 AM",
-        evaluation: { enrolled: 88, responses: 39, rating: 3.9, A: 29, B: 27, C: 21, DF: 11 },
-        dna: {
-          workload: "Workload: High",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: Helpful for catching up",
-          comment: "Students mention the course moves quickly during summer and requires consistent review."
-        }
-      }
-    },
-    features: [
-      "Integrated Course Evaluation Preview shows enrollment, responses, grade distribution, and rating.",
-      "Course Evaluation DNA summarizes workload, clarity, exam difficulty, grading fairness, and usefulness.",
-      "Visual Timetable Builder checks whether this course creates morning workload concentration.",
-      "Course Twin Preview shows how this course may fit Kevin’s weekly routine."
-    ],
-    recommendation: "This course is available and has moderate workload. It is a safe option if Kevin wants a structured science requirement.",
-    aiAdvice: "BIO 201 appears manageable, but Kevin should avoid pairing it with too many heavy STEM courses in the same semester.",
-    language: {
-      plain: "This course is available and fits a common science sequence.",
-      korean: "이 과목은 수강 가능하며 일반적인 science sequence에 잘 맞는 과목입니다."
-    },
-    pathway: {
-      past: "Past: introductory science preparation",
-      current: "Current: BIO 201 selected",
-      future: "Future: BIO 202 or lab requirement",
-      peerText: "Most Biochemistry sophomores who take BIO 201 use it as an early science foundation course.",
-      peerSteps: [
-        "Complete introductory science preparation",
-        "Take BIO 201 with a balanced weekly schedule",
-        "Continue to BIO 202 or required lab sequence"
-      ],
-      options: [
-        "Keep BIO 201 if the schedule remains balanced.",
-        "Avoid pairing it with too many heavy STEM courses.",
-        "Use Course Evaluation DNA to check workload before final enrollment."
-      ],
-      problem: "No serious registration problem is detected for BIO 201.",
-      cause: "The course fits a common science sequence, but workload should still be checked.",
-      risk: "The main risk is workload concentration if BIO 201 is combined with multiple lab or chemistry courses.",
-      agency: "Contact an academic advisor only if this course is being used to satisfy a specific major or transfer requirement."
-    }
-  },
+  "BIO 201": makeCourse("BIO 201", "Biology I", "BIO", "200", "Life Sciences Building 038", "4 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed Fri", "9:00 AM", "9:50 AM", 220, 86, 4.2, 84, 70, 42, 24, "Available", "Moderate", "Medium", "Positive", "Low", "High"),
+    "Spring 2026": offer("Section 02", "Tue Thu", "11:00 AM", "12:20 PM", 198, 74, 4.0, 69, 61, 44, 24, "Available", "High", "Medium High", "Mixed", "Low", "Moderate"),
+    "Summer 2026": offer("Section 90", "Mon Tue Wed Thu", "10:00 AM", "11:15 AM", 88, 39, 3.9, 29, 27, 21, 11, "Limited Seats", "High", "Medium", "Mixed", "Low", "Moderate")
+  }),
+  "MAT 123": makeCourse("MAT 123", "Calculus I", "MAT", "100", "Math Tower P 131", "4 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "10:00 AM", "11:20 AM", 180, 62, 3.8, 48, 55, 50, 27, "Sequence Risk", "High", "High", "Mixed", "Low", "Moderate"),
+    "Spring 2026": offer("Section 03", "Tue Thu", "8:30 AM", "9:50 AM", 166, 58, 3.6, 39, 50, 48, 29, "Sequence Risk", "High", "High", "Mixed", "Low", "Low Moderate"),
+    "Summer 2026": offer("External Equivalent", "Online or Partner Campus", "Varies", "Varies", 72, 28, 3.7, 21, 20, 19, 12, "External Option Recommended", "Intensive", "High", "Mixed", "Low", "Varies by institution")
+  }),
+  "CHE 131": makeCourse("CHE 131", "General Chemistry I", "CHE", "100", "Chemistry Building 100", "4 credits", {
+    "Fall 2026": offer("Section 03", "Tue Thu", "11:00 AM", "12:20 PM", 310, 130, 3.6, 72, 90, 96, 52, "High Workload", "Very High", "High", "Mixed", "Low", "Moderate"),
+    "Spring 2026": offer("Section 04", "Mon Wed", "2:30 PM", "3:50 PM", 276, 101, 3.7, 70, 82, 83, 41, "Available", "High", "High", "Mixed", "Low", "Moderate"),
+    "Summer 2026": offer("Section 90", "Mon Tue Wed Thu", "9:00 AM", "10:50 AM", 118, 47, 3.4, 24, 34, 38, 22, "Intensive Format", "Intensive", "High", "Mixed Negative", "Low", "Moderate")
+  }),
+  "AMS 151": makeCourse("AMS 151", "Applied Calculus I", "AMS", "100", "Engineering Building 143", "3 credits", {
+    "Fall 2026": offer("Section 02", "Tue Thu", "2:00 PM", "3:20 PM", 240, 95, 4.1, 88, 76, 52, 24, "Available", "Moderate", "Medium", "Positive", "Low", "High"),
+    "Spring 2026": offer("Section 01", "Mon Wed", "12:30 PM", "1:50 PM", 230, 82, 4.0, 80, 75, 53, 22, "Available", "Moderate", "Medium", "Positive", "Low", "Moderate High"),
+    "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 104, 41, 3.9, 34, 31, 25, 14, "Available Online", "Moderate High", "Medium", "Mixed", "Low", "Moderate")
+  }),
+  "EST 207": makeCourse("EST 207", "Interaction Design", "EST", "200", "Computer Science Building 2120", "3 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "1:00 PM", "2:20 PM", 39, 30, 4.4, 18, 12, 6, 3, "Project Based", "Moderate", "Low", "Positive", "High", "High"),
+    "Spring 2026": offer("Section 01", "Tue Thu", "3:00 PM", "4:20 PM", 42, 31, 4.5, 21, 13, 6, 2, "Project Based", "Moderate", "Low", "Positive", "High", "High"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
+  "PSY 103": makeCourse("PSY 103", "Introduction to Psychology", "PSY", "100", "Javits Lecture Center 100", "3 credits", {
+    "Fall 2026": offer("Section 04", "Tue Thu", "9:30 AM", "10:50 AM", 280, 110, 4.0, 90, 88, 70, 32, "Available", "Moderate", "Medium", "Positive", "Low", "High"),
+    "Spring 2026": offer("Section 02", "Mon Wed", "4:00 PM", "5:20 PM", 255, 93, 3.9, 78, 82, 68, 27, "Available", "Moderate", "Medium", "Mixed Positive", "Low", "Moderate High"),
+    "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 142, 61, 3.8, 44, 45, 36, 17, "Online Available", "Moderate High", "Medium", "Mixed", "Low", "Moderate")
+  }),
+  "BUS 348": makeCourse("BUS 348", "Strategic Management", "BUS", "300", "Harriman Hall 137", "3 credits", {
+    "Fall 2026": offer("Section 01", "Wed", "6:00 PM", "8:50 PM", 160, 58, 3.9, 50, 48, 42, 20, "Reserved Seats", "Moderate High", "Medium", "Mixed", "High", "Moderate"),
+    "Spring 2026": offer("Section 02", "Fri", "1:00 PM", "3:50 PM", 150, 52, 4.0, 51, 46, 38, 15, "Reserved Seats", "Moderate", "Medium", "Positive", "High", "Moderate High"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  })
+}
 
-  "MAT 123": {
-    code: "MAT 123",
-    title: "Calculus I",
-    level: "100",
-    location: "Math Tower P 131",
-    credits: "4 credits",
-    category: "Math sequence requirement",
-    statusByTerm: {
-      "Fall 2026": "Sequence Risk",
-      "Spring 2026": "Sequence Risk",
-      "Summer 2026": "External Option Recommended"
-    },
-    offerings: {
-      "Fall 2026": {
-        section: "Section 01",
-        days: "Mon Wed",
-        start: "10:00 AM",
-        end: "11:20 AM",
-        evaluation: { enrolled: 180, responses: 62, rating: 3.8, A: 48, B: 55, C: 50, DF: 27 },
-        dna: {
-          workload: "Workload: High",
-          exam: "Exam Difficulty: High",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: High for degree sequence",
-          comment: "Students mention fast pacing, frequent problem sets, and the need to confirm prerequisite expectations early."
-        }
-      },
-      "Spring 2026": {
-        section: "Section 03",
-        days: "Tue Thu",
-        start: "8:30 AM",
-        end: "9:50 AM",
-        evaluation: { enrolled: 166, responses: 58, rating: 3.6, A: 39, B: 50, C: 48, DF: 29 },
-        dna: {
-          workload: "Workload: High",
-          exam: "Exam Difficulty: High",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Low Moderate",
-          usefulness: "Usefulness: High but risky without sequence check",
-          comment: "Students mention that early morning sections are difficult when paired with heavy science courses."
-        }
-      },
-      "Summer 2026": {
-        section: "Equivalent Course Search",
-        days: "Online or partner campus",
-        start: "Varies",
-        end: "Varies",
-        evaluation: { enrolled: 72, responses: 28, rating: 3.7, A: 21, B: 20, C: 19, DF: 12 },
-        dna: {
-          workload: "Workload: Intensive",
-          exam: "Exam Difficulty: High",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Varies by institution",
-          usefulness: "Usefulness: Possible backup path",
-          comment: "Students mention that summer math courses require daily practice and advisor confirmation before transfer."
-        }
-      }
-    },
-    features: [
-      "Hidden Rule Decoder explains that MAP 103 or MAT 119 may need to be checked.",
-      "Course Pathway Checker compares MAT 123 with Kevin’s Biochemistry degree sequence.",
-      "Advisor Ready Evidence Pack creates a report for the coordinator or advisor.",
-      "Backup Option Generator suggests MAT 119, summer equivalent, or course replacement."
-    ],
-    recommendation: "This course should be checked with an advisor before enrollment because it may not fit Kevin’s current degree path.",
-    aiAdvice: "Kevin should not keep MAT 123 without checking whether MAT 119 or MAP 103 is required. The safest next step is to generate an advisor report.",
-    language: {
-      plain: "Sequence risk means this course may look available, but it may not fit the order of courses Kevin needs for graduation.",
-      korean: "Sequence risk는 과목이 수강 가능해 보여도 Kevin의 졸업 요건 순서에 맞지 않을 수 있다는 뜻입니다."
-    },
-    pathway: {
-      past: "Past: MAP 103 or placement expected",
-      current: "Current: MAT 123 selected",
-      future: "Future: AMS 161 may be delayed",
-      peerText: "Most Biochemistry sophomores who complete this requirement confirm their math sequence before taking MAT 123.",
-      peerSteps: [
-        "Check MAP 103 or placement status",
-        "Confirm whether MAT 119 is required with MAT 123",
-        "Ask advisor whether an approved summer equivalent can satisfy the sequence"
-      ],
-      options: [
-        "Add MAT 119 if allowed.",
-        "Take an approved summer equivalent course.",
-        "Replace MAT 123 with another required course this semester.",
-        "Generate Advisor Ready Evidence Pack before making a final decision."
-      ],
-      problem: "The selected course may not fit Kevin’s current math sequence.",
-      cause: "MAP 103 or MAT 119 may need to be checked before MAT 123 can safely count toward the degree path.",
-      risk: "This choice may delay the math sequence and affect Kevin’s future semester planning.",
-      agency: "Contact Academic and Transfer Advising Services or the department coordinator with this evidence pack."
-    }
-  },
-
-  "CHE 131": {
-    code: "CHE 131",
-    title: "General Chemistry I",
-    level: "100",
-    location: "Chemistry Building 100",
-    credits: "4 credits",
-    category: "High workload STEM course",
-    statusByTerm: {
-      "Fall 2026": "High Workload",
-      "Spring 2026": "Available",
-      "Summer 2026": "Intensive Format"
-    },
-    offerings: {
-      "Fall 2026": {
-        section: "Section 03",
-        days: "Tue Thu",
-        start: "11:00 AM",
-        end: "12:20 PM",
-        evaluation: { enrolled: 310, responses: 130, rating: 3.6, A: 72, B: 90, C: 96, DF: 52 },
-        dna: {
-          workload: "Workload: Very High",
-          exam: "Exam Difficulty: High",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: Required for STEM pathway",
-          comment: "Students mention heavy homework, difficult exams, and the need for steady weekly preparation."
-        }
-      },
-      "Spring 2026": {
-        section: "Section 04",
-        days: "Mon Wed",
-        start: "2:30 PM",
-        end: "3:50 PM",
-        evaluation: { enrolled: 276, responses: 101, rating: 3.7, A: 70, B: 82, C: 83, DF: 41 },
-        dna: {
-          workload: "Workload: High",
-          exam: "Exam Difficulty: High",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: Strong but demanding",
-          comment: "Students mention that afternoon sections are easier to manage but still require frequent review."
-        }
-      },
-      "Summer 2026": {
-        section: "Section 90",
-        days: "Mon Tue Wed Thu",
-        start: "9:00 AM",
-        end: "10:50 AM",
-        evaluation: { enrolled: 118, responses: 47, rating: 3.4, A: 24, B: 34, C: 38, DF: 22 },
-        dna: {
-          workload: "Workload: Intensive",
-          exam: "Exam Difficulty: High",
-          fairness: "Grading Fairness: Mixed Negative",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: Fast but risky",
-          comment: "Students mention the summer version is compressed and difficult when taken with other science courses."
-        }
-      }
-    },
-    features: [
-      "Schedule Stress Heatmap warns when CHE 131 is combined with other heavy science courses.",
-      "Course Evaluation DNA shows exam difficulty and workload patterns from student comments.",
-      "Visual Timetable Builder checks whether Kevin’s work and basketball routine remain realistic.",
-      "AI Course Planning Assistant explains why this course may create overload."
-    ],
-    recommendation: "This course is possible, but Kevin should check workload concentration before adding another difficult STEM course.",
-    aiAdvice: "CHE 131 is academically useful, but Kevin should avoid taking it with another high workload science course unless his weekly schedule has recovery time.",
-    language: {
-      plain: "High workload means this course may require more weekly study time than a regular course.",
-      korean: "High workload는 일반 과목보다 더 많은 주간 학습 시간이 필요할 수 있다는 뜻입니다."
-    },
-    pathway: {
-      past: "Past: chemistry preparation expected",
-      current: "Current: CHE 131 selected",
-      future: "Future: CHE 132 or lab sequence",
-      peerText: "Most STEM students avoid pairing CHE 131 with too many other high workload courses.",
-      peerSteps: [
-        "Confirm chemistry preparation",
-        "Take CHE 131 with a manageable weekly schedule",
-        "Continue to CHE 132 or required lab sequence"
-      ],
-      options: [
-        "Use the timetable heatmap to check workload concentration.",
-        "Move one heavy course to another semester if possible.",
-        "Ask an advisor whether the current course combination is realistic."
-      ],
-      problem: "The course is available, but workload concentration may become too high.",
-      cause: "CHE 131 has high exam difficulty and heavy weekly preparation.",
-      risk: "Kevin may experience schedule overload if this course is combined with work shifts, basketball, and other STEM courses.",
-      agency: "Contact an academic advisor if the course combination affects major progress or academic standing."
-    }
-  },
-
-  "AMS 151": {
-    code: "AMS 151",
-    title: "Applied Calculus I",
-    level: "100",
-    location: "Engineering Building 143",
-    credits: "3 credits",
-    category: "Applied math option",
-    statusByTerm: {
-      "Fall 2026": "Available",
-      "Spring 2026": "Available",
-      "Summer 2026": "Available Online"
-    },
-    offerings: {
-      "Fall 2026": {
-        section: "Section 02",
-        days: "Tue Thu",
-        start: "2:00 PM",
-        end: "3:20 PM",
-        evaluation: { enrolled: 240, responses: 95, rating: 4.1, A: 88, B: 76, C: 52, DF: 24 },
-        dna: {
-          workload: "Workload: Moderate",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Positive",
-          group: "Group Work: Low",
-          clarity: "Clarity: High",
-          usefulness: "Usefulness: Practical math option",
-          comment: "Students mention practical examples, steady assignments, and clear grading expectations."
-        }
-      },
-      "Spring 2026": {
-        section: "Section 01",
-        days: "Mon Wed",
-        start: "12:30 PM",
-        end: "1:50 PM",
-        evaluation: { enrolled: 230, responses: 82, rating: 4.0, A: 80, B: 75, C: 53, DF: 22 },
-        dna: {
-          workload: "Workload: Moderate",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Positive",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate High",
-          usefulness: "Usefulness: Flexible if approved",
-          comment: "Students mention clear lectures but recommend not falling behind on weekly problem sets."
-        }
-      },
-      "Summer 2026": {
-        section: "Online Section",
-        days: "Online",
-        start: "Asynchronous",
-        end: "Asynchronous",
-        evaluation: { enrolled: 104, responses: 41, rating: 3.9, A: 34, B: 31, C: 25, DF: 14 },
-        dna: {
-          workload: "Workload: Moderate High",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: Flexible but needs approval",
-          comment: "Students mention flexibility but warn that online pacing requires self discipline."
-        }
-      }
-    },
-    features: [
-      "Peer Pathway Map shows how similar students used this course in their pathway.",
-      "Visual Timetable Builder confirms fewer conflicts with morning courses.",
-      "Course Evaluation Preview shows grade distribution and response count by semester.",
-      "Backup Option Generator can compare this course with MAT 123."
-    ],
-    recommendation: "This course may be a practical alternative depending on Kevin’s major requirement and advisor approval.",
-    aiAdvice: "AMS 151 may reduce schedule pressure, but Kevin must confirm whether it satisfies his exact requirement.",
-    language: {
-      plain: "Requirement fit means the course may be useful, but it still needs to match Kevin’s official degree requirement.",
-      korean: "Requirement fit은 과목이 유용하더라도 Kevin의 공식 졸업 요건에 맞는지 확인해야 한다는 뜻입니다."
-    },
-    pathway: {
-      past: "Past: math preparation or placement",
-      current: "Current: AMS 151 selected",
-      future: "Future: next quantitative requirement",
-      peerText: "Similar students use AMS 151 when their major allows an applied calculus pathway.",
-      peerSteps: [
-        "Confirm the major accepts AMS 151",
-        "Compare AMS 151 with MAT 123",
-        "Continue to the next quantitative requirement if approved"
-      ],
-      options: [
-        "Confirm whether AMS 151 satisfies Kevin’s requirement.",
-        "Compare workload with MAT 123.",
-        "Use the advisor report if the requirement is unclear."
-      ],
-      problem: "The course looks available, but requirement fit must be confirmed.",
-      cause: "Some majors accept applied calculus while others require a different math path.",
-      risk: "Kevin may take a course that is useful but does not satisfy the intended requirement.",
-      agency: "Contact the department advisor to confirm whether AMS 151 fits the degree plan."
-    }
-  },
-
-  "EST 207": {
-    code: "EST 207",
-    title: "Interaction Design",
-    level: "200",
-    location: "Computer Science Building 2120",
-    credits: "3 credits",
-    category: "Project based design course",
-    statusByTerm: {
-      "Fall 2026": "Project Based",
-      "Spring 2026": "Project Based",
-      "Summer 2026": "Not Offered"
-    },
-    offerings: {
-      "Fall 2026": {
-        section: "Section 01",
-        days: "Mon Wed",
-        start: "1:00 PM",
-        end: "2:20 PM",
-        evaluation: { enrolled: 39, responses: 30, rating: 4.4, A: 18, B: 12, C: 6, DF: 3 },
-        dna: {
-          workload: "Workload: Moderate",
-          exam: "Exam Difficulty: Low",
-          fairness: "Grading Fairness: Positive",
-          group: "Group Work: High",
-          clarity: "Clarity: High",
-          usefulness: "Usefulness: Strong for project experience",
-          comment: "Students mention useful feedback, persona design, and practical group project experience."
-        }
-      },
-      "Spring 2026": {
-        section: "Section 01",
-        days: "Tue Thu",
-        start: "3:00 PM",
-        end: "4:20 PM",
-        evaluation: { enrolled: 42, responses: 31, rating: 4.5, A: 21, B: 13, C: 6, DF: 2 },
-        dna: {
-          workload: "Workload: Moderate",
-          exam: "Exam Difficulty: Low",
-          fairness: "Grading Fairness: Positive",
-          group: "Group Work: High",
-          clarity: "Clarity: High",
-          usefulness: "Usefulness: Strong for interaction design",
-          comment: "Students mention inclusive class discussion, consistent feedback, and applied design practice."
-        }
-      },
-      "Summer 2026": {
-        section: "Not Offered",
-        days: "Not Offered",
-        start: "Not Offered",
-        end: "Not Offered",
-        evaluation: { enrolled: 0, responses: 0, rating: 0, A: 0, B: 0, C: 0, DF: 0 },
-        dna: {
-          workload: "Workload: Not Available",
-          exam: "Exam Difficulty: Not Available",
-          fairness: "Grading Fairness: Not Available",
-          group: "Group Work: Not Available",
-          clarity: "Clarity: Not Available",
-          usefulness: "Usefulness: Not Available",
-          comment: "This course is not offered in Summer 2026 in this prototype."
-        }
-      }
-    },
-    features: [
-      "Course Experience Forecast predicts strong fit for students who prefer project based learning.",
-      "Course Evaluation DNA summarizes teamwork, feedback quality, and project workload.",
-      "Visual Timetable Builder shows how group work time fits into the weekly schedule.",
-      "Integrated Course Evaluation Preview helps students compare past student comments before registration."
-    ],
-    recommendation: "This course is suitable for students who prefer project development, feedback, and applied design work.",
-    aiAdvice: "EST 207 is manageable if Kevin has time for group project meetings and revision work.",
-    language: {
-      plain: "Project based means the course may not have heavy exams, but it requires steady group work and revision.",
-      korean: "Project based는 시험 부담은 낮을 수 있지만 꾸준한 그룹 작업과 수정이 필요하다는 뜻입니다."
-    },
-    pathway: {
-      past: "Past: introductory design foundation",
-      current: "Current: EST 207 selected",
-      future: "Future: advanced design course",
-      peerText: "Similar students take EST 207 when they want project based interaction design experience.",
-      peerSteps: [
-        "Complete introductory technology or design foundation",
-        "Take EST 207 for applied design practice",
-        "Use the project experience for later design or UX related work"
-      ],
-      options: [
-        "Keep EST 207 if group project time fits the weekly schedule.",
-        "Check course evaluation comments about teamwork and feedback.",
-        "Avoid pairing it with too many other group intensive courses."
-      ],
-      problem: "No serious registration problem is detected, but group project workload should be considered.",
-      cause: "Project based courses require steady communication and revision time.",
-      risk: "Kevin may underestimate group coordination workload.",
-      agency: "Contact the instructor only if project expectations or participation requirements are unclear."
-    }
-  },
-
-  "PSY 103": {
-    code: "PSY 103",
-    title: "Introduction to Psychology",
-    level: "100",
-    location: "Javits Lecture Center 100",
-    credits: "3 credits",
-    category: "General education option",
-    statusByTerm: {
-      "Fall 2026": "Available",
-      "Spring 2026": "Available",
-      "Summer 2026": "Online Available"
-    },
-    offerings: {
-      "Fall 2026": {
-        section: "Section 04",
-        days: "Tue Thu",
-        start: "9:30 AM",
-        end: "10:50 AM",
-        evaluation: { enrolled: 280, responses: 110, rating: 4.0, A: 90, B: 88, C: 70, DF: 32 },
-        dna: {
-          workload: "Workload: Moderate",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Positive",
-          group: "Group Work: Low",
-          clarity: "Clarity: High",
-          usefulness: "Usefulness: Flexible elective",
-          comment: "Students mention organized slides, predictable exams, and useful examples."
-        }
-      },
-      "Spring 2026": {
-        section: "Section 02",
-        days: "Mon Wed",
-        start: "4:00 PM",
-        end: "5:20 PM",
-        evaluation: { enrolled: 255, responses: 93, rating: 3.9, A: 78, B: 82, C: 68, DF: 27 },
-        dna: {
-          workload: "Workload: Moderate",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Mixed Positive",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate High",
-          usefulness: "Usefulness: Useful for general education",
-          comment: "Students mention interesting lectures but recommend steady review before exams."
-        }
-      },
-      "Summer 2026": {
-        section: "Online Section",
-        days: "Online",
-        start: "Asynchronous",
-        end: "Asynchronous",
-        evaluation: { enrolled: 142, responses: 61, rating: 3.8, A: 44, B: 45, C: 36, DF: 17 },
-        dna: {
-          workload: "Workload: Moderate High",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: Low",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: Flexible online option",
-          comment: "Students mention flexibility but say online exams require careful preparation."
-        }
-      }
-    },
-    features: [
-      "Course Evaluation Preview shows grade distribution and student comment patterns.",
-      "Schedule Stress Heatmap checks whether the class fits Kevin’s routine.",
-      "Course Twin Preview shows workload risk for non major students.",
-      "Backup Option Generator compares this course with other general education options."
-    ],
-    recommendation: "This course is a flexible option for students looking for a general education course with predictable workload.",
-    aiAdvice: "PSY 103 is flexible, but Kevin should confirm whether it helps his degree progress before choosing it only for convenience.",
-    language: {
-      plain: "General education means the course may count toward broad university requirements, but Kevin should confirm the exact category.",
-      korean: "General education은 대학 공통 요건에 해당할 수 있지만 정확한 충족 영역은 확인해야 한다는 뜻입니다."
-    },
-    pathway: {
-      past: "Past: general education planning",
-      current: "Current: PSY 103 selected",
-      future: "Future: SBC or elective progress",
-      peerText: "Similar students often use PSY 103 to satisfy a general education or elective need.",
-      peerSteps: [
-        "Check whether PSY 103 satisfies the intended category",
-        "Compare workload with other general education options",
-        "Use the course as a flexible schedule filler if it does not block required courses"
-      ],
-      options: [
-        "Keep PSY 103 if it satisfies the intended requirement.",
-        "Compare with another general education course if the schedule is tight.",
-        "Check evaluation comments for exam style and workload."
-      ],
-      problem: "No serious registration problem is detected.",
-      cause: "The main issue is whether the course satisfies the intended requirement.",
-      risk: "The course may fill time but may not satisfy the requirement Kevin expected.",
-      agency: "Contact an advisor only if the requirement category is unclear."
-    }
-  },
-
-  "BUS 348": {
-    code: "BUS 348",
-    title: "Strategic Management",
-    level: "300",
-    location: "Harriman Hall 137",
-    credits: "3 credits",
-    category: "Reserved seat management course",
-    statusByTerm: {
-      "Fall 2026": "Reserved Seats",
-      "Spring 2026": "Reserved Seats",
-      "Summer 2026": "Not Offered"
-    },
-    offerings: {
-      "Fall 2026": {
-        section: "Section 01",
-        days: "Wed",
-        start: "6:00 PM",
-        end: "8:50 PM",
-        evaluation: { enrolled: 160, responses: 58, rating: 3.9, A: 50, B: 48, C: 42, DF: 20 },
-        dna: {
-          workload: "Workload: Moderate High",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Mixed",
-          group: "Group Work: High",
-          clarity: "Clarity: Moderate",
-          usefulness: "Usefulness: Strong for business pathway",
-          comment: "Students mention useful cases but note that group work and reserved seats can affect planning."
-        }
-      },
-      "Spring 2026": {
-        section: "Section 02",
-        days: "Fri",
-        start: "1:00 PM",
-        end: "3:50 PM",
-        evaluation: { enrolled: 150, responses: 52, rating: 4.0, A: 51, B: 46, C: 38, DF: 15 },
-        dna: {
-          workload: "Workload: Moderate",
-          exam: "Exam Difficulty: Medium",
-          fairness: "Grading Fairness: Positive",
-          group: "Group Work: High",
-          clarity: "Clarity: Moderate High",
-          usefulness: "Usefulness: Strong for capstone planning",
-          comment: "Students mention strong case discussions and manageable grading when group work is organized early."
-        }
-      },
-      "Summer 2026": {
-        section: "Not Offered",
-        days: "Not Offered",
-        start: "Not Offered",
-        end: "Not Offered",
-        evaluation: { enrolled: 0, responses: 0, rating: 0, A: 0, B: 0, C: 0, DF: 0 },
-        dna: {
-          workload: "Workload: Not Available",
-          exam: "Exam Difficulty: Not Available",
-          fairness: "Grading Fairness: Not Available",
-          group: "Group Work: Not Available",
-          clarity: "Clarity: Not Available",
-          usefulness: "Usefulness: Not Available",
-          comment: "This course is not offered in Summer 2026 in this prototype."
-        }
-      }
-    },
-    features: [
-      "Hidden Rule Decoder explains why the course may show open seats but still block enrollment.",
-      "Advisor Ready Evidence Pack summarizes the reserved seat issue for official support.",
-      "AI Course Planning Assistant suggests whether to wait, choose another section, or contact the department.",
-      "Visual Timetable Builder checks whether the evening section conflicts with work time."
-    ],
-    recommendation: "This course may require department confirmation because open seats may be reserved for a specific student group.",
-    aiAdvice: "BUS 348 shows how ZOLAR explains reserved seats. Kevin should not assume open seats are available to every student.",
-    language: {
-      plain: "Reserved seats means some seats are saved for specific student groups. Even if the class looks open, Kevin may not be allowed to enroll.",
-      korean: "Reserved seats는 특정 학생 그룹을 위해 남겨진 좌석이라는 뜻입니다. 수업이 open으로 보여도 Kevin에게 허용된 좌석이 아닐 수 있습니다."
-    },
-    pathway: {
-      past: "Past: business core progress",
-      current: "Current: BUS 348 selected",
-      future: "Future: graduation or capstone requirement",
-      peerText: "Similar students usually check reserved seats before relying on BUS 348 for graduation planning.",
-      peerSteps: [
-        "Confirm major standing and reserved seat eligibility",
-        "Check whether the section is open to the student’s group",
-        "Prepare advisor or department message if enrollment is blocked"
-      ],
-      options: [
-        "Check whether the reserved seats apply to Kevin.",
-        "Prepare an advisor report with the blocked enrollment message.",
-        "Choose a backup section or course if the restriction remains."
-      ],
-      problem: "The course may show available seats but still block enrollment because of reserved seats.",
-      cause: "Some seats may be reserved for a specific major, year level, or student group.",
-      risk: "Kevin may lose time waiting for a seat that is not actually open to him.",
-      agency: "Contact the department coordinator or advisor with the reserved seat evidence."
+function offer(section, days, start, end, enrolled, responses, rating, A, B, C, DF, status, workload, exam, fairness, group, clarity) {
+  return {
+    section, days, start, end, status,
+    evaluation: { enrolled, responses, rating, A, B, C, DF },
+    dna: {
+      workload,
+      exam,
+      fairness,
+      group,
+      clarity,
+      usefulness: rating >= 4 ? "High" : rating >= 3.7 ? "Moderate High" : "Moderate",
+      comment: makeComment(status, workload)
     }
   }
+}
+
+function makeCourse(code, title, dept, level, location, credits, offerings) {
+  return { code, title, dept, level, location, credits, offerings }
+}
+
+function makeComment(status, workload) {
+  if (status.includes("Sequence")) return "Students recommend checking prerequisite and course sequence before enrollment."
+  if (status.includes("Reserved")) return "Students mention that seat restrictions should be confirmed before relying on this course."
+  if (status.includes("High") || workload.includes("High")) return "Students mention heavy weekly workload and the need for steady preparation."
+  if (status.includes("Not Offered")) return "This course is not offered during the selected term in this prototype."
+  return "Students mention clear organization, manageable workload, and predictable grading."
+}
+
+function courseAdvice(course, offering) {
+  if (offering.status.includes("Sequence")) return "This course may not fit the required sequence. Check MAT 119, MAP 103, or an approved equivalent before enrolling."
+  if (offering.status.includes("Reserved")) return "This course may show open seats but still block enrollment because some seats are reserved for specific student groups."
+  if (offering.status.includes("High") || offering.dna.workload.includes("High")) return "This course is possible, but the student should check workload concentration before adding another difficult course."
+  if (offering.status.includes("Not Offered")) return "This course is not offered in the selected term. Use the backup option generator to find another term or course."
+  return "This course appears manageable, but the student should still review evaluation patterns and weekly schedule fit."
+}
+
+function plainSupport(course, offering) {
+  if (offering.status.includes("Sequence")) {
+    return {
+      en: "Sequence risk means the course may look available, but it may not fit the order required for graduation.",
+      ko: "Sequence risk는 과목이 수강 가능해 보여도 졸업에 필요한 순서에 맞지 않을 수 있다는 뜻입니다."
+    }
+  }
+  if (offering.status.includes("Reserved")) {
+    return {
+      en: "Reserved seats means some seats are saved for specific student groups. The class can look open but still block enrollment.",
+      ko: "Reserved seats는 특정 학생 그룹을 위해 남겨진 좌석이라는 뜻입니다. 수업이 open으로 보여도 수강이 막힐 수 있습니다."
+    }
+  }
+  if (offering.status.includes("High") || offering.dna.workload.includes("High")) {
+    return {
+      en: "High workload means the course may require more weekly study time than a regular course.",
+      ko: "High workload는 일반 과목보다 더 많은 주간 학습 시간이 필요할 수 있다는 뜻입니다."
+    }
+  }
+  return {
+    en: "Available means the course is open in this prototype, but requirement fit should still be checked.",
+    ko: "Available은 이 프로토타입에서 수강 가능하다는 뜻이지만, 졸업 요건 충족 여부는 확인해야 합니다."
+  }
+}
+
+function isRisk(offering) {
+  return offering.status.includes("Risk") ||
+    offering.status.includes("Reserved") ||
+    offering.status.includes("High") ||
+    offering.status.includes("Intensive") ||
+    offering.status.includes("External") ||
+    offering.status.includes("Limited") ||
+    offering.status.includes("Not Offered")
 }
 
 function getCourse() {
-  return courses[selectedCourseId] || courses["MAT 123"]
+  return selectedCourseId ? courses[selectedCourseId] : null
 }
 
-function getOffering(course, term) {
-  return course.offerings[term] || course.offerings["Fall 2026"] || Object.values(course.offerings)[0]
+function getOffering(course, term = selectedTerm) {
+  return course.offerings[term] || Object.values(course.offerings)[0]
 }
 
-function normalizeText(text) {
-  return text.toLowerCase().replace(/\s+/g, " ").trim()
+function t(key) {
+  return translations[currentLang][key] || key
+}
+
+function applyLanguage() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.dataset.i18n)
+  })
+
+  document.getElementById("englishButton").classList.toggle("active-lang", currentLang === "en")
+  document.getElementById("koreanButton").classList.toggle("active-lang", currentLang === "ko")
+
+  renderCurrentPage()
 }
 
 function showPage(pageId) {
-  const target = document.getElementById(pageId)
-  if (!target) return
+  currentPage = pageId
 
-  pages.forEach(page => {
-    page.classList.remove("active-page")
-  })
+  document.querySelectorAll(".page").forEach(page => page.classList.remove("active-page"))
+  document.querySelectorAll(".nav").forEach(button => button.classList.remove("active"))
 
-  navButtons.forEach(button => {
-    button.classList.remove("active")
-  })
+  document.getElementById(pageId).classList.add("active-page")
+  const nav = document.querySelector(`.nav[data-page="${pageId}"]`)
+  if (nav) nav.classList.add("active")
 
-  target.classList.add("active-page")
-
-  const activeButton = document.querySelector(`.nav[data-page="${pageId}"]`)
-  if (activeButton) {
-    activeButton.classList.add("active")
-  }
-
-  renderDynamicPage(pageId)
+  renderCurrentPage()
 }
 
-function renderDynamicPage(pageId) {
-  if (pageId === "search") renderCourseResults()
-  if (pageId === "timetable") renderTimetable()
-  if (pageId === "evaluation") renderEvaluation()
-  if (pageId === "pathway") renderPathway()
-  if (pageId === "advisor") renderAdvisor()
-  if (pageId === "chatbot") renderChatbot()
+function renderCurrentPage() {
+  if (currentPage === "search") renderSearch()
+  if (currentPage === "timetable") renderTimetable()
+  if (currentPage === "evaluation") renderEvaluation()
+  if (currentPage === "pathway") renderPathway()
+  if (currentPage === "advisor") renderAdvisor()
+  if (currentPage === "assistant") renderAssistant()
 }
 
-document.addEventListener("click", event => {
-  const selectButton = event.target.closest("[data-select-course]")
-  if (selectButton) {
-    selectedCourseId = selectButton.dataset.selectCourse
-    selectedTerm = selectButton.dataset.selectTerm
-    renderCourseResults()
-    return
-  }
+function renderSearch() {
+  const resultsEl = document.getElementById("courseSearchResults")
+  const detailEl = document.getElementById("courseDetail")
+  const query = document.getElementById("courseSearchInput").value.trim().toLowerCase()
+  const term = document.getElementById("courseSearchTerm").value
+  const dept = document.getElementById("departmentFilter").value
+  const level = document.getElementById("levelFilter").value
+  const day = document.getElementById("dayFilter").value
+  const risk = document.getElementById("riskFilter").value
+  const sort = document.getElementById("sortFilter").value
 
-  const goButton = event.target.closest("[data-go]")
-  if (goButton) {
-    if (goButton.dataset.course) selectedCourseId = goButton.dataset.course
-    if (goButton.dataset.term) selectedTerm = goButton.dataset.term
-    showPage(goButton.dataset.go)
-  }
-})
-
-navButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    showPage(button.dataset.page)
-  })
-})
-
-const courseSearchInput = document.getElementById("courseSearchInput")
-const courseSearchTerm = document.getElementById("courseSearchTerm")
-const courseSearchButton = document.getElementById("courseSearchButton")
-const courseSearchResults = document.getElementById("courseSearchResults")
-const levelFilter = document.getElementById("levelFilter")
-const dayFilter = document.getElementById("dayFilter")
-const riskFilter = document.getElementById("riskFilter")
-
-function isRiskStatus(status) {
-  return status.includes("Risk") || status.includes("Reserved") || status.includes("High") || status.includes("Intensive") || status.includes("External") || status.includes("Not Offered") || status.includes("Limited")
-}
-
-function renderCourseResults() {
-  if (!courseSearchResults) return
-
-  const query = normalizeText(courseSearchInput.value)
-  const term = courseSearchTerm.value
-  const level = levelFilter.value
-  const day = dayFilter.value
-  const risk = riskFilter.value
-
-  const results = Object.values(courses).filter(course => {
-    const courseText = normalizeText(`${course.code} ${course.title}`)
-    const offering = getOffering(course, term)
-    const status = course.statusByTerm[term] || "Check Required"
-    const queryMatch = courseText.includes(query) || query.includes(normalizeText(course.code)) || query === ""
-    const levelMatch = level === "All" || course.level === level
-    const dayMatch = day === "Any" || offering.days.includes(day)
-    const riskMatch = risk === "All" || (risk === "Risk" && isRiskStatus(status)) || (risk === "Safe" && !isRiskStatus(status))
-    return queryMatch && levelMatch && dayMatch && riskMatch
-  })
-
-  if (results.length === 0) {
-    courseSearchResults.innerHTML = `
-      <div class="search-empty">
-        <h3>No matching sample course found</h3>
-        <p>Try changing the course code, semester, course level, preferred day, or risk filter.</p>
+  if (!query) {
+    resultsEl.innerHTML = ""
+    detailEl.innerHTML = `
+      <div class="empty-state">
+        <h3>${t("emptySearchTitle")}</h3>
+        <p>${t("emptySearchText")}</p>
       </div>
     `
     return
   }
 
-  courseSearchResults.innerHTML = results.map(course => {
+  let results = Object.values(courses).filter(course => {
     const offering = getOffering(course, term)
-    const status = course.statusByTerm[term] || "Check Required"
-    const riskStatus = isRiskStatus(status)
-    const cardClass = riskStatus ? "risk" : "safe-result"
-    const badgeClass = riskStatus ? "warning" : "safe"
-    const evalData = offering.evaluation
+    const matchQuery = `${course.code} ${course.title}`.toLowerCase().includes(query)
+    const matchDept = dept === "All" || course.dept === dept
+    const matchLevel = level === "All" || course.level === level
+    const matchDay = day === "Any" || offering.days.includes(day)
+    const matchRisk = risk === "All" || (risk === "Risk" && isRisk(offering)) || (risk === "Safe" && !isRisk(offering))
+    return matchQuery && matchDept && matchLevel && matchDay && matchRisk
+  })
 
+  if (sort === "rating") results.sort((a, b) => getOffering(b, term).evaluation.rating - getOffering(a, term).evaluation.rating)
+  if (sort === "workload") results.sort((a, b) => workloadScore(getOffering(b, term).dna.workload) - workloadScore(getOffering(a, term).dna.workload))
+
+  if (results.length === 0) {
+    resultsEl.innerHTML = `<div class="empty-state"><h3>No results</h3><p>Try another course code or filter.</p></div>`
+    detailEl.innerHTML = `<div class="empty-state"><h3>No course selected</h3><p>Search results will appear after changing filters.</p></div>`
+    return
+  }
+
+  if (!selectedCourseId || !results.find(c => c.code === selectedCourseId)) {
+    selectedCourseId = results[0].code
+  }
+  selectedTerm = term
+
+  resultsEl.innerHTML = results.map(course => {
+    const offering = getOffering(course, term)
     return `
-      <div class="course-result-grid">
-        <div class="course-main-card ${cardClass}">
-          <div class="course-main-top">
-            <div>
-              <h3>${course.code} ${course.title}</h3>
-              <p class="course-meta">${term} · ${offering.section} · ${offering.days} · ${offering.start} to ${offering.end} · ${course.location} · ${course.credits}</p>
-            </div>
-            <span class="badge ${badgeClass}">${status}</span>
-          </div>
-
-          <div class="mini-metric-grid">
-            <div class="mini-metric">
-              <strong>${evalData.enrolled}</strong>
-              <span>Enrolled</span>
-            </div>
-            <div class="mini-metric">
-              <strong>${evalData.responses}</strong>
-              <span>Responses</span>
-            </div>
-            <div class="mini-metric">
-              <strong>${evalData.rating}</strong>
-              <span>Rating</span>
-            </div>
-            <div class="mini-metric">
-              <strong>${evalData.A}</strong>
-              <span>A grades</span>
-            </div>
-          </div>
-
-          <p><strong>ZOLAR recommendation:</strong> ${course.recommendation}</p>
-          <p><strong>AI planning advice:</strong> ${course.aiAdvice}</p>
-
-          <div class="course-actions">
-            <button class="primary" data-select-course="${course.code}" data-select-term="${term}">Select This Course</button>
-            <button data-go="evaluation" data-course="${course.code}" data-term="${term}">View Evaluation DNA</button>
-            <button data-go="timetable" data-course="${course.code}" data-term="${term}">Add to Timetable</button>
-            <button data-go="pathway" data-course="${course.code}" data-term="${term}">Check Pathway</button>
-            <button data-go="advisor" data-course="${course.code}" data-term="${term}">Prepare Advisor Report</button>
-            <button data-go="chatbot" data-course="${course.code}" data-term="${term}">Ask AI Assistant</button>
-          </div>
-        </div>
-
-        <div class="course-feature-card">
-          <h3>Key Features Applied</h3>
-          <ul class="feature-list">
-            ${course.features.map(feature => `<li>${feature}</li>`).join("")}
-          </ul>
-          <div class="language-box">
-            <strong>Guided Language Support</strong>
-            <p>${course.language.plain}</p>
-            <p>${course.language.korean}</p>
-          </div>
-        </div>
+      <div class="result-card ${selectedCourseId === course.code ? "active" : ""}" data-select="${course.code}">
+        <h4>${course.code}</h4>
+        <p>${course.title}</p>
+        <span class="badge ${isRisk(offering) ? "warning" : "safe"}">${offering.status}</span>
+        <p>${offering.evaluation.rating} / 5 · ${offering.evaluation.responses} reviews</p>
       </div>
     `
   }).join("")
+
+  renderCourseDetail()
 }
 
-if (courseSearchButton) {
-  courseSearchButton.addEventListener("click", renderCourseResults)
+function workloadScore(value) {
+  if (value.includes("Very")) return 5
+  if (value.includes("Intensive")) return 5
+  if (value.includes("High")) return 4
+  if (value.includes("Moderate High")) return 3
+  if (value.includes("Moderate")) return 2
+  return 1
 }
 
-if (courseSearchInput) {
-  courseSearchInput.addEventListener("keydown", event => {
-    if (event.key === "Enter") renderCourseResults()
-  })
-}
-
-;[courseSearchTerm, levelFilter, dayFilter, riskFilter].forEach(filter => {
-  if (filter) {
-    filter.addEventListener("change", () => {
-      selectedTerm = courseSearchTerm.value
-      renderCourseResults()
-    })
-  }
-})
-
-function renderBanner(elementId) {
-  const el = document.getElementById(elementId)
-  if (!el) return
-
+function renderCourseDetail() {
+  const detailEl = document.getElementById("courseDetail")
   const course = getCourse()
-  const offering = getOffering(course, selectedTerm)
+  if (!course) return
 
-  el.innerHTML = `
-    <h3>${course.code} ${course.title}</h3>
-    <p>${selectedTerm} · ${offering.section} · ${offering.days} · ${offering.start} to ${offering.end} · ${course.location} · ${course.credits}</p>
+  const offering = getOffering(course)
+  const data = offering.evaluation
+  const support = plainSupport(course, offering)
+
+  detailEl.innerHTML = `
+    <div class="detail-hero">
+      <div>
+        <h3>${course.code} ${course.title}</h3>
+        <p>${selectedTerm} · ${offering.section} · ${offering.days} · ${offering.start} to ${offering.end} · ${course.location} · ${course.credits}</p>
+      </div>
+      <span class="badge ${isRisk(offering) ? "warning" : "safe"}">${offering.status}</span>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric"><strong>${data.enrolled}</strong><span>Enrolled</span></div>
+      <div class="metric"><strong>${data.responses}</strong><span>Responses</span></div>
+      <div class="metric"><strong>${data.rating}</strong><span>Rating</span></div>
+      <div class="metric"><strong>${data.A}</strong><span>A grades</span></div>
+    </div>
+
+    <p><strong>ZOLAR recommendation:</strong> ${courseAdvice(course, offering)}</p>
+
+    <div class="detail-actions">
+      <button class="primary" data-action="addCourse">${plannedCourses.includes(course.code) ? "Added to Plan" : "Add to Plan"}</button>
+      <button data-go="evaluation">View Evaluation DNA</button>
+      <button data-go="timetable">Open Timetable</button>
+      <button data-go="pathway">Check Pathway</button>
+      <button data-go="advisor">Prepare Advisor Report</button>
+      <button data-go="assistant">Ask AI Assistant</button>
+    </div>
+
+    <div class="detail-section">
+      <h4>Integrated Course Evaluation Preview</h4>
+      <p>Students can see evaluation data, grade distribution, workload information, and student comments without moving to another website.</p>
+    </div>
+
+    <div class="detail-section">
+      <h4>Course Evaluation DNA</h4>
+      <ul class="feature-list">
+        <li>Workload: ${offering.dna.workload}</li>
+        <li>Exam Difficulty: ${offering.dna.exam}</li>
+        <li>Grading Fairness: ${offering.dna.fairness}</li>
+        <li>Group Work: ${offering.dna.group}</li>
+        <li>Clarity: ${offering.dna.clarity}</li>
+      </ul>
+    </div>
+
+    <div class="detail-section">
+      <h4>Guided Language Support</h4>
+      <div class="language-box">
+        <strong>Plain English</strong>
+        <p>${support.en}</p>
+        <strong>Korean</strong>
+        <p>${support.ko}</p>
+      </div>
+    </div>
   `
 }
 
 function renderTimetable() {
-  renderBanner("selectedCourseBanner")
-
-  const course = getCourse()
-  const offering = getOffering(course, selectedTerm)
   const grid = document.getElementById("timetableGrid")
+  const summary = document.getElementById("scheduleSummary")
   const heatmap = document.getElementById("heatmap")
-  const summary = document.getElementById("stressSummary")
-  const subtitle = document.getElementById("timetableSubtitle")
 
-  if (!grid || !heatmap || !summary || !subtitle) return
-
-  subtitle.textContent = `Selected course: ${course.code} in ${selectedTerm}. Click the button to simulate a drag and drop adjustment.`
-
-  const baseBlocks = [
-    { day: "Mon", time: "9 AM", text: "Study Block<br>9:00 to 9:50<br>Library", color: "green" },
-    { day: "Wed", time: "9 AM", text: "CHE Review<br>9:00 to 10:20<br>Chem 100", color: "red" },
-    { day: "Mon", time: "1 PM", text: "EST 207<br>1:00 to 2:20<br>CS 2120", color: "yellow" },
-    { day: "Tue", time: "3 PM", text: "Work Shift<br>3:00 to 7:00<br>Taco Bell", color: "purple" },
-    { day: "Thu", time: "3 PM", text: "Work Shift<br>3:00 to 7:00<br>Taco Bell", color: "purple" }
-  ]
-
-  const selectedBlock = {
-    day: getPrimaryDay(offering.days),
-    time: getTimeSlot(offering.start),
-    text: `${course.code}<br>${offering.start} to ${offering.end}<br>${course.location}`,
-    color: isRiskStatus(course.statusByTerm[selectedTerm] || "") ? "red" : "blue",
-    selected: true
-  }
-
-  const allBlocks = [...baseBlocks, selectedBlock]
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
   const times = ["8 AM", "9 AM", "11 AM", "1 PM", "3 PM", "6 PM"]
 
   let html = `<div class="time"></div>`
-  days.forEach(dayName => {
-    html += `<div class="day">${dayName}</div>`
-  })
+  days.forEach(day => html += `<div class="day">${day}</div>`)
 
   times.forEach(time => {
     html += `<div class="time">${time}</div>`
-    days.forEach(dayName => {
-      const block = allBlocks.find(item => item.day === dayName && item.time === time)
+    days.forEach(day => {
+      const block = plannedCourses.map(code => courses[code]).find(course => {
+        const off = getOffering(course)
+        return getPrimaryDay(off.days) === day && getTimeSlot(off.start) === time
+      })
+
       if (block) {
-        const movedClass = block.selected && moved ? "moved" : ""
-        html += `<div class="slot"><div class="block ${block.color} ${movedClass}">${block.text}</div></div>`
+        const off = getOffering(block)
+        html += `
+          <div class="slot">
+            <div class="block ${isRisk(off) ? "red" : "blue"} ${moved ? "moved" : ""}">
+              <div>
+                ${block.code}<br>
+                ${off.start} to ${off.end}<br>
+                ${block.location}
+              </div>
+              <button data-drop="${block.code}">Drop</button>
+            </div>
+          </div>
+        `
       } else {
-        html += `<div class="slot"></div>`
+        html += `
+          <div class="slot">
+            <button data-add-empty="${day}-${time}">Add</button>
+          </div>
+        `
       }
     })
   })
 
   grid.innerHTML = html
 
-  const stress = getStress(course.code)
-  heatmap.innerHTML = stress.map(level => `<span class="${level}"></span>`).join("")
+  if (plannedCourses.length === 0) {
+    summary.innerHTML = `<p>No courses added yet. Return to Course Search and add a course to the plan.</p>`
+    heatmap.innerHTML = ["low", "low", "low", "low", "low"].map(x => `<span class="${x}"></span>`).join("")
+    return
+  }
 
-  summary.innerHTML = `
-    <p><strong>Selected course:</strong> ${course.code} ${course.title}</p>
-    <p><strong>Start and end time:</strong> ${offering.start} to ${offering.end}</p>
-    <p><strong>Location:</strong> ${course.location}</p>
-    <p><strong>Kevin’s routine check:</strong> ZOLAR compares this class with work shifts, study time, basketball, and recovery gaps.</p>
-    <p><strong>Detected issue:</strong> ${course.pathway.risk}</p>
-  `
+  summary.innerHTML = plannedCourses.map(code => {
+    const course = courses[code]
+    const off = getOffering(course)
+    return `<p><strong>${course.code}</strong> · ${off.days} · ${off.start} to ${off.end} · ${course.location}</p>`
+  }).join("")
 
-  const moveButton = document.getElementById("moveCourse")
-  if (moveButton) moveButton.textContent = moved ? "Reset Timetable" : "Simulate Drag and Drop"
+  const hasRisk = plannedCourses.some(code => isRisk(getOffering(courses[code])))
+  heatmap.innerHTML = (hasRisk ? ["mid", "high", "mid", "mid", "low"] : ["low", "mid", "mid", "low", "low"])
+    .map(x => `<span class="${x}"></span>`).join("")
 }
 
 function getPrimaryDay(days) {
@@ -973,178 +465,295 @@ function getTimeSlot(start) {
   return "11 AM"
 }
 
-function getStress(code) {
-  if (code === "CHE 131") return ["mid", "high", "high", "mid", "low"]
-  if (code === "MAT 123") return ["mid", "high", "mid", "mid", "low"]
-  if (code === "BUS 348") return ["low", "mid", "high", "mid", "mid"]
-  if (code === "EST 207") return ["low", "mid", "mid", "mid", "low"]
-  return ["low", "mid", "mid", "low", "low"]
-}
-
-const moveButton = document.getElementById("moveCourse")
-if (moveButton) {
-  moveButton.addEventListener("click", () => {
-    moved = !moved
-    renderTimetable()
-  })
-}
-
 function renderEvaluation() {
-  renderBanner("evaluationBanner")
-
+  const el = document.getElementById("evaluationContent")
   const course = getCourse()
-  const semesterSelect = document.getElementById("semesterSelect")
-  if (!semesterSelect) return
+  if (!course) {
+    el.innerHTML = `<div class="card empty-state"><h3>No course selected</h3><p>Search and select a course first.</p></div>`
+    return
+  }
 
-  semesterSelect.innerHTML = Object.keys(course.offerings).map(term => {
-    return `<option value="${term}" ${term === selectedTerm ? "selected" : ""}>${term}</option>`
-  }).join("")
-
-  updateEvaluation(selectedTerm)
-}
-
-function updateEvaluation(term) {
-  const course = getCourse()
-  const offering = getOffering(course, term)
-  const data = offering.evaluation
+  const terms = Object.keys(course.offerings)
+  const off = getOffering(course)
+  const data = off.evaluation
   const total = data.enrolled || 1
 
-  const title = document.getElementById("evaluationCourseTitle")
-  if (!title) return
+  el.innerHTML = `
+    <div class="card">
+      <h3>${course.code} ${course.title}</h3>
+      <select id="evaluationTermSelect">
+        ${terms.map(term => `<option value="${term}" ${term === selectedTerm ? "selected" : ""}>${term}</option>`).join("")}
+      </select>
+      <p>${selectedTerm} · ${off.section} · ${off.days} · ${off.start} to ${off.end} · ${course.location}</p>
 
-  title.textContent = `${course.code} ${course.title}`
-  document.getElementById("semesterData").textContent =
-    `${term} · ${offering.section} · ${offering.days} · ${offering.start} to ${offering.end} · ${course.location} · ${data.enrolled} enrolled · ${data.responses} responses · Overall rating ${data.rating} out of 5`
+      ${gradeRow("A", data.A, total)}
+      ${gradeRow("B", data.B, total)}
+      ${gradeRow("C", data.C, total)}
+      ${gradeRow("D or F", data.DF, total)}
 
-  document.getElementById("countA").textContent = `${data.A} students`
-  document.getElementById("countB").textContent = `${data.B} students`
-  document.getElementById("countC").textContent = `${data.C} students`
-  document.getElementById("countDF").textContent = `${data.DF} students`
+      <table class="grade-table">
+        <tr><th>Semester</th><th>Enrolled</th><th>Responses</th><th>A</th><th>B</th><th>C</th><th>D or F</th><th>Rating</th></tr>
+        <tr><td>${selectedTerm}</td><td>${data.enrolled}</td><td>${data.responses}</td><td>${data.A}</td><td>${data.B}</td><td>${data.C}</td><td>${data.DF}</td><td>${data.rating}</td></tr>
+      </table>
+    </div>
 
-  document.getElementById("barA").style.width = `${Math.round((data.A / total) * 100)}%`
-  document.getElementById("barB").style.width = `${Math.round((data.B / total) * 100)}%`
-  document.getElementById("barC").style.width = `${Math.round((data.C / total) * 100)}%`
-  document.getElementById("barDF").style.width = `${Math.round((data.DF / total) * 100)}%`
-
-  document.getElementById("gradeTableBody").innerHTML = `
-    <tr>
-      <td>${term}</td>
-      <td>${course.location}</td>
-      <td>${data.enrolled}</td>
-      <td>${data.responses}</td>
-      <td>${data.A}</td>
-      <td>${data.B}</td>
-      <td>${data.C}</td>
-      <td>${data.DF}</td>
-      <td>${data.rating}</td>
-    </tr>
+    <div class="card">
+      <h3>Course Evaluation DNA</h3>
+      <ul class="dna">
+        <li>Workload: ${off.dna.workload}</li>
+        <li>Exam Difficulty: ${off.dna.exam}</li>
+        <li>Grading Fairness: ${off.dna.fairness}</li>
+        <li>Group Work: ${off.dna.group}</li>
+        <li>Clarity: ${off.dna.clarity}</li>
+        <li>Usefulness: ${off.dna.usefulness}</li>
+      </ul>
+      <h4>Student Comment Pattern</h4>
+      <p>${off.dna.comment}</p>
+    </div>
   `
-
-  document.getElementById("dnaWorkload").textContent = offering.dna.workload
-  document.getElementById("dnaExam").textContent = offering.dna.exam
-  document.getElementById("dnaFairness").textContent = offering.dna.fairness
-  document.getElementById("dnaGroup").textContent = offering.dna.group
-  document.getElementById("dnaClarity").textContent = offering.dna.clarity
-  document.getElementById("dnaUsefulness").textContent = offering.dna.usefulness
-  document.getElementById("commentPattern").textContent = offering.dna.comment
-  document.getElementById("evaluationMeaning").textContent = `For Kevin, this helps compare workload, grading risk, and student experience before he commits to a course that may affect his schedule and graduation sequence.`
 }
 
-const semesterSelect = document.getElementById("semesterSelect")
-if (semesterSelect) {
-  semesterSelect.addEventListener("change", () => {
-    selectedTerm = semesterSelect.value
-    updateEvaluation(selectedTerm)
-    renderBanner("evaluationBanner")
-  })
-}
-
-const applyEvaluationButton = document.getElementById("applyEvaluationButton")
-if (applyEvaluationButton) {
-  applyEvaluationButton.addEventListener("click", () => {
-    const select = document.getElementById("semesterSelect")
-    if (select) {
-      selectedTerm = select.value
-      updateEvaluation(selectedTerm)
-    }
-  })
+function gradeRow(label, count, total) {
+  const width = Math.round((count / total) * 100)
+  return `
+    <div class="grade-row">
+      <span>${label}</span>
+      <div class="grade-bar"><b style="width:${width}%"></b></div>
+      <strong>${count} students</strong>
+    </div>
+  `
 }
 
 function renderPathway() {
-  renderBanner("pathwayBanner")
-
+  const el = document.getElementById("pathwayContent")
   const course = getCourse()
-  const path = course.pathway
-  const status = course.statusByTerm[selectedTerm] || "Check Required"
-  const risky = isRiskStatus(status)
+  if (!course) {
+    el.innerHTML = `<div class="card empty-state"><h3>No course selected</h3><p>Search and select a course first.</p></div>`
+    return
+  }
 
-  document.getElementById("pathwayCards").innerHTML = `
-    <div class="path-item done">${path.past}</div>
-    <div class="path-item ${risky ? "risk-path" : "done"}">${path.current}</div>
-    <div class="path-item future">${path.future}</div>
+  const off = getOffering(course)
+  const options = backupOptions(course, off)
+
+  el.innerHTML = `
+    <div class="pathway">
+      <div class="path-item done">Past<br>${course.dept} preparation</div>
+      <div class="path-item ${isRisk(off) ? "risk-path" : "done"}">Current<br>${course.code} selected</div>
+      <div class="path-item future">Future<br>${futurePath(course)}</div>
+    </div>
+
+    <div class="grid two">
+      <div class="card">
+        <h3>Peer Pathway Map</h3>
+        <p>Similar students in the same major usually compare course sequence, workload, and future requirement fit before enrollment.</p>
+        <ol>
+          <li>Check prerequisite or requirement category</li>
+          <li>Compare course evaluation and weekly schedule pressure</li>
+          <li>Confirm with advisor when the system detects risk</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <h3>Backup Option Generator</h3>
+        ${options.map(option => `<p><strong>Option:</strong> ${option}</p>`).join("")}
+        <button class="primary" data-go="advisor">Prepare Advisor Report</button>
+      </div>
+    </div>
   `
+}
 
-  document.getElementById("peerPathwayText").textContent = path.peerText
-  document.getElementById("peerPathwayList").innerHTML = path.peerSteps.map(step => `<li>${step}</li>`).join("")
-  document.getElementById("recommendedOptions").innerHTML = path.options.map(option => `<p><strong>Backup option:</strong> ${option}</p>`).join("")
+function backupOptions(course, off) {
+  if (off.status.includes("Sequence")) return ["Check whether MAT 119 can be added.", "Find an approved summer equivalent course.", "Replace MAT 123 with another required course this semester."]
+  if (off.status.includes("Reserved")) return ["Check whether reserved seats apply to this student.", "Choose another section.", "Contact the department coordinator."]
+  if (off.status.includes("Not Offered")) return ["Choose Fall or Spring.", "Select a different course.", "Ask an advisor for an approved substitute."]
+  if (off.dna.workload.includes("High")) return ["Move one heavy course to another semester.", "Choose a lighter elective.", "Review workload comments before enrolling."]
+  return ["Keep the course if it fits the schedule.", "Compare evaluation comments.", "Confirm requirement fit if needed."]
+}
+
+function futurePath(course) {
+  if (course.code === "MAT 123") return "AMS 161 may be delayed"
+  if (course.code === "BIO 201") return "BIO 202 or lab requirement"
+  if (course.code === "CHE 131") return "CHE 132 or lab sequence"
+  if (course.code === "BUS 348") return "Capstone or graduation requirement"
+  return "Next degree requirement"
 }
 
 function renderAdvisor() {
-  renderBanner("advisorBanner")
-
+  const el = document.getElementById("advisorContent")
   const course = getCourse()
-  const path = course.pathway
-  const offering = getOffering(course, selectedTerm)
+  if (!course) {
+    el.innerHTML = `<div class="card empty-state"><h3>No course selected</h3><p>Search and select a course first.</p></div>`
+    return
+  }
 
-  document.getElementById("advisorProblem").textContent = path.problem
-  document.getElementById("advisorCause").textContent = path.cause
-  document.getElementById("advisorRisk").textContent = path.risk
-  document.getElementById("advisorAgency").textContent = path.agency
+  const off = getOffering(course)
 
-  document.getElementById("advisorMessage").innerHTML = `
-    Dear Advisor,<br><br>
-    I am reviewing ${course.code} ${course.title} for ${selectedTerm}. ZOLAR shows that this course has the following issue: ${path.problem}
-    The course is listed as ${offering.section}, ${offering.days}, ${offering.start} to ${offering.end}, at ${course.location}.
-    Could you confirm whether this course fits my current degree path, or whether I should choose one of the recommended alternatives?<br><br>
-    Thank you.
+  el.innerHTML = `
+    <div class="card">
+      <h3>Detected Problem</h3>
+      <p>${courseAdvice(course, off)}</p>
+
+      <h3>Detected Rule</h3>
+      <p>${off.status}</p>
+
+      <h3>Course Information</h3>
+      <p>${course.code} ${course.title} · ${selectedTerm} · ${off.section} · ${off.days} · ${off.start} to ${off.end} · ${course.location}</p>
+
+      <h3>Possible Alternatives</h3>
+      ${backupOptions(course, off).map(option => `<p>${option}</p>`).join("")}
+
+      <h3>Email Draft</h3>
+      <div class="email-box">
+        Dear Advisor,<br><br>
+        I am reviewing ${course.code} ${course.title} for ${selectedTerm}. ZOLAR shows the following issue: ${courseAdvice(course, off)}
+        Could you confirm whether this course fits my degree path, or whether I should choose one of the recommended alternatives?<br><br>
+        Thank you.
+      </div>
+    </div>
   `
 }
 
-function renderChatbot() {
-  renderBanner("chatbotBanner")
-
+function renderAssistant() {
+  const el = document.getElementById("assistantContent")
   const course = getCourse()
-  const path = course.pathway
+  if (!course) {
+    el.innerHTML = `<div class="card empty-state"><h3>No course selected</h3><p>Search and select a course first.</p></div>`
+    return
+  }
 
-  document.getElementById("aiAnalysis").innerHTML = `
-    <div class="ai-box"><strong>Major:</strong> Biochemistry</div>
-    <div class="ai-box"><strong>Selected course:</strong> ${course.code} ${course.title}</div>
-    <div class="ai-box"><strong>Detected risk:</strong> ${path.problem}</div>
-    <div class="ai-box"><strong>Planning advice:</strong> ${course.aiAdvice}</div>
-  `
+  const off = getOffering(course)
+  const support = plainSupport(course, off)
 
-  document.getElementById("languageSupport").innerHTML = `
-    <div class="language-box">
-      <strong>Plain language explanation</strong>
-      <p>${course.language.plain}</p>
+  el.innerHTML = `
+    <div class="grid two">
+      <div class="card">
+        <h3>AI Planning Analysis</h3>
+        <div class="ai-box"><strong>Selected course:</strong> ${course.code} ${course.title}</div>
+        <div class="ai-box"><strong>Detected risk:</strong> ${off.status}</div>
+        <div class="ai-box"><strong>Planning advice:</strong> ${courseAdvice(course, off)}</div>
+      </div>
+
+      <div class="card">
+        <h3>Guided Language Support</h3>
+        <div class="language-box">
+          <strong>Plain English</strong>
+          <p>${support.en}</p>
+          <strong>Korean</strong>
+          <p>${support.ko}</p>
+        </div>
+      </div>
     </div>
-    <div class="language-box">
-      <strong>Korean support</strong>
-      <p>${course.language.korean}</p>
-    </div>
-  `
 
-  document.getElementById("chatBox").innerHTML = `
-    <div class="message user">Why should I check ${course.code} before enrolling?</div>
-    <div class="message bot">ZOLAR detected this issue: ${path.problem}</div>
-    <div class="message bot">Possible reason: ${path.cause}</div>
-    <div class="message bot">Recommended human support: ${path.agency}</div>
+    <div class="chat">
+      <div class="message user">Why should I check ${course.code} before enrolling?</div>
+      <div class="message bot">ZOLAR detected this issue: ${courseAdvice(course, off)}</div>
+      <div class="message bot">Recommended next step: review backup options or prepare an advisor report.</div>
+    </div>
+
+    <div class="toolbar">
+      <button data-go="pathway">View Pathway</button>
+      <button data-go="advisor">Generate Advisor Report</button>
+      <button data-go="search">Return to Search</button>
+    </div>
   `
 }
 
-renderCourseResults()
-renderTimetable()
-renderEvaluation()
-renderPathway()
-renderAdvisor()
-renderChatbot()
+document.addEventListener("click", event => {
+  const go = event.target.closest("[data-go]")
+  if (go) {
+    showPage(go.dataset.go)
+    return
+  }
+
+  const select = event.target.closest("[data-select]")
+  if (select) {
+    selectedCourseId = select.dataset.select
+    renderSearch()
+    return
+  }
+
+  const action = event.target.closest("[data-action]")
+  if (action && action.dataset.action === "addCourse" && selectedCourseId) {
+    if (!plannedCourses.includes(selectedCourseId)) plannedCourses.push(selectedCourseId)
+    renderSearch()
+    return
+  }
+
+  const drop = event.target.closest("[data-drop]")
+  if (drop) {
+    plannedCourses = plannedCourses.filter(code => code !== drop.dataset.drop)
+    renderTimetable()
+    return
+  }
+
+  const addEmpty = event.target.closest("[data-add-empty]")
+  if (addEmpty) {
+    showPage("search")
+    return
+  }
+})
+
+document.querySelectorAll(".nav").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page))
+})
+
+document.getElementById("courseSearchButton").addEventListener("click", renderSearch)
+document.getElementById("courseSearchInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") renderSearch()
+})
+
+;["departmentFilter", "levelFilter", "dayFilter", "riskFilter", "sortFilter", "courseSearchTerm"].forEach(id => {
+  document.getElementById(id).addEventListener("change", () => {
+    if (id === "courseSearchTerm") selectedTerm = document.getElementById(id).value
+    renderSearch()
+  })
+})
+
+document.getElementById("clearFiltersButton").addEventListener("click", () => {
+  document.getElementById("courseSearchInput").value = ""
+  document.getElementById("departmentFilter").value = "All"
+  document.getElementById("levelFilter").value = "All"
+  document.getElementById("dayFilter").value = "Any"
+  document.getElementById("riskFilter").value = "All"
+  document.getElementById("sortFilter").value = "relevance"
+  selectedCourseId = null
+  renderSearch()
+})
+
+document.getElementById("simulateMoveButton").addEventListener("click", () => {
+  moved = !moved
+  renderTimetable()
+})
+
+document.addEventListener("change", event => {
+  if (event.target.id === "evaluationTermSelect") {
+    selectedTerm = event.target.value
+    renderEvaluation()
+  }
+})
+
+document.getElementById("englishButton").addEventListener("click", () => {
+  currentLang = "en"
+  applyLanguage()
+})
+
+document.getElementById("koreanButton").addEventListener("click", () => {
+  currentLang = "ko"
+  applyLanguage()
+})
+
+document.getElementById("userMenuButton").addEventListener("click", () => {
+  document.getElementById("userDropdown").classList.toggle("hidden")
+})
+
+document.getElementById("signOutButton").addEventListener("click", () => {
+  document.getElementById("app").classList.add("hidden")
+  document.getElementById("loginScreen").classList.remove("hidden")
+})
+
+document.getElementById("signInButton").addEventListener("click", () => {
+  document.getElementById("loginScreen").classList.add("hidden")
+  document.getElementById("app").classList.remove("hidden")
+})
+
+applyLanguage()
