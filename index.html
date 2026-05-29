@@ -1,1 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZOLAR Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">Z</div>
+        <div>
+          <h1>ZOLAR</h1>
+          <p>Course Registration Support</p>
+        </div>
+      </div>
 
+      <button class="nav active" data-page="dashboard">Dashboard</button>
+      <button class="nav" data-page="search">Course Search</button>
+      <button class="nav" data-page="timetable">Visual Timetable</button>
+      <button class="nav" data-page="evaluation">Course Evaluation</button>
+      <button class="nav" data-page="pathway">Course Pathway</button>
+      <button class="nav" data-page="advisor">Advisor Report</button>
+      <button class="nav" data-page="chatbot">Help Navigator</button>
+    </aside>
+
+    <main class="main">
+      <section id="dashboard" class="page active-page">
+        <div class="header">
+          <div>
+            <h2>ZOLAR Prototype</h2>
+            <p>A redesigned SOLAR experience for safer and clearer course registration.</p>
+          </div>
+          <button class="primary" data-go="search">Start Course Search</button>
+        </div>
+
+        <div class="grid three">
+          <div class="card">
+            <h3>Integrated Academic Information</h3>
+            <p>ZOLAR combines course registration, course evaluation, grade distribution, and workload information in one place.</p>
+          </div>
+          <div class="card">
+            <h3>Personalized Decision Support</h3>
+            <p>The system checks student records, course sequence, and possible graduation risks before enrollment.</p>
+          </div>
+          <div class="card">
+            <h3>Clear Visual Feedback</h3>
+            <p>Students can see schedule conflicts, workload concentration, and safer alternatives before confirming courses.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Prototype Flow</h3>
+          <p>Course Search → Visual Timetable → Course Evaluation → Course Pathway → Advisor Report → Help Navigator</p>
+        </div>
+      </section>
+
+      <section id="search" class="page">
+        <div class="header">
+          <div>
+            <h2>Course Search</h2>
+            <p>Search courses with smart filters, hidden rule detection, and clear action guidance.</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input type="text" value="MAT 123" aria-label="course search">
+          <select>
+            <option>Fall 2026</option>
+            <option>Spring 2026</option>
+            <option>Summer 2026</option>
+          </select>
+          <button class="primary">Search</button>
+        </div>
+
+        <div class="course-list">
+          <div class="course-card selected">
+            <div>
+              <h3>MAT 123 Calculus I</h3>
+              <p>Section 01 · Mon Wed 10:00 AM to 11:20 AM · 4 credits</p>
+            </div>
+            <span class="badge warning">Sequence Risk</span>
+          </div>
+
+          <div class="alert">
+            <h3>Hidden Rule Decoder</h3>
+            <p>This course may not fit your current math sequence. ZOLAR detected that MAP 103 or MAT 119 may need to be checked before enrollment.</p>
+            <div class="button-row">
+              <button class="primary" data-go="pathway">Check Pathway</button>
+              <button data-go="advisor">Prepare Advisor Report</button>
+            </div>
+          </div>
+
+          <div class="course-card">
+            <div>
+              <h3>AMS 151 Applied Calculus I</h3>
+              <p>Section 02 · Tue Thu 2:00 PM to 3:20 PM · 3 credits</p>
+            </div>
+            <span class="badge safe">Available</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="timetable" class="page">
+        <div class="header">
+          <div>
+            <h2>Visual Timetable Builder</h2>
+            <p>Compare courses visually and test schedule changes before enrollment.</p>
+          </div>
+          <button class="primary" id="moveCourse">Simulate Drag and Drop</button>
+        </div>
+
+        <div class="timetable-wrap">
+          <div class="timetable">
+            <div class="time">8 AM</div>
+            <div class="day">Mon</div>
+            <div class="day">Tue</div>
+            <div class="day">Wed</div>
+            <div class="day">Thu</div>
+            <div class="day">Fri</div>
+
+            <div class="time">9 AM</div>
+            <div class="block green">BIO 201<br>9:00</div>
+            <div></div>
+            <div class="block red">CHE 230<br>9:00</div>
+            <div></div>
+            <div class="block green">BIO 201<br>9:00</div>
+
+            <div class="time">11 AM</div>
+            <div></div>
+            <div class="block blue" id="movableCourse">MAT 123<br>11:00</div>
+            <div></div>
+            <div class="block blue">MAT 123<br>11:00</div>
+            <div></div>
+
+            <div class="time">1 PM</div>
+            <div class="block yellow">EST 207<br>1:00</div>
+            <div></div>
+            <div class="block yellow">EST 207<br>1:00</div>
+            <div></div>
+            <div></div>
+
+            <div class="time">3 PM</div>
+            <div></div>
+            <div class="block purple">Work Shift<br>3:00</div>
+            <div></div>
+            <div class="block purple">Work Shift<br>3:00</div>
+            <div></div>
+          </div>
+
+          <div class="side-panel">
+            <h3>Schedule Stress Heatmap</h3>
+            <div class="heatmap">
+              <span class="low"></span>
+              <span class="mid"></span>
+              <span class="high"></span>
+              <span class="mid"></span>
+              <span class="low"></span>
+            </div>
+            <p><strong>Detected issue:</strong> Wednesday has the highest workload concentration.</p>
+            <p><strong>Drag and drop simulation:</strong> Click the button above to move MAT 123 and reduce conflict.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="evaluation" class="page">
+        <div class="header">
+          <div>
+            <h2>Course Evaluation Preview</h2>
+            <p>View Classie style evaluation data inside ZOLAR without opening another website.</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <select id="semesterSelect">
+            <option value="fall2025">Fall 2025</option>
+            <option value="spring2025">Spring 2025</option>
+            <option value="fall2024">Fall 2024</option>
+          </select>
+          <button class="primary">Apply Semester Filter</button>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <h3>BIO 201 Biology I</h3>
+            <p id="semesterData">Fall 2025 · 220 enrolled · 86 responses · Overall rating 4.2 out of 5</p>
+            <div class="bars">
+              <div><span>A</span><div><b style="width: 38%"></b></div></div>
+              <div><span>B</span><div><b style="width: 32%"></b></div></div>
+              <div><span>C</span><div><b style="width: 18%"></b></div></div>
+              <div><span>D or F</span><div><b style="width: 8%"></b></div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Course Evaluation DNA</h3>
+            <ul class="dna">
+              <li>Workload: Moderate</li>
+              <li>Exam Difficulty: Medium</li>
+              <li>Grading Fairness: Positive</li>
+              <li>Group Work: Low</li>
+              <li>Clarity: High</li>
+            </ul>
+            <p>Repeated comment pattern: Students mention clear lectures, weekly quizzes, and manageable workload.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="pathway" class="page">
+        <div class="header">
+          <div>
+            <h2>Course Pathway and Recommendations</h2>
+            <p>Compare past, current, and future course decisions before enrollment.</p>
+          </div>
+        </div>
+
+        <div class="pathway">
+          <div class="path-item done">Past<br>MAP 103 expected</div>
+          <div class="path-item risk">Current<br>MAT 123 selected</div>
+          <div class="path-item future">Future<br>AMS 161 risk</div>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <h3>Peer Pathway Map</h3>
+            <p>Similar Biochemistry sophomores usually completed the math sequence in this order:</p>
+            <ol>
+              <li>MAP 103 or equivalent placement</li>
+              <li>MAT 123 with required condition</li>
+              <li>AMS 161 or next major requirement</li>
+            </ol>
+          </div>
+
+          <div class="card">
+            <h3>Recommended Options</h3>
+            <p><strong>Option A:</strong> Check whether MAT 119 can be added.</p>
+            <p><strong>Option B:</strong> Find an approved summer equivalent course.</p>
+            <p><strong>Option C:</strong> Replace MAT 123 with another required course this semester.</p>
+            <button class="primary" data-go="advisor">Prepare Advisor Report</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="advisor" class="page">
+        <div class="header">
+          <div>
+            <h2>Advisor Ready Evidence Pack</h2>
+            <p>A structured report that helps students contact the correct human support.</p>
+          </div>
+        </div>
+
+        <div class="card report">
+          <h3>Detected Problem</h3>
+          <p>The student selected MAT 123, but ZOLAR detected that the course may not fit the current degree sequence.</p>
+
+          <h3>Possible Cause</h3>
+          <p>MAP 103 or MAT 119 may need to be checked before continuing with this path.</p>
+
+          <h3>Degree Risk</h3>
+          <p>This choice may delay the math sequence and affect future semester planning.</p>
+
+          <h3>Recommended Human Agency</h3>
+          <p>Contact Academic and Transfer Advising Services or the department coordinator with this evidence pack.</p>
+
+          <h3>Prepared Message</h3>
+          <div class="email-box">
+            Dear Advisor,<br><br>
+            I tried to enroll in MAT 123, but ZOLAR shows that this course may not fit my current degree path. Could you confirm whether I should take MAP 103, add MAT 119, or consider an approved equivalent summer course?<br><br>
+            Thank you.
+          </div>
+        </div>
+      </section>
+
+      <section id="chatbot" class="page">
+        <div class="header">
+          <div>
+            <h2>ZOLAR Help Navigator</h2>
+            <p>A chatbot that identifies the problem and connects students to the proper human support.</p>
+          </div>
+        </div>
+
+        <div class="chat">
+          <div class="message user">Why can’t I enroll in MAT 123?</div>
+          <div class="message bot">ZOLAR detected a possible sequence issue. This may involve MAP 103 or MAT 119.</div>
+          <div class="message bot">Would you like to check your degree path, find an approved summer course, or contact an advisor?</div>
+        </div>
+
+        <div class="button-row">
+          <button data-go="pathway">View Degree Path</button>
+          <button data-go="advisor">Generate Advisor Report</button>
+          <button>Find Summer Equivalent</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
