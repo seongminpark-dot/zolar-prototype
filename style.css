@@ -466,3 +466,48 @@ select {
 .header {
   flex-wrap: wrap;
 }
+/* Course Evaluation page layout fix */
+#evaluation .grid.two {
+  grid-template-columns: 1fr;
+  max-width: 900px;
+}
+
+#evaluation .card {
+  width: 100%;
+}
+
+#evaluation .dna {
+  columns: 2;
+  column-gap: 40px;
+  padding-left: 22px;
+}
+
+#evaluation .dna li {
+  margin-bottom: 8px;
+  break-inside: avoid;
+}
+
+#evaluation .grade-table {
+  display: table;
+  width: 100%;
+  table-layout: auto;
+}
+
+#evaluation .grade-row {
+  grid-template-columns: 70px minmax(180px, 1fr) 120px;
+}
+
+@media (max-width: 800px) {
+  #evaluation .dna {
+    columns: 1;
+  }
+
+  #evaluation .grade-table {
+    font-size: 12px;
+  }
+
+  #evaluation .grade-table th,
+  #evaluation .grade-table td {
+    padding: 7px;
+  }
+}
