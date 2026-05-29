@@ -396,3 +396,73 @@ select {
     grid-template-columns: 1fr;
   }
 }
+.grade-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 110px;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.grade-row span {
+  font-weight: 800;
+}
+
+.grade-bar {
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.grade-bar b {
+  display: block;
+  height: 100%;
+  background: #7a0019;
+}
+
+.grade-row strong {
+  font-size: 13px;
+  color: #374151;
+}
+
+.grade-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 22px;
+  font-size: 13px;
+}
+
+.grade-table th,
+.grade-table td {
+  border: 1px solid #d1d5db;
+  padding: 9px;
+  text-align: center;
+}
+
+.grade-table th {
+  background: #f3f4f6;
+  font-weight: 800;
+}
+
+.timetable-wrap {
+  grid-template-columns: minmax(620px, 1fr) 260px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+.side-panel {
+  min-width: 240px;
+}
+
+.timetable {
+  min-width: 620px;
+}
+
+.main {
+  overflow-x: hidden;
+}
+
+.header {
+  flex-wrap: wrap;
+}
