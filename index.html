@@ -13,7 +13,7 @@
         <div class="logo">Z</div>
         <div>
           <h1>ZOLAR</h1>
-          <p>Course Registration Support</p>
+          <p>Kevin Ruiz Prototype</p>
         </div>
       </div>
 
@@ -27,11 +27,23 @@
     </aside>
 
     <main class="main">
+      <div class="profile-bar">
+        <div>
+          <h2>Kevin Ruiz</h2>
+          <p>Biochemistry sophomore · Current concern: MAT 123 sequence risk · Goal: protect graduation sequence and avoid schedule overload</p>
+        </div>
+        <div class="profile-tags">
+          <span>Works 20 hours per week</span>
+          <span>Basketball club first team</span>
+          <span>Needs stable routine</span>
+        </div>
+      </div>
+
       <section id="dashboard" class="page active-page">
         <div class="header">
           <div>
-            <h2>ZOLAR Prototype</h2>
-            <p>A redesigned SOLAR experience for safer and clearer course registration.</p>
+            <h2>ZOLAR Dashboard</h2>
+            <p>A persona based course registration support system designed around Kevin’s academic sequence, work schedule, and weekly routine.</p>
           </div>
           <button class="primary" data-go="search">Start Course Search</button>
         </div>
@@ -39,17 +51,17 @@
         <div class="grid three">
           <div class="card">
             <h3>Integrated Academic Information</h3>
-            <p>ZOLAR combines course registration, course evaluation, grade distribution, schedule, and workload information in one place.</p>
+            <p>Course search, evaluation data, grade distribution, workload comments, and schedule information are shown in one place.</p>
           </div>
 
           <div class="card">
             <h3>Personalized Decision Support</h3>
-            <p>The system checks student records, course sequence, degree risk, and possible advisor support before enrollment.</p>
+            <p>ZOLAR checks Kevin’s major, selected course, degree sequence, and routine before suggesting safer options.</p>
           </div>
 
           <div class="card">
             <h3>Clear Visual Feedback</h3>
-            <p>Students can see schedule conflicts, course risk, workload concentration, and realistic alternatives before confirming courses.</p>
+            <p>Kevin can see conflicts, workload pressure, course risk, and backup options before making a final registration decision.</p>
           </div>
         </div>
 
@@ -57,29 +69,63 @@
           <h3>Prototype Flow</h3>
           <p>Course Search → Visual Timetable → Course Evaluation → Course Pathway → Advisor Report → Help Navigator</p>
         </div>
+
+        <div class="card">
+          <h3>Key Features Included</h3>
+          <div class="feature-chip-wrap">
+            <span>Integrated Course Evaluation Preview</span>
+            <span>Visual Timetable Builder</span>
+            <span>Sorting System</span>
+            <span>Course Evaluation DNA</span>
+            <span>Backup Option Generator</span>
+            <span>AI Course Planning Assistant</span>
+            <span>Guided Language Support</span>
+            <span>Peer Pathway Map</span>
+            <span>Advisor Ready Evidence Pack</span>
+          </div>
+        </div>
       </section>
 
       <section id="search" class="page">
         <div class="header">
           <div>
-            <h2>Course Search</h2>
-            <p>Search courses with semester data, hidden rule detection, course evaluation preview, pathway risk, and advisor support.</p>
+            <h2>Smart Course Search</h2>
+            <p>Search courses with level sorting, day sorting, hidden rule detection, evaluation preview, and Kevin specific planning advice.</p>
           </div>
         </div>
 
         <div class="toolbar">
-          <input id="courseSearchInput" type="text" value="BIO 201" aria-label="course search" placeholder="Try BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, or BUS 348">
+          <input id="courseSearchInput" type="text" value="MAT 123" placeholder="Try BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, BUS 348">
           <select id="courseSearchTerm">
             <option value="Fall 2026">Fall 2026</option>
             <option value="Spring 2026">Spring 2026</option>
             <option value="Summer 2026">Summer 2026</option>
           </select>
+          <select id="levelFilter">
+            <option value="All">All levels</option>
+            <option value="100">100 level</option>
+            <option value="200">200 level</option>
+            <option value="300">300 level</option>
+          </select>
+          <select id="dayFilter">
+            <option value="Any">Any day</option>
+            <option value="Mon">Monday</option>
+            <option value="Tue">Tuesday</option>
+            <option value="Wed">Wednesday</option>
+            <option value="Thu">Thursday</option>
+            <option value="Fri">Friday</option>
+          </select>
+          <select id="riskFilter">
+            <option value="All">All risk levels</option>
+            <option value="Safe">Available or safe</option>
+            <option value="Risk">Risk or restriction</option>
+          </select>
           <button id="courseSearchButton" class="primary">Search</button>
         </div>
 
         <div class="card search-note">
-          <h3>Search Supported Courses</h3>
-          <p>This prototype includes sample results for BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, and BUS 348. The purpose is to show how ZOLAR combines registration data, course evaluation data, pathway risk, timetable planning, and advisor support in one course search page.</p>
+          <h3>Kevin Mode</h3>
+          <p>ZOLAR is currently showing results as Kevin Ruiz’s page. Recommendations consider his Biochemistry major, math sequence issue, work schedule, basketball routine, and need for a stable weekly plan.</p>
         </div>
 
         <div id="courseSearchResults" class="course-list"></div>
@@ -113,7 +159,7 @@
         <div class="header">
           <div>
             <h2>Course Evaluation Preview</h2>
-            <p>View Classie style evaluation data inside ZOLAR by semester, grade count, rating, workload, and student comment patterns.</p>
+            <p>View course evaluation data by semester, grade count, rating, workload, and student comment patterns.</p>
           </div>
         </div>
 
@@ -180,13 +226,14 @@
               <li id="dnaFairness"></li>
               <li id="dnaGroup"></li>
               <li id="dnaClarity"></li>
+              <li id="dnaUsefulness"></li>
             </ul>
 
             <h4>Repeated Student Comment Pattern</h4>
             <p id="commentPattern"></p>
 
-            <h4>Why this matters</h4>
-            <p>This preview reduces the need to move between SOLAR and a separate course evaluation website. Students can compare academic risk, workload, and past course experience before registration.</p>
+            <h4>Why this matters for Kevin</h4>
+            <p id="evaluationMeaning"></p>
           </div>
         </div>
       </section>
@@ -211,7 +258,7 @@
           </div>
 
           <div class="card">
-            <h3>Recommended Options</h3>
+            <h3>Backup Option Generator</h3>
             <div id="recommendedOptions"></div>
             <button class="primary" data-go="advisor">Prepare Advisor Report</button>
           </div>
@@ -222,7 +269,7 @@
         <div class="header">
           <div>
             <h2>Advisor Ready Evidence Pack</h2>
-            <p>A structured report that helps students contact the correct human support.</p>
+            <p>A structured report that helps Kevin contact the correct human support.</p>
           </div>
         </div>
 
@@ -249,12 +296,24 @@
       <section id="chatbot" class="page">
         <div class="header">
           <div>
-            <h2>ZOLAR Help Navigator</h2>
-            <p>A chatbot that identifies the problem and connects students to the proper human support.</p>
+            <h2>AI Course Planning Assistant</h2>
+            <p>A planning assistant that identifies the problem, explains the risk, and connects Kevin to human support.</p>
           </div>
         </div>
 
         <div class="selected-course-banner" id="chatbotBanner"></div>
+
+        <div class="grid two">
+          <div class="card">
+            <h3>AI Planning Analysis</h3>
+            <div id="aiAnalysis"></div>
+          </div>
+
+          <div class="card">
+            <h3>Guided Language Support</h3>
+            <div id="languageSupport"></div>
+          </div>
+        </div>
 
         <div class="chat" id="chatBox"></div>
 
@@ -262,6 +321,7 @@
           <button data-go="pathway">View Degree Path</button>
           <button data-go="advisor">Generate Advisor Report</button>
           <button data-go="evaluation">View Course Evaluation</button>
+          <button data-go="search">Return to Course Search</button>
         </div>
       </section>
     </main>
