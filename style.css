@@ -905,3 +905,14 @@ input::placeholder {
     columns: 1;
   }
 }
+.disclaimer-card {
+  background: #fff7d6;
+  border: 1px solid #f59e0b;
+  border-left: 6px solid #f59e0b;
+  color: #78350f;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  font-weight: 800;
+  line-height: 1.5;
+}
