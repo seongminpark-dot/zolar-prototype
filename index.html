@@ -39,15 +39,17 @@
         <div class="grid three">
           <div class="card">
             <h3>Integrated Academic Information</h3>
-            <p>ZOLAR combines course registration, course evaluation, grade distribution, and workload information in one place.</p>
+            <p>ZOLAR combines course registration, course evaluation, grade distribution, schedule, and workload information in one place.</p>
           </div>
+
           <div class="card">
             <h3>Personalized Decision Support</h3>
-            <p>The system checks student records, course sequence, and possible graduation risks before enrollment.</p>
+            <p>The system checks student records, course sequence, degree risk, and possible advisor support before enrollment.</p>
           </div>
+
           <div class="card">
             <h3>Clear Visual Feedback</h3>
-            <p>Students can see schedule conflicts, workload concentration, and safer alternatives before confirming courses.</p>
+            <p>Students can see schedule conflicts, course risk, workload concentration, and realistic alternatives before confirming courses.</p>
           </div>
         </div>
 
@@ -58,124 +60,137 @@
       </section>
 
       <section id="search" class="page">
-  <div class="header">
-    <div>
-      <h2>Course Search</h2>
-      <p>Search courses with semester data, hidden rule detection, course evaluation preview, pathway risk, and advisor support.</p>
-    </div>
-  </div>
+        <div class="header">
+          <div>
+            <h2>Course Search</h2>
+            <p>Search courses with semester data, hidden rule detection, course evaluation preview, pathway risk, and advisor support.</p>
+          </div>
+        </div>
 
-  <div class="toolbar">
-    <input id="courseSearchInput" type="text" value="BIO 201" aria-label="course search" placeholder="Try BIO 201, MAT 123, CHE 131, AMS 151, EST 207">
-    <select id="courseSearchTerm">
-      <option value="fall2026">Fall 2026</option>
-      <option value="spring2026">Spring 2026</option>
-      <option value="summer2026">Summer 2026</option>
-    </select>
-    <button id="courseSearchButton" class="primary">Search</button>
-  </div>
+        <div class="toolbar">
+          <input id="courseSearchInput" type="text" value="BIO 201" aria-label="course search" placeholder="Try BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, or BUS 348">
+          <select id="courseSearchTerm">
+            <option value="Fall 2026">Fall 2026</option>
+            <option value="Spring 2026">Spring 2026</option>
+            <option value="Summer 2026">Summer 2026</option>
+          </select>
+          <button id="courseSearchButton" class="primary">Search</button>
+        </div>
 
-  <div class="card search-note">
-    <h3>Search Supported Courses</h3>
-    <p>This prototype includes sample results for BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, and BUS 348. The purpose is to show how ZOLAR combines registration data, course evaluation data, pathway risk, and advisor support in one course search page.</p>
-  </div>
+        <div class="card search-note">
+          <h3>Search Supported Courses</h3>
+          <p>This prototype includes sample results for BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, and BUS 348. The purpose is to show how ZOLAR combines registration data, course evaluation data, pathway risk, timetable planning, and advisor support in one course search page.</p>
+        </div>
 
-  <div id="courseSearchResults" class="course-list"></div>
-</section>
+        <div id="courseSearchResults" class="course-list"></div>
+      </section>
+
+      <section id="timetable" class="page">
+        <div class="header">
+          <div>
+            <h2>Visual Timetable Builder</h2>
+            <p id="timetableSubtitle">Compare selected courses visually and test schedule changes before enrollment.</p>
+          </div>
+          <button class="primary" id="moveCourse">Simulate Drag and Drop</button>
+        </div>
+
+        <div class="selected-course-banner" id="selectedCourseBanner"></div>
+
+        <div class="timetable-wrap">
+          <div class="timetable-card">
+            <div class="timetable-grid" id="timetableGrid"></div>
+          </div>
+
+          <div class="side-panel">
+            <h3>Schedule Stress Heatmap</h3>
+            <div class="heatmap" id="heatmap"></div>
+            <div id="stressSummary"></div>
+          </div>
+        </div>
+      </section>
 
       <section id="evaluation" class="page">
-  <div class="header">
-    <div>
-      <h2>Course Evaluation Preview</h2>
-      <p>View Classie style evaluation data inside ZOLAR by semester, grade count, rating, workload, and student comment patterns.</p>
-    </div>
-  </div>
+        <div class="header">
+          <div>
+            <h2>Course Evaluation Preview</h2>
+            <p>View Classie style evaluation data inside ZOLAR by semester, grade count, rating, workload, and student comment patterns.</p>
+          </div>
+        </div>
 
-  <div class="toolbar">
-    <select id="semesterSelect">
-      <option value="fall2025">Fall 2025</option>
-      <option value="spring2025">Spring 2025</option>
-      <option value="fall2024">Fall 2024</option>
-    </select>
-    <button class="primary">Apply Semester Filter</button>
-  </div>
+        <div class="selected-course-banner" id="evaluationBanner"></div>
 
-  <div class="grid two">
-    <div class="card">
-      <h3>BIO 201 Biology I</h3>
-      <p id="semesterData">Fall 2025 · 220 enrolled · 86 responses · Overall rating 4.2 out of 5</p>
+        <div class="toolbar">
+          <select id="semesterSelect"></select>
+          <button class="primary" id="applyEvaluationButton">Apply Semester Filter</button>
+        </div>
 
-      <h4>Grade Distribution</h4>
-      <div class="grade-row">
-        <span>A</span>
-        <div class="grade-bar"><b id="barA" style="width: 38%"></b></div>
-        <strong id="countA">84 students</strong>
-      </div>
+        <div class="evaluation-layout">
+          <div class="card">
+            <h3 id="evaluationCourseTitle">Course Title</h3>
+            <p id="semesterData"></p>
 
-      <div class="grade-row">
-        <span>B</span>
-        <div class="grade-bar"><b id="barB" style="width: 32%"></b></div>
-        <strong id="countB">70 students</strong>
-      </div>
+            <h4>Grade Distribution</h4>
+            <div class="grade-row">
+              <span>A</span>
+              <div class="grade-bar"><b id="barA"></b></div>
+              <strong id="countA"></strong>
+            </div>
 
-      <div class="grade-row">
-        <span>C</span>
-        <div class="grade-bar"><b id="barC" style="width: 19%"></b></div>
-        <strong id="countC">42 students</strong>
-      </div>
+            <div class="grade-row">
+              <span>B</span>
+              <div class="grade-bar"><b id="barB"></b></div>
+              <strong id="countB"></strong>
+            </div>
 
-      <div class="grade-row">
-        <span>D or F</span>
-        <div class="grade-bar"><b id="barDF" style="width: 11%"></b></div>
-        <strong id="countDF">24 students</strong>
-      </div>
+            <div class="grade-row">
+              <span>C</span>
+              <div class="grade-bar"><b id="barC"></b></div>
+              <strong id="countC"></strong>
+            </div>
 
-      <table class="grade-table">
-        <thead>
-          <tr>
-            <th>Semester</th>
-            <th>Enrolled</th>
-            <th>Responses</th>
-            <th>A</th>
-            <th>B</th>
-            <th>C</th>
-            <th>D or F</th>
-            <th>Rating</th>
-          </tr>
-        </thead>
-        <tbody id="gradeTableBody">
-          <tr>
-            <td>Fall 2025</td>
-            <td>220</td>
-            <td>86</td>
-            <td>84</td>
-            <td>70</td>
-            <td>42</td>
-            <td>24</td>
-            <td>4.2</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            <div class="grade-row">
+              <span>D or F</span>
+              <div class="grade-bar"><b id="barDF"></b></div>
+              <strong id="countDF"></strong>
+            </div>
 
-    <div class="card">
-      <h3>Course Evaluation DNA</h3>
-      <ul class="dna">
-        <li id="dnaWorkload">Workload: Moderate</li>
-        <li id="dnaExam">Exam Difficulty: Medium</li>
-        <li id="dnaFairness">Grading Fairness: Positive</li>
-        <li id="dnaGroup">Group Work: Low</li>
-        <li id="dnaClarity">Clarity: High</li>
-      </ul>
+            <table class="grade-table">
+              <thead>
+                <tr>
+                  <th>Semester</th>
+                  <th>Location</th>
+                  <th>Enrolled</th>
+                  <th>Responses</th>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>C</th>
+                  <th>D or F</th>
+                  <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody id="gradeTableBody"></tbody>
+            </table>
+          </div>
 
-      <h4>Repeated Student Comment Pattern</h4>
-      <p id="commentPattern">Students mention clear lectures, weekly quizzes, and manageable workload.</p>
+          <div class="card">
+            <h3>Course Evaluation DNA</h3>
+            <ul class="dna">
+              <li id="dnaWorkload"></li>
+              <li id="dnaExam"></li>
+              <li id="dnaFairness"></li>
+              <li id="dnaGroup"></li>
+              <li id="dnaClarity"></li>
+            </ul>
 
-      <h4>Why this matters</h4>
-      <p>This preview reduces the need to move between SOLAR and a separate course evaluation website. Students can compare academic risk, workload, and past course experience before registration.</p>
-    </div>
-  </div>
-</section>
+            <h4>Repeated Student Comment Pattern</h4>
+            <p id="commentPattern"></p>
+
+            <h4>Why this matters</h4>
+            <p>This preview reduces the need to move between SOLAR and a separate course evaluation website. Students can compare academic risk, workload, and past course experience before registration.</p>
+          </div>
+        </div>
+      </section>
+
       <section id="pathway" class="page">
         <div class="header">
           <div>
@@ -184,28 +199,20 @@
           </div>
         </div>
 
-        <div class="pathway">
-          <div class="path-item done">Past<br>MAP 103 expected</div>
-          <div class="path-item risk">Current<br>MAT 123 selected</div>
-          <div class="path-item future">Future<br>AMS 161 risk</div>
-        </div>
+        <div class="selected-course-banner" id="pathwayBanner"></div>
+
+        <div class="pathway" id="pathwayCards"></div>
 
         <div class="grid two">
           <div class="card">
             <h3>Peer Pathway Map</h3>
-            <p>Similar Biochemistry sophomores usually completed the math sequence in this order:</p>
-            <ol>
-              <li>MAP 103 or equivalent placement</li>
-              <li>MAT 123 with required condition</li>
-              <li>AMS 161 or next major requirement</li>
-            </ol>
+            <p id="peerPathwayText"></p>
+            <ol id="peerPathwayList"></ol>
           </div>
 
           <div class="card">
             <h3>Recommended Options</h3>
-            <p><strong>Option A:</strong> Check whether MAT 119 can be added.</p>
-            <p><strong>Option B:</strong> Find an approved summer equivalent course.</p>
-            <p><strong>Option C:</strong> Replace MAT 123 with another required course this semester.</p>
+            <div id="recommendedOptions"></div>
             <button class="primary" data-go="advisor">Prepare Advisor Report</button>
           </div>
         </div>
@@ -219,25 +226,23 @@
           </div>
         </div>
 
+        <div class="selected-course-banner" id="advisorBanner"></div>
+
         <div class="card report">
           <h3>Detected Problem</h3>
-          <p>The student selected MAT 123, but ZOLAR detected that the course may not fit the current degree sequence.</p>
+          <p id="advisorProblem"></p>
 
           <h3>Possible Cause</h3>
-          <p>MAP 103 or MAT 119 may need to be checked before continuing with this path.</p>
+          <p id="advisorCause"></p>
 
-          <h3>Degree Risk</h3>
-          <p>This choice may delay the math sequence and affect future semester planning.</p>
+          <h3>Degree or Schedule Risk</h3>
+          <p id="advisorRisk"></p>
 
           <h3>Recommended Human Agency</h3>
-          <p>Contact Academic and Transfer Advising Services or the department coordinator with this evidence pack.</p>
+          <p id="advisorAgency"></p>
 
           <h3>Prepared Message</h3>
-          <div class="email-box">
-            Dear Advisor,<br><br>
-            I tried to enroll in MAT 123, but ZOLAR shows that this course may not fit my current degree path. Could you confirm whether I should take MAP 103, add MAT 119, or consider an approved equivalent summer course?<br><br>
-            Thank you.
-          </div>
+          <div class="email-box" id="advisorMessage"></div>
         </div>
       </section>
 
@@ -249,16 +254,14 @@
           </div>
         </div>
 
-        <div class="chat">
-          <div class="message user">Why can’t I enroll in MAT 123?</div>
-          <div class="message bot">ZOLAR detected a possible sequence issue. This may involve MAP 103 or MAT 119.</div>
-          <div class="message bot">Would you like to check your degree path, find an approved summer course, or contact an advisor?</div>
-        </div>
+        <div class="selected-course-banner" id="chatbotBanner"></div>
+
+        <div class="chat" id="chatBox"></div>
 
         <div class="button-row">
           <button data-go="pathway">View Degree Path</button>
           <button data-go="advisor">Generate Advisor Report</button>
-          <button>Find Summer Equivalent</button>
+          <button data-go="evaluation">View Course Evaluation</button>
         </div>
       </section>
     </main>
