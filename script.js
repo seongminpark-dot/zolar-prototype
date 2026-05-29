@@ -106,7 +106,7 @@ const courses = {
   }),
   "MAT 123": makeCourse("MAT 123", "Calculus I", "MAT", "100", "Math Tower P 131", "4 credits", {
     "Fall 2026": offer("Section 01", "Mon Wed", "10:00 AM", "11:20 AM", 180, 62, 3.8, 48, 55, 50, 27, "Sequence Risk", "High", "High", "Mixed", "Low", "Moderate"),
-    "Spring 2026": offer("Section 03", "Tue Thu", "8:30 AM", "9:50 AM", 166, 58, 3.6, 39, 50, 48, 29, "Sequence Risk", "High", "High", "Mixed", "Low", "Low Moderate"),
+    "Spring 2026": offer("Section 03", "Tue Thu", "9:00 AM", "10:20 AM", 166, 58, 3.6, 39, 50, 48, 29, "Sequence Risk", "High", "High", "Mixed", "Low", "Low Moderate"),
     "Summer 2026": offer("External Equivalent", "Online or Partner Campus", "Varies", "Varies", 72, 28, 3.7, 21, 20, 19, 12, "External Option Recommended", "Intensive", "High", "Mixed", "Low", "Varies by institution")
   }),
   "CHE 131": makeCourse("CHE 131", "General Chemistry I", "CHE", "100", "Chemistry Building 100", "4 credits", {
@@ -392,7 +392,7 @@ function renderTimetable() {
   const heatmap = document.getElementById("heatmap")
 
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-  const times = ["8 AM", "9 AM", "11 AM", "1 PM", "3 PM", "6 PM"]
+  const times = ["9 AM", "11 AM", "1 PM", "3 PM", "6 PM"]
 
   let html = `<div class="time"></div>`
   days.forEach(day => html += `<div class="day">${day}</div>`)
@@ -456,7 +456,6 @@ function getPrimaryDay(days) {
 }
 
 function getTimeSlot(start) {
-  if (start.includes("8:")) return "8 AM"
   if (start.includes("9:")) return "9 AM"
   if (start.includes("10:") || start.includes("11:")) return "11 AM"
   if (start.includes("12:") || start.includes("1:")) return "1 PM"
@@ -587,14 +586,15 @@ function renderAdvisor() {
   }
 
   const off = getOffering(course)
+  const recipient = off.status.includes("Sequence") ? "Academic and Transfer Advising Services" : off.status.includes("Reserved") ? "Department Coordinator" : "Academic Advisor"
 
   el.innerHTML = `
     <div class="card">
       <h3>Detected Problem</h3>
       <p>${courseAdvice(course, off)}</p>
 
-      <h3>Detected Rule</h3>
-      <p>${off.status}</p>
+      <h3>Recommended Office</h3>
+      <p>${recipient}</p>
 
       <h3>Course Information</h3>
       <p>${course.code} ${course.title} · ${selectedTerm} · ${off.section} · ${off.days} · ${off.start} to ${off.end} · ${course.location}</p>
@@ -604,11 +604,14 @@ function renderAdvisor() {
 
       <h3>Email Draft</h3>
       <div class="email-box">
-        Dear Advisor,<br><br>
+        Dear ${recipient},<br><br>
         I am reviewing ${course.code} ${course.title} for ${selectedTerm}. ZOLAR shows the following issue: ${courseAdvice(course, off)}
         Could you confirm whether this course fits my degree path, or whether I should choose one of the recommended alternatives?<br><br>
         Thank you.
       </div>
+
+      <button class="primary" data-action="sendAdvisorEmail">Send Email Draft</button>
+      <div id="advisorSendStatus"></div>
     </div>
   `
 }
@@ -617,7 +620,7 @@ function renderAssistant() {
   const el = document.getElementById("assistantContent")
   const course = getCourse()
   if (!course) {
-    el.innerHTML = `<div class="card empty-state"><h3>No course selected</h3><p>Search and select a course first.</p></div>`
+    el.innerHTML = `<div class="card empty-state"><h3>No course selected</h3><p>Search and select a course first, or open the chat button at the bottom right.</p></div>`
     return
   }
 
@@ -658,6 +661,60 @@ function renderAssistant() {
   `
 }
 
+function renderChatbotGreeting() {
+  const chatMessages = document.getElementById("chatMessages")
+  chatMessages.innerHTML = `
+    <div class="chatbot-message bot">Hi Kevin. I am ZOLAR Chat. I can explain course risk, backup options, advisor reports, and schedule issues.</div>
+    <div class="chatbot-message bot">Search and select a course first, or ask a general question such as “What should I do if MAT 123 is risky?”</div>
+  `
+}
+
+function sendChatMessage(text) {
+  const chatMessages = document.getElementById("chatMessages")
+  const cleanText = text.trim()
+  if (!cleanText) return
+
+  chatMessages.innerHTML += `<div class="chatbot-message user">${cleanText}</div>`
+
+  const response = getChatbotResponse(cleanText)
+  chatMessages.innerHTML += `<div class="chatbot-message bot">${response}</div>`
+  chatMessages.scrollTop = chatMessages.scrollHeight
+}
+
+function getChatbotResponse(text) {
+  const lower = text.toLowerCase()
+  const course = getCourse()
+  const off = course ? getOffering(course) : null
+
+  if (lower.includes("mat 123")) {
+    selectedCourseId = "MAT 123"
+    const mat = courses["MAT 123"]
+    return `MAT 123 has a sequence risk in this prototype. ZOLAR recommends checking MAT 119, MAP 103, or an approved summer equivalent before enrollment.`
+  }
+
+  if (lower.includes("backup") || lower.includes("alternative")) {
+    if (!course || !off) return "Select a course first. Then I can show backup options based on the detected rule."
+    return backupOptions(course, off).map(option => `• ${option}`).join("<br>")
+  }
+
+  if (lower.includes("advisor") || lower.includes("email")) {
+    if (!course || !off) return "Search and select a course first. Then I can prepare an advisor ready evidence pack."
+    return `For ${course.code}, the advisor report should include the detected issue, course information, possible alternatives, and a short email draft. You can open Advisor Report from the left menu.`
+  }
+
+  if (lower.includes("risk") || lower.includes("risky")) {
+    if (!course || !off) return "Search and select a course first. Then I can explain the exact course risk."
+    return courseAdvice(course, off)
+  }
+
+  if (lower.includes("schedule") || lower.includes("time")) {
+    if (!course || !off) return "Add a course to the plan, then open Visual Timetable to check schedule conflicts."
+    return `${course.code} meets ${off.days}, ${off.start} to ${off.end}, at ${course.location}. Add it to the plan to see it on the timetable.`
+  }
+
+  return "I can help with course risk, backup options, advisor reports, course evaluation, or timetable planning. Try asking about MAT 123 risk or backup options."
+}
+
 document.addEventListener("click", event => {
   const go = event.target.closest("[data-go]")
   if (go) {
@@ -679,6 +736,12 @@ document.addEventListener("click", event => {
     return
   }
 
+  if (action && action.dataset.action === "sendAdvisorEmail") {
+    const status = document.getElementById("advisorSendStatus")
+    status.innerHTML = `<div class="sent-box">Email draft sent to the recommended office for review.</div>`
+    return
+  }
+
   const drop = event.target.closest("[data-drop]")
   if (drop) {
     plannedCourses = plannedCourses.filter(code => code !== drop.dataset.drop)
@@ -690,6 +753,11 @@ document.addEventListener("click", event => {
   if (addEmpty) {
     showPage("search")
     return
+  }
+
+  const suggestion = event.target.closest("[data-chat-suggestion]")
+  if (suggestion) {
+    sendChatMessage(suggestion.dataset.chatSuggestion)
   }
 })
 
@@ -754,6 +822,29 @@ document.getElementById("signOutButton").addEventListener("click", () => {
 document.getElementById("signInButton").addEventListener("click", () => {
   document.getElementById("loginScreen").classList.add("hidden")
   document.getElementById("app").classList.remove("hidden")
+})
+
+document.getElementById("chatbotButton").addEventListener("click", () => {
+  const windowEl = document.getElementById("chatbotWindow")
+  windowEl.classList.toggle("hidden")
+  if (!windowEl.classList.contains("hidden")) renderChatbotGreeting()
+})
+
+document.getElementById("closeChatbot").addEventListener("click", () => {
+  document.getElementById("chatbotWindow").classList.add("hidden")
+})
+
+document.getElementById("sendChatButton").addEventListener("click", () => {
+  const input = document.getElementById("chatInput")
+  sendChatMessage(input.value)
+  input.value = ""
+})
+
+document.getElementById("chatInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    sendChatMessage(event.target.value)
+    event.target.value = ""
+  }
 })
 
 applyLanguage()
