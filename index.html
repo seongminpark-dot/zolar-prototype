@@ -58,112 +58,30 @@
       </section>
 
       <section id="search" class="page">
-        <div class="header">
-          <div>
-            <h2>Course Search</h2>
-            <p>Search courses with smart filters, hidden rule detection, and clear action guidance.</p>
-          </div>
-        </div>
+  <div class="header">
+    <div>
+      <h2>Course Search</h2>
+      <p>Search courses with semester data, hidden rule detection, course evaluation preview, pathway risk, and advisor support.</p>
+    </div>
+  </div>
 
-        <div class="toolbar">
-          <input type="text" value="MAT 123" aria-label="course search">
-          <select>
-            <option>Fall 2026</option>
-            <option>Spring 2026</option>
-            <option>Summer 2026</option>
-          </select>
-          <button class="primary">Search</button>
-        </div>
+  <div class="toolbar">
+    <input id="courseSearchInput" type="text" value="BIO 201" aria-label="course search" placeholder="Try BIO 201, MAT 123, CHE 131, AMS 151, EST 207">
+    <select id="courseSearchTerm">
+      <option value="fall2026">Fall 2026</option>
+      <option value="spring2026">Spring 2026</option>
+      <option value="summer2026">Summer 2026</option>
+    </select>
+    <button id="courseSearchButton" class="primary">Search</button>
+  </div>
 
-        <div class="course-list">
-          <div class="course-card selected">
-            <div>
-              <h3>MAT 123 Calculus I</h3>
-              <p>Section 01 · Mon Wed 10:00 AM to 11:20 AM · 4 credits</p>
-            </div>
-            <span class="badge warning">Sequence Risk</span>
-          </div>
+  <div class="card search-note">
+    <h3>Search Supported Courses</h3>
+    <p>This prototype includes sample results for BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, and BUS 348. The purpose is to show how ZOLAR combines registration data, course evaluation data, pathway risk, and advisor support in one course search page.</p>
+  </div>
 
-          <div class="alert">
-            <h3>Hidden Rule Decoder</h3>
-            <p>This course may not fit your current math sequence. ZOLAR detected that MAP 103 or MAT 119 may need to be checked before enrollment.</p>
-            <div class="button-row">
-              <button class="primary" data-go="pathway">Check Pathway</button>
-              <button data-go="advisor">Prepare Advisor Report</button>
-            </div>
-          </div>
-
-          <div class="course-card">
-            <div>
-              <h3>AMS 151 Applied Calculus I</h3>
-              <p>Section 02 · Tue Thu 2:00 PM to 3:20 PM · 3 credits</p>
-            </div>
-            <span class="badge safe">Available</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="timetable" class="page">
-        <div class="header">
-          <div>
-            <h2>Visual Timetable Builder</h2>
-            <p>Compare courses visually and test schedule changes before enrollment.</p>
-          </div>
-          <button class="primary" id="moveCourse">Simulate Drag and Drop</button>
-        </div>
-
-        <div class="timetable-wrap">
-          <div class="timetable">
-            <div class="time">8 AM</div>
-            <div class="day">Mon</div>
-            <div class="day">Tue</div>
-            <div class="day">Wed</div>
-            <div class="day">Thu</div>
-            <div class="day">Fri</div>
-
-            <div class="time">9 AM</div>
-            <div class="block green">BIO 201<br>9:00</div>
-            <div></div>
-            <div class="block red">CHE 230<br>9:00</div>
-            <div></div>
-            <div class="block green">BIO 201<br>9:00</div>
-
-            <div class="time">11 AM</div>
-            <div></div>
-            <div class="block blue" id="movableCourse">MAT 123<br>11:00</div>
-            <div></div>
-            <div class="block blue">MAT 123<br>11:00</div>
-            <div></div>
-
-            <div class="time">1 PM</div>
-            <div class="block yellow">EST 207<br>1:00</div>
-            <div></div>
-            <div class="block yellow">EST 207<br>1:00</div>
-            <div></div>
-            <div></div>
-
-            <div class="time">3 PM</div>
-            <div></div>
-            <div class="block purple">Work Shift<br>3:00</div>
-            <div></div>
-            <div class="block purple">Work Shift<br>3:00</div>
-            <div></div>
-          </div>
-
-          <div class="side-panel">
-            <h3>Schedule Stress Heatmap</h3>
-            <div class="heatmap">
-              <span class="low"></span>
-              <span class="mid"></span>
-              <span class="high"></span>
-              <span class="mid"></span>
-              <span class="low"></span>
-            </div>
-            <p><strong>Detected issue:</strong> Wednesday has the highest workload concentration.</p>
-            <p><strong>Drag and drop simulation:</strong> Click the button above to move MAT 123 and reduce conflict.</p>
-          </div>
-        </div>
-      </section>
+  <div id="courseSearchResults" class="course-list"></div>
+</section>
 
       <section id="evaluation" class="page">
   <div class="header">
