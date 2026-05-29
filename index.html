@@ -7,71 +7,101 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
+  <section id="loginScreen" class="login-screen">
+    <div class="login-brand">
+      <div class="shield">★</div>
+      <h1>Stony Brook <span>University</span></h1>
+    </div>
+
+    <div class="login-card">
+      <h2>SOLAR LOGIN</h2>
+
+      <label>Stony Brook ID</label>
+      <input id="loginId" type="text" value="0000000">
+
+      <label>Password</label>
+      <input id="loginPassword" type="password" value="password">
+
+      <div class="login-row">
+        <button id="signInButton" class="primary">Sign In</button>
+        <button class="text-button">Forgot Password?</button>
+      </div>
+
+      <p class="login-note">
+        This is a course registration prototype. The login page is included to show a realistic SOLAR style user flow.
+      </p>
+    </div>
+  </section>
+
+  <div id="app" class="app hidden">
     <aside class="sidebar">
       <div class="brand">
         <div class="logo">Z</div>
         <div>
           <h1>ZOLAR</h1>
-          <p>Kevin Ruiz Prototype</p>
+          <p data-i18n="prototypeLabel">Course Registration Support</p>
         </div>
       </div>
 
-      <button class="nav active" data-page="dashboard">Dashboard</button>
-      <button class="nav" data-page="search">Course Search</button>
-      <button class="nav" data-page="timetable">Visual Timetable</button>
-      <button class="nav" data-page="evaluation">Course Evaluation</button>
-      <button class="nav" data-page="pathway">Course Pathway</button>
-      <button class="nav" data-page="advisor">Advisor Report</button>
-      <button class="nav" data-page="chatbot">Help Navigator</button>
+      <button class="nav active" data-page="dashboard" data-i18n="navDashboard">Dashboard</button>
+      <button class="nav" data-page="search" data-i18n="navSearch">Course Search</button>
+      <button class="nav" data-page="timetable" data-i18n="navTimetable">Visual Timetable</button>
+      <button class="nav" data-page="evaluation" data-i18n="navEvaluation">Course Evaluation</button>
+      <button class="nav" data-page="pathway" data-i18n="navPathway">Course Pathway</button>
+      <button class="nav" data-page="advisor" data-i18n="navAdvisor">Advisor Report</button>
+      <button class="nav" data-page="assistant" data-i18n="navAssistant">AI Assistant</button>
     </aside>
 
     <main class="main">
-      <div class="profile-bar">
-        <div>
-          <h2>Kevin Ruiz</h2>
-          <p>Biochemistry sophomore · Current concern: MAT 123 sequence risk · Goal: protect graduation sequence and avoid schedule overload</p>
+      <header class="topbar">
+        <div class="top-left">
+          <strong>Stony Brook University</strong>
+          <span>ZOLAR</span>
         </div>
-        <div class="profile-tags">
-          <span>Works 20 hours per week</span>
-          <span>Basketball club first team</span>
-          <span>Needs stable routine</span>
+
+        <div class="top-right">
+          <button class="icon-button">🔔</button>
+          <button class="icon-button">✉️</button>
+
+          <div class="user-menu">
+            <button id="userMenuButton" class="user-button">
+              <span class="avatar">A</span>
+              <span>Alex Kim</span>
+              <span>▾</span>
+            </button>
+
+            <div id="userDropdown" class="user-dropdown hidden">
+              <button id="signOutButton">Sign Out</button>
+            </div>
+          </div>
         </div>
-      </div>
+      </header>
 
       <section id="dashboard" class="page active-page">
-        <div class="header">
-          <div>
-            <h2>ZOLAR Dashboard</h2>
-            <p>A persona based course registration support system designed around Kevin’s academic sequence, work schedule, and weekly routine.</p>
-          </div>
-          <button class="primary" data-go="search">Start Course Search</button>
+        <div class="page-title">
+          <h2 data-i18n="dashboardTitle">Dashboard</h2>
+          <p data-i18n="dashboardSubtitle">A redesigned SOLAR experience for safer, clearer, and more connected course registration.</p>
         </div>
 
         <div class="grid three">
           <div class="card">
-            <h3>Integrated Academic Information</h3>
-            <p>Course search, evaluation data, grade distribution, workload comments, and schedule information are shown in one place.</p>
+            <h3 data-i18n="needOneTitle">Integrated Academic Information</h3>
+            <p data-i18n="needOneText">Course search, evaluation data, grade distribution, workload comments, and schedule information are shown in one place.</p>
           </div>
 
           <div class="card">
-            <h3>Personalized Decision Support</h3>
-            <p>ZOLAR checks Kevin’s major, selected course, degree sequence, and routine before suggesting safer options.</p>
+            <h3 data-i18n="needTwoTitle">Personalized Decision Support</h3>
+            <p data-i18n="needTwoText">ZOLAR checks major requirements, selected courses, degree sequence, schedule pressure, and possible advisor support.</p>
           </div>
 
           <div class="card">
-            <h3>Clear Visual Feedback</h3>
-            <p>Kevin can see conflicts, workload pressure, course risk, and backup options before making a final registration decision.</p>
+            <h3 data-i18n="needThreeTitle">Clear Visual Feedback</h3>
+            <p data-i18n="needThreeText">Students can see conflicts, workload pressure, course risk, and backup options before making a final registration decision.</p>
           </div>
         </div>
 
         <div class="card">
-          <h3>Prototype Flow</h3>
-          <p>Course Search → Visual Timetable → Course Evaluation → Course Pathway → Advisor Report → Help Navigator</p>
-        </div>
-
-        <div class="card">
-          <h3>Key Features Included</h3>
+          <h3 data-i18n="keyFeaturesTitle">Key Features Included</h3>
           <div class="feature-chip-wrap">
             <span>Integrated Course Evaluation Preview</span>
             <span>Visual Timetable Builder</span>
@@ -84,247 +114,168 @@
             <span>Advisor Ready Evidence Pack</span>
           </div>
         </div>
+
+        <button class="primary" data-go="search" data-i18n="startSearch">Start Course Search</button>
       </section>
 
       <section id="search" class="page">
-        <div class="header">
-          <div>
-            <h2>Smart Course Search</h2>
-            <p>Search courses with level sorting, day sorting, hidden rule detection, evaluation preview, and Kevin specific planning advice.</p>
+        <div class="page-title">
+          <h2 data-i18n="searchTitle">Course Search</h2>
+          <p data-i18n="searchSubtitle">Search courses and review registration status, evaluation data, course risk, and planning support in one screen.</p>
+        </div>
+
+        <div class="search-panel">
+          <div class="search-row">
+            <div>
+              <label data-i18n="searchCourseLabel">Search course</label>
+              <input id="courseSearchInput" type="text" placeholder="BIO 201, MAT 123, CHE 131">
+            </div>
+
+            <div>
+              <label data-i18n="departmentLabel">Department</label>
+              <select id="departmentFilter">
+                <option value="All">All</option>
+                <option value="BIO">Biology</option>
+                <option value="MAT">Math</option>
+                <option value="CHE">Chemistry</option>
+                <option value="AMS">Applied Math</option>
+                <option value="EST">Technology</option>
+                <option value="PSY">Psychology</option>
+                <option value="BUS">Business</option>
+              </select>
+            </div>
+
+            <div>
+              <label data-i18n="levelLabel">Course Level</label>
+              <select id="levelFilter">
+                <option value="All">All</option>
+                <option value="100">100 level</option>
+                <option value="200">200 level</option>
+                <option value="300">300 level</option>
+              </select>
+            </div>
+
+            <div>
+              <label data-i18n="termLabel">Term</label>
+              <select id="courseSearchTerm">
+                <option value="Fall 2026">Fall 2026</option>
+                <option value="Spring 2026">Spring 2026</option>
+                <option value="Summer 2026">Summer 2026</option>
+              </select>
+            </div>
+
+            <button id="courseSearchButton" class="primary" data-i18n="searchButton">Search</button>
+          </div>
+
+          <div class="filter-row">
+            <select id="dayFilter">
+              <option value="Any">Any day</option>
+              <option value="Mon">Monday</option>
+              <option value="Tue">Tuesday</option>
+              <option value="Wed">Wednesday</option>
+              <option value="Thu">Thursday</option>
+              <option value="Fri">Friday</option>
+            </select>
+
+            <select id="riskFilter">
+              <option value="All">All risk levels</option>
+              <option value="Safe">Available or safe</option>
+              <option value="Risk">Risk or restriction</option>
+            </select>
+
+            <button id="clearFiltersButton" data-i18n="clearFilters">Clear all</button>
           </div>
         </div>
 
-        <div class="toolbar">
-          <input id="courseSearchInput" type="text" value="MAT 123" placeholder="Try BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, BUS 348">
-          <select id="courseSearchTerm">
-            <option value="Fall 2026">Fall 2026</option>
-            <option value="Spring 2026">Spring 2026</option>
-            <option value="Summer 2026">Summer 2026</option>
-          </select>
-          <select id="levelFilter">
-            <option value="All">All levels</option>
-            <option value="100">100 level</option>
-            <option value="200">200 level</option>
-            <option value="300">300 level</option>
-          </select>
-          <select id="dayFilter">
-            <option value="Any">Any day</option>
-            <option value="Mon">Monday</option>
-            <option value="Tue">Tuesday</option>
-            <option value="Wed">Wednesday</option>
-            <option value="Thu">Thursday</option>
-            <option value="Fri">Friday</option>
-          </select>
-          <select id="riskFilter">
-            <option value="All">All risk levels</option>
-            <option value="Safe">Available or safe</option>
-            <option value="Risk">Risk or restriction</option>
-          </select>
-          <button id="courseSearchButton" class="primary">Search</button>
-        </div>
+        <div class="search-layout">
+          <div class="result-list">
+            <div class="result-header">
+              <h3 data-i18n="searchResultsTitle">Search Results</h3>
+              <select id="sortFilter">
+                <option value="relevance">Sort relevance</option>
+                <option value="rating">Sort rating</option>
+                <option value="workload">Sort workload</option>
+              </select>
+            </div>
+            <div id="courseSearchResults"></div>
+          </div>
 
-        <div class="card search-note">
-          <h3>Kevin Mode</h3>
-          <p>ZOLAR is currently showing results as Kevin Ruiz’s page. Recommendations consider his Biochemistry major, math sequence issue, work schedule, basketball routine, and need for a stable weekly plan.</p>
+          <div class="result-detail" id="courseDetail">
+            <div class="empty-state">
+              <h3 data-i18n="emptySearchTitle">Search for a course</h3>
+              <p data-i18n="emptySearchText">Enter a course code or name to view evaluation data, pathway risk, timetable options, and advisor support.</p>
+            </div>
+          </div>
         </div>
-
-        <div id="courseSearchResults" class="course-list"></div>
       </section>
 
       <section id="timetable" class="page">
-        <div class="header">
-          <div>
-            <h2>Visual Timetable Builder</h2>
-            <p id="timetableSubtitle">Compare selected courses visually and test schedule changes before enrollment.</p>
-          </div>
-          <button class="primary" id="moveCourse">Simulate Drag and Drop</button>
+        <div class="page-title">
+          <h2 data-i18n="timetableTitle">Visual Timetable Builder</h2>
+          <p data-i18n="timetableSubtitle">Add and drop courses directly from the weekly timetable.</p>
         </div>
 
-        <div class="selected-course-banner" id="selectedCourseBanner"></div>
+        <div class="toolbar">
+          <button id="simulateMoveButton" class="primary" data-i18n="simulateDrag">Simulate Drag and Drop</button>
+          <button data-go="search" data-i18n="returnSearch">Return to Course Search</button>
+        </div>
 
         <div class="timetable-wrap">
           <div class="timetable-card">
-            <div class="timetable-grid" id="timetableGrid"></div>
+            <div id="timetableGrid" class="timetable-grid"></div>
           </div>
 
           <div class="side-panel">
-            <h3>Schedule Stress Heatmap</h3>
-            <div class="heatmap" id="heatmap"></div>
-            <div id="stressSummary"></div>
+            <h3 data-i18n="schedulePanelTitle">Schedule Summary</h3>
+            <div id="scheduleSummary"></div>
+
+            <h3 data-i18n="stressTitle">Schedule Stress Heatmap</h3>
+            <div id="heatmap" class="heatmap"></div>
           </div>
         </div>
       </section>
 
       <section id="evaluation" class="page">
-        <div class="header">
-          <div>
-            <h2>Course Evaluation Preview</h2>
-            <p>View course evaluation data by semester, grade count, rating, workload, and student comment patterns.</p>
-          </div>
+        <div class="page-title">
+          <h2 data-i18n="evaluationTitle">Course Evaluation Preview</h2>
+          <p data-i18n="evaluationSubtitle">View evaluation scores, grade distribution, workload information, and student comment patterns by semester.</p>
         </div>
 
-        <div class="selected-course-banner" id="evaluationBanner"></div>
-
-        <div class="toolbar">
-          <select id="semesterSelect"></select>
-          <button class="primary" id="applyEvaluationButton">Apply Semester Filter</button>
-        </div>
-
-        <div class="evaluation-layout">
-          <div class="card">
-            <h3 id="evaluationCourseTitle">Course Title</h3>
-            <p id="semesterData"></p>
-
-            <h4>Grade Distribution</h4>
-            <div class="grade-row">
-              <span>A</span>
-              <div class="grade-bar"><b id="barA"></b></div>
-              <strong id="countA"></strong>
-            </div>
-
-            <div class="grade-row">
-              <span>B</span>
-              <div class="grade-bar"><b id="barB"></b></div>
-              <strong id="countB"></strong>
-            </div>
-
-            <div class="grade-row">
-              <span>C</span>
-              <div class="grade-bar"><b id="barC"></b></div>
-              <strong id="countC"></strong>
-            </div>
-
-            <div class="grade-row">
-              <span>D or F</span>
-              <div class="grade-bar"><b id="barDF"></b></div>
-              <strong id="countDF"></strong>
-            </div>
-
-            <table class="grade-table">
-              <thead>
-                <tr>
-                  <th>Semester</th>
-                  <th>Location</th>
-                  <th>Enrolled</th>
-                  <th>Responses</th>
-                  <th>A</th>
-                  <th>B</th>
-                  <th>C</th>
-                  <th>D or F</th>
-                  <th>Rating</th>
-                </tr>
-              </thead>
-              <tbody id="gradeTableBody"></tbody>
-            </table>
-          </div>
-
-          <div class="card">
-            <h3>Course Evaluation DNA</h3>
-            <ul class="dna">
-              <li id="dnaWorkload"></li>
-              <li id="dnaExam"></li>
-              <li id="dnaFairness"></li>
-              <li id="dnaGroup"></li>
-              <li id="dnaClarity"></li>
-              <li id="dnaUsefulness"></li>
-            </ul>
-
-            <h4>Repeated Student Comment Pattern</h4>
-            <p id="commentPattern"></p>
-
-            <h4>Why this matters for Kevin</h4>
-            <p id="evaluationMeaning"></p>
-          </div>
-        </div>
+        <div id="evaluationContent"></div>
       </section>
 
       <section id="pathway" class="page">
-        <div class="header">
-          <div>
-            <h2>Course Pathway and Recommendations</h2>
-            <p>Compare past, current, and future course decisions before enrollment.</p>
-          </div>
+        <div class="page-title">
+          <h2 data-i18n="pathwayTitle">Course Pathway</h2>
+          <p data-i18n="pathwaySubtitle">Review past, current, and future course decisions before enrollment.</p>
         </div>
 
-        <div class="selected-course-banner" id="pathwayBanner"></div>
-
-        <div class="pathway" id="pathwayCards"></div>
-
-        <div class="grid two">
-          <div class="card">
-            <h3>Peer Pathway Map</h3>
-            <p id="peerPathwayText"></p>
-            <ol id="peerPathwayList"></ol>
-          </div>
-
-          <div class="card">
-            <h3>Backup Option Generator</h3>
-            <div id="recommendedOptions"></div>
-            <button class="primary" data-go="advisor">Prepare Advisor Report</button>
-          </div>
-        </div>
+        <div id="pathwayContent"></div>
       </section>
 
       <section id="advisor" class="page">
-        <div class="header">
-          <div>
-            <h2>Advisor Ready Evidence Pack</h2>
-            <p>A structured report that helps Kevin contact the correct human support.</p>
-          </div>
+        <div class="page-title">
+          <h2 data-i18n="advisorTitle">Advisor Ready Evidence Pack</h2>
+          <p data-i18n="advisorSubtitle">Create a short advisor report with the blocked course, detected rule, degree risk, alternatives, and an email draft.</p>
         </div>
 
-        <div class="selected-course-banner" id="advisorBanner"></div>
-
-        <div class="card report">
-          <h3>Detected Problem</h3>
-          <p id="advisorProblem"></p>
-
-          <h3>Possible Cause</h3>
-          <p id="advisorCause"></p>
-
-          <h3>Degree or Schedule Risk</h3>
-          <p id="advisorRisk"></p>
-
-          <h3>Recommended Human Agency</h3>
-          <p id="advisorAgency"></p>
-
-          <h3>Prepared Message</h3>
-          <div class="email-box" id="advisorMessage"></div>
-        </div>
+        <div id="advisorContent"></div>
       </section>
 
-      <section id="chatbot" class="page">
-        <div class="header">
-          <div>
-            <h2>AI Course Planning Assistant</h2>
-            <p>A planning assistant that identifies the problem, explains the risk, and connects Kevin to human support.</p>
-          </div>
+      <section id="assistant" class="page">
+        <div class="page-title">
+          <h2 data-i18n="assistantTitle">AI Course Planning Assistant</h2>
+          <p data-i18n="assistantSubtitle">Identify the problem, explain the risk, suggest alternatives, and connect the student to human support.</p>
         </div>
 
-        <div class="selected-course-banner" id="chatbotBanner"></div>
-
-        <div class="grid two">
-          <div class="card">
-            <h3>AI Planning Analysis</h3>
-            <div id="aiAnalysis"></div>
-          </div>
-
-          <div class="card">
-            <h3>Guided Language Support</h3>
-            <div id="languageSupport"></div>
-          </div>
-        </div>
-
-        <div class="chat" id="chatBox"></div>
-
-        <div class="button-row">
-          <button data-go="pathway">View Degree Path</button>
-          <button data-go="advisor">Generate Advisor Report</button>
-          <button data-go="evaluation">View Course Evaluation</button>
-          <button data-go="search">Return to Course Search</button>
-        </div>
+        <div id="assistantContent"></div>
       </section>
     </main>
+
+    <div class="language-toggle">
+      <button id="englishButton" class="active-lang">EN</button>
+      <button id="koreanButton">한국어</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
