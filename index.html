@@ -166,48 +166,98 @@
       </section>
 
       <section id="evaluation" class="page">
-        <div class="header">
-          <div>
-            <h2>Course Evaluation Preview</h2>
-            <p>View Classie style evaluation data inside ZOLAR without opening another website.</p>
-          </div>
-        </div>
+  <div class="header">
+    <div>
+      <h2>Course Evaluation Preview</h2>
+      <p>View Classie style evaluation data inside ZOLAR by semester, grade count, rating, workload, and student comment patterns.</p>
+    </div>
+  </div>
 
-        <div class="toolbar">
-          <select id="semesterSelect">
-            <option value="fall2025">Fall 2025</option>
-            <option value="spring2025">Spring 2025</option>
-            <option value="fall2024">Fall 2024</option>
-          </select>
-          <button class="primary">Apply Semester Filter</button>
-        </div>
+  <div class="toolbar">
+    <select id="semesterSelect">
+      <option value="fall2025">Fall 2025</option>
+      <option value="spring2025">Spring 2025</option>
+      <option value="fall2024">Fall 2024</option>
+    </select>
+    <button class="primary">Apply Semester Filter</button>
+  </div>
 
-        <div class="grid two">
-          <div class="card">
-            <h3>BIO 201 Biology I</h3>
-            <p id="semesterData">Fall 2025 · 220 enrolled · 86 responses · Overall rating 4.2 out of 5</p>
-            <div class="bars">
-              <div><span>A</span><div><b style="width: 38%"></b></div></div>
-              <div><span>B</span><div><b style="width: 32%"></b></div></div>
-              <div><span>C</span><div><b style="width: 18%"></b></div></div>
-              <div><span>D or F</span><div><b style="width: 8%"></b></div></div>
-            </div>
-          </div>
+  <div class="grid two">
+    <div class="card">
+      <h3>BIO 201 Biology I</h3>
+      <p id="semesterData">Fall 2025 · 220 enrolled · 86 responses · Overall rating 4.2 out of 5</p>
 
-          <div class="card">
-            <h3>Course Evaluation DNA</h3>
-            <ul class="dna">
-              <li>Workload: Moderate</li>
-              <li>Exam Difficulty: Medium</li>
-              <li>Grading Fairness: Positive</li>
-              <li>Group Work: Low</li>
-              <li>Clarity: High</li>
-            </ul>
-            <p>Repeated comment pattern: Students mention clear lectures, weekly quizzes, and manageable workload.</p>
-          </div>
-        </div>
-      </section>
+      <h4>Grade Distribution</h4>
+      <div class="grade-row">
+        <span>A</span>
+        <div class="grade-bar"><b id="barA" style="width: 38%"></b></div>
+        <strong id="countA">84 students</strong>
+      </div>
 
+      <div class="grade-row">
+        <span>B</span>
+        <div class="grade-bar"><b id="barB" style="width: 32%"></b></div>
+        <strong id="countB">70 students</strong>
+      </div>
+
+      <div class="grade-row">
+        <span>C</span>
+        <div class="grade-bar"><b id="barC" style="width: 19%"></b></div>
+        <strong id="countC">42 students</strong>
+      </div>
+
+      <div class="grade-row">
+        <span>D or F</span>
+        <div class="grade-bar"><b id="barDF" style="width: 11%"></b></div>
+        <strong id="countDF">24 students</strong>
+      </div>
+
+      <table class="grade-table">
+        <thead>
+          <tr>
+            <th>Semester</th>
+            <th>Enrolled</th>
+            <th>Responses</th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D or F</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody id="gradeTableBody">
+          <tr>
+            <td>Fall 2025</td>
+            <td>220</td>
+            <td>86</td>
+            <td>84</td>
+            <td>70</td>
+            <td>42</td>
+            <td>24</td>
+            <td>4.2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Course Evaluation DNA</h3>
+      <ul class="dna">
+        <li id="dnaWorkload">Workload: Moderate</li>
+        <li id="dnaExam">Exam Difficulty: Medium</li>
+        <li id="dnaFairness">Grading Fairness: Positive</li>
+        <li id="dnaGroup">Group Work: Low</li>
+        <li id="dnaClarity">Clarity: High</li>
+      </ul>
+
+      <h4>Repeated Student Comment Pattern</h4>
+      <p id="commentPattern">Students mention clear lectures, weekly quizzes, and manageable workload.</p>
+
+      <h4>Why this matters</h4>
+      <p>This preview reduces the need to move between SOLAR and a separate course evaluation website. Students can compare academic risk, workload, and past course experience before registration.</p>
+    </div>
+  </div>
+</section>
       <section id="pathway" class="page">
         <div class="header">
           <div>
