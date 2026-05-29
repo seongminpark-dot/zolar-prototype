@@ -28,7 +28,7 @@
       </div>
 
       <p class="login-note">
-        This is a course registration prototype. The login page is included to show a realistic SOLAR style user flow.
+        This prototype uses a SOLAR style login flow to show how the redesigned course registration support system would begin.
       </p>
     </div>
   </section>
@@ -65,8 +65,8 @@
 
           <div class="user-menu">
             <button id="userMenuButton" class="user-button">
-              <span class="avatar">A</span>
-              <span>Alex Kim</span>
+              <span class="avatar">K</span>
+              <span>Kevin Ruiz</span>
               <span>▾</span>
             </button>
 
@@ -112,6 +112,7 @@
             <span>Guided Language Support</span>
             <span>Peer Pathway Map</span>
             <span>Advisor Ready Evidence Pack</span>
+            <span>Chatbot Support</span>
           </div>
         </div>
 
@@ -128,7 +129,7 @@
           <div class="search-row">
             <div>
               <label data-i18n="searchCourseLabel">Search course</label>
-              <input id="courseSearchInput" type="text" placeholder="BIO 201, MAT 123, CHE 131">
+              <input id="courseSearchInput" type="text" placeholder="Search BIO 201, MAT 123, CHE 131, AMS 151, EST 207, PSY 103, BUS 348">
             </div>
 
             <div>
@@ -275,6 +276,28 @@
     <div class="language-toggle">
       <button id="englishButton" class="active-lang">EN</button>
       <button id="koreanButton">한국어</button>
+    </div>
+
+    <button id="chatbotButton" class="chatbot-button">💬</button>
+
+    <div id="chatbotWindow" class="chatbot-window hidden">
+      <div class="chatbot-header">
+        <span>ZOLAR Chat</span>
+        <button id="closeChatbot">×</button>
+      </div>
+
+      <div id="chatMessages" class="chatbot-messages"></div>
+
+      <div class="chatbot-actions">
+        <button data-chat-suggestion="Why is this course risky?">Course risk</button>
+        <button data-chat-suggestion="What should I ask my advisor?">Advisor help</button>
+        <button data-chat-suggestion="Show backup options.">Backup options</button>
+      </div>
+
+      <div class="chatbot-input-row">
+        <input id="chatInput" type="text" placeholder="Ask about course risk, backup options, or advisor support">
+        <button id="sendChatButton">➤</button>
+      </div>
     </div>
   </div>
 
