@@ -7,19 +7,21 @@ const translations = {
     navEvaluation: "Course Evaluation",
     navPathway: "Course Pathway",
     navAdvisor: "Advisor Report",
-    navAssistant: "AI Assistant",
+    navAssistant: "AI Guided Planner",
     dashboardTitle: "Dashboard",
-    dashboardSubtitle: "A redesigned SOLAR experience for safer, clearer, and more connected course registration.",
-    needOneTitle: "Integrated Academic Information",
-    needOneText: "Course search, evaluation data, grade distribution, workload comments, and schedule information are shown in one place.",
-    needTwoTitle: "Personalized Decision Support",
-    needTwoText: "ZOLAR checks major requirements, selected courses, degree sequence, schedule pressure, and possible advisor support.",
-    needThreeTitle: "Clear Visual Feedback",
-    needThreeText: "Students can see conflicts, workload pressure, course risk, and backup options before making a final registration decision.",
+    dashboardSubtitle: "A redesigned course registration experience for safer, clearer, and more evidence based course decisions.",
+    needOneTitle: "Integrated Course Decision Hub",
+    needOneText: "When a student searches for one course, ZOLAR combines registration status, evaluation patterns, grade distribution, workload, timetable fit, sequence risk, and advisor next steps on one decision page.",
+    needTwoTitle: "Evidence Based Course Planning",
+    needTwoText: "The prototype turns separated information into usable decision evidence, including course evaluation data, student comment patterns, grade counts, and workload signals.",
+    needThreeTitle: "Human Support Pathway",
+    needThreeText: "When a course may create a sequence or registration problem, ZOLAR prepares backup options, advisor evidence, and a message draft instead of leaving the student to guess alone.",
+    scenarioTitle: "Student Scenario Context",
+    scenarioText: "This prototype is designed around a sophomore Biochemistry student who is trying to avoid a math sequence mistake while balancing course load, work hours, and a stable weekly schedule.",
     keyFeaturesTitle: "Key Features Included",
     startSearch: "Start Course Search",
     searchTitle: "Course Search",
-    searchSubtitle: "Search courses and review registration status, evaluation data, course risk, and planning support in one screen.",
+    searchSubtitle: "Search courses and review registration status, evaluation data, grade counts, workload patterns, course risk, timetable fit, and advisor support in one screen.",
     searchCourseLabel: "Search course",
     departmentLabel: "Department",
     levelLabel: "Course Level",
@@ -30,19 +32,19 @@ const translations = {
     emptySearchTitle: "Search for a course",
     emptySearchText: "Enter a course code or name to view evaluation data, pathway risk, timetable options, and advisor support.",
     timetableTitle: "Visual Timetable Builder",
-    timetableSubtitle: "Add and drop courses directly from the weekly timetable.",
+    timetableSubtitle: "Add and drop courses directly from the weekly timetable while checking schedule pressure and time conflicts.",
     simulateDrag: "Simulate Drag and Drop",
     returnSearch: "Return to Course Search",
     schedulePanelTitle: "Schedule Summary",
     stressTitle: "Schedule Stress Heatmap",
-    evaluationTitle: "Course Evaluation Preview",
-    evaluationSubtitle: "View evaluation scores, grade distribution, workload information, and student comment patterns by semester.",
+    evaluationTitle: "Course Evaluation DNA",
+    evaluationSubtitle: "Evaluation data is translated into decision categories such as workload, exam difficulty, grading fairness, clarity, group work, and usefulness.",
     pathwayTitle: "Course Pathway",
-    pathwaySubtitle: "Review past, current, and future course decisions before enrollment.",
+    pathwaySubtitle: "Review past preparation, current registration choices, peer pathways, and future degree sequence risks before enrollment.",
     advisorTitle: "Advisor Ready Evidence Pack",
     advisorSubtitle: "Create a short advisor report with the blocked course, detected rule, degree risk, alternatives, and an email draft.",
-    assistantTitle: "AI Course Planning Assistant",
-    assistantSubtitle: "Identify the problem, explain the risk, suggest alternatives, and connect the student to human support."
+    assistantTitle: "AI Guided Planning Assistant",
+    assistantSubtitle: "The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, suggests safer alternatives, and prepares the student to contact the correct support office."
   },
   ko: {
     prototypeLabel: "수강신청 지원 시스템",
@@ -52,19 +54,21 @@ const translations = {
     navEvaluation: "강의 평가",
     navPathway: "수강 경로",
     navAdvisor: "어드바이저 보고서",
-    navAssistant: "AI 도우미",
+    navAssistant: "AI 수강 계획 도우미",
     dashboardTitle: "대시보드",
-    dashboardSubtitle: "더 안전하고 명확하며 연결된 수강신청 경험을 위한 SOLAR 개선 프로토타입입니다.",
-    needOneTitle: "통합 학업 정보",
-    needOneText: "과목 검색, 강의 평가, 성적 분포, 과제량 의견, 시간표 정보를 한 화면에서 보여줍니다.",
-    needTwoTitle: "개인화된 의사결정 지원",
-    needTwoText: "전공 요건, 선택 과목, 졸업 순서, 시간표 부담, 어드바이저 지원 가능성을 함께 확인합니다.",
-    needThreeTitle: "명확한 시각 피드백",
-    needThreeText: "수강 확정 전에 충돌, 과제량 부담, 과목 위험, 대체 선택지를 시각적으로 확인할 수 있습니다.",
+    dashboardSubtitle: "더 안전하고 명확하며 근거 중심적인 수강 결정을 위한 수강신청 개선 프로토타입입니다.",
+    needOneTitle: "통합 과목 결정 허브",
+    needOneText: "학생이 하나의 과목을 검색하면 ZOLAR는 수강 상태, 강의 평가 패턴, 성적 분포, 과제량, 시간표 적합성, 수강 순서 위험, 어드바이저 다음 단계를 한 결정 페이지에 함께 보여줍니다.",
+    needTwoTitle: "근거 기반 수강 계획",
+    needTwoText: "이 프로토타입은 흩어진 정보를 강의 평가 자료, 학생 의견 패턴, 성적 수치, 과제량 신호처럼 실제 결정에 필요한 근거로 바꿔 보여줍니다.",
+    needThreeTitle: "사람의 도움으로 이어지는 경로",
+    needThreeText: "과목이 수강 순서나 등록 문제를 만들 수 있을 때, ZOLAR는 학생이 혼자 추측하지 않도록 대체 선택지, 어드바이저용 근거, 메시지 초안을 준비합니다.",
+    scenarioTitle: "학생 시나리오 맥락",
+    scenarioText: "이 프로토타입은 수업 부담, 근무 시간, 안정적인 주간 일정을 유지하면서 수학 수강 순서 실수를 피하려는 Biochemistry 전공 2학년 학생을 중심으로 설계되었습니다.",
     keyFeaturesTitle: "포함된 주요 기능",
     startSearch: "과목 검색 시작",
     searchTitle: "과목 검색",
-    searchSubtitle: "수강 상태, 강의 평가, 과목 위험, 학업 계획 지원을 한 화면에서 확인합니다.",
+    searchSubtitle: "수강 상태, 강의 평가, 성적 수치, 과제량 패턴, 과목 위험, 시간표 적합성, 어드바이저 지원을 한 화면에서 확인합니다.",
     searchCourseLabel: "과목 검색",
     departmentLabel: "학과",
     levelLabel: "과목 레벨",
@@ -75,19 +79,19 @@ const translations = {
     emptySearchTitle: "과목을 검색하세요",
     emptySearchText: "과목 코드나 이름을 입력하면 강의 평가, 경로 위험, 시간표 옵션, 어드바이저 지원을 볼 수 있습니다.",
     timetableTitle: "시각 시간표",
-    timetableSubtitle: "주간 시간표에서 직접 과목을 추가하고 삭제할 수 있습니다.",
+    timetableSubtitle: "주간 시간표에서 과목을 직접 추가하거나 삭제하면서 시간표 부담과 시간 충돌을 확인합니다.",
     simulateDrag: "드래그 앤 드롭 시뮬레이션",
     returnSearch: "과목 검색으로 돌아가기",
     schedulePanelTitle: "시간표 요약",
     stressTitle: "시간표 부담 히트맵",
-    evaluationTitle: "강의 평가 미리보기",
-    evaluationSubtitle: "학기별 평가 점수, 성적 분포, 과제량 정보, 학생 의견 패턴을 확인합니다.",
+    evaluationTitle: "강의 평가 DNA",
+    evaluationSubtitle: "강의 평가 자료를 과제량, 시험 난이도, 채점 공정성, 명확성, 그룹 활동, 유용성 같은 결정 기준으로 바꿔 보여줍니다.",
     pathwayTitle: "수강 경로",
-    pathwaySubtitle: "수강 전 과거, 현재, 미래의 과목 결정을 검토합니다.",
-    advisorTitle: "어드바이저 제출용 요약 보고서",
-    advisorSubtitle: "막힌 과목, 감지된 규칙, 졸업 경로 위험, 대안, 이메일 초안을 생성합니다.",
+    pathwaySubtitle: "수강 전 과거 준비, 현재 선택, 비슷한 학생들의 경로, 미래 졸업 순서 위험을 검토합니다.",
+    advisorTitle: "어드바이저 제출용 근거 패키지",
+    advisorSubtitle: "막힌 과목, 감지된 규칙, 졸업 경로 위험, 대안, 이메일 초안을 포함한 짧은 보고서를 만듭니다.",
     assistantTitle: "AI 수강 계획 도우미",
-    assistantSubtitle: "문제를 파악하고 위험을 설명하며 대안을 제시하고 사람의 도움으로 연결합니다."
+    assistantSubtitle: "이 도우미는 사람의 advising을 대체하지 않습니다. 등록 문제를 파악하고, 가능한 규칙을 설명하고, 더 안전한 대안을 제시하며, 학생이 적절한 지원 부서에 연락할 수 있도록 준비시킵니다."
   }
 }
 
@@ -355,16 +359,17 @@ function renderCourseDetail() {
       <button data-go="timetable">Open Timetable</button>
       <button data-go="pathway">Check Pathway</button>
       <button data-go="advisor">Prepare Advisor Report</button>
-      <button data-go="assistant">Ask AI Assistant</button>
+      <button data-go="assistant">Ask AI Guided Planner</button>
     </div>
 
     <div class="detail-section">
-      <h4>Integrated Course Evaluation Preview</h4>
-      <p>Students can see evaluation data, grade distribution, workload information, and student comments without moving to another website.</p>
+      <h4>Integrated Course Decision Hub</h4>
+      <p>This page combines registration status, evaluation data, grade counts, workload comments, timetable fit, sequence risk, backup options, and advisor next steps before the student confirms enrollment.</p>
     </div>
 
     <div class="detail-section">
       <h4>Course Evaluation DNA</h4>
+      <p>Course Evaluation DNA translates student evaluation data into decision categories such as workload, exam difficulty, grading fairness, clarity, group work, and usefulness.</p>
       <ul class="feature-list">
         <li>Workload: ${offering.dna.workload}</li>
         <li>Exam Difficulty: ${offering.dna.exam}</li>
@@ -498,6 +503,7 @@ function renderEvaluation() {
 
     <div class="card">
       <h3>Course Evaluation DNA</h3>
+      <p>Course Evaluation DNA translates student evaluation data into decision categories instead of showing only a score.</p>
       <ul class="dna">
         <li>Workload: ${off.dna.workload}</li>
         <li>Exam Difficulty: ${off.dna.exam}</li>
@@ -544,7 +550,7 @@ function renderPathway() {
     <div class="grid two">
       <div class="card">
         <h3>Peer Pathway Map</h3>
-        <p>Similar students in the same major usually compare course sequence, workload, and future requirement fit before enrollment.</p>
+        <p>Similar students in the same major usually compare course sequence, workload, and future requirement fit before enrollment. This helps students avoid relying only on informal advice from friends.</p>
         <ol>
           <li>Check prerequisite or requirement category</li>
           <li>Compare course evaluation and weekly schedule pressure</li>
@@ -630,7 +636,8 @@ function renderAssistant() {
   el.innerHTML = `
     <div class="grid two">
       <div class="card">
-        <h3>AI Planning Analysis</h3>
+        <h3>AI Guided Planning Assistant</h3>
+        <p>The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, suggests safer alternatives, and prepares the student to contact the correct human support office.</p>
         <div class="ai-box"><strong>Selected course:</strong> ${course.code} ${course.title}</div>
         <div class="ai-box"><strong>Detected risk:</strong> ${off.status}</div>
         <div class="ai-box"><strong>Planning advice:</strong> ${courseAdvice(course, off)}</div>
