@@ -916,3 +916,32 @@ input::placeholder {
   font-weight: 800;
   line-height: 1.5;
 }
+.top-icon-wrap {
+  position: relative;
+}
+
+.top-popup {
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 260px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+  padding: 16px;
+  z-index: 80;
+}
+
+.top-popup strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #1f2933;
+}
+
+.top-popup p {
+  margin: 0;
+  color: #52606d;
+  line-height: 1.5;
+  font-size: 14px;
+}
