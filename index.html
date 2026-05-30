@@ -101,6 +101,25 @@
         </div>
 
         <div class="grid three">
+          <div class="card degree-card" id="degreeWorksCard">
+  <div class="degree-visual">
+    <div class="degree-screen">
+      <div class="degree-line wide"></div>
+      <div class="degree-line"></div>
+      <div class="degree-check">✓ Major Requirements</div>
+      <div class="degree-check warning">○ Math Sequence Requirement</div>
+      <div class="degree-check">✓ SBC Requirements</div>
+    </div>
+  </div>
+
+  <div>
+    <h3 data-i18n="degreeWorksTitle">Degree Works Audit Preview</h3>
+    <p data-i18n="degreeWorksText">
+      ZOLAR connects course decisions to a Degree Works style audit preview, showing the student’s major, GPA, completed requirements, missing requirements, and whether a selected course helps complete a degree requirement.
+    </p>
+    <button id="openDegreeWorksButton" class="primary" data-i18n="openDegreeWorks">Open Audit Preview</button>
+  </div>
+</div>
           <div class="card">
             <h3 data-i18n="needOneTitle">Integrated Course Decision Hub</h3>
             <p data-i18n="needOneText">When a student searches for one course, ZOLAR combines registration status, evaluation patterns, grade distribution, workload, timetable fit, sequence risk, and advisor next steps on one decision page.</p>
@@ -293,7 +312,48 @@
         <div id="assistantContent"></div>
       </section>
     </main>
+<div id="degreeWorksModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 data-i18n="degreeWorksModalTitle">Degree Works Audit Preview</h2>
+      <button id="closeDegreeWorksButton">×</button>
+    </div>
 
+    <p class="modal-note" data-i18n="degreeWorksModalNote">
+      This prototype does not replace Degree Works. It shows how a course registration system could use degree audit style information before a student confirms enrollment.
+    </p>
+
+    <div class="audit-grid">
+      <div class="audit-box">
+        <h3 data-i18n="studentRecordTitle">Student Record</h3>
+        <p><strong>Major:</strong> Biochemistry</p>
+        <p><strong>Level:</strong> Sophomore</p>
+        <p><strong>GPA:</strong> 3.21</p>
+        <p><strong>Credits Completed:</strong> 42</p>
+      </div>
+
+      <div class="audit-box">
+        <h3 data-i18n="requirementProgressTitle">Requirement Progress</h3>
+        <p>✓ General Education Requirement</p>
+        <p>✓ Introductory Biology Requirement</p>
+        <p>○ Calculus Sequence Requirement</p>
+        <p>○ Upper Division Major Requirement</p>
+      </div>
+
+      <div class="audit-box">
+        <h3 data-i18n="selectedCourseFitTitle">Selected Course Fit</h3>
+        <p id="degreeWorksCourseFit">Select a course to check how it may apply to the degree audit.</p>
+      </div>
+
+      <div class="audit-box">
+        <h3 data-i18n="advisorNoteTitle">Advisor Note</h3>
+        <p data-i18n="advisorNoteText">
+          Degree audit information can guide planning, but students should confirm unusual sequence or transfer questions with an advisor.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
     <div class="language-toggle">
       <button id="englishButton" class="active-lang">EN</button>
       <button id="koreanButton">한국어</button>
