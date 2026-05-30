@@ -8,12 +8,14 @@
 </head>
 <body>
   <section id="loginScreen" class="login-screen">
-   <div class="login-brand">
-  <div class="shield">Z</div>
-  <h1>Course Registration <span>Prototype</span></h1>
-</div>
+    <div class="login-brand">
+      <div class="shield">Z</div>
+      <h1>Course Registration <span>Prototype</span></h1>
+    </div>
+
     <div class="login-card">
-<h2>ZOLAR Prototype Login</h2>
+      <h2>ZOLAR Prototype Login</h2>
+
       <label>Stony Brook ID</label>
       <input id="loginId" type="text" value="0000000">
 
@@ -26,8 +28,8 @@
       </div>
 
       <p class="login-note">
-  This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.
-</p>
+        This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.
+      </p>
     </div>
   </section>
 
@@ -47,13 +49,13 @@
       <button class="nav" data-page="evaluation" data-i18n="navEvaluation">Course Evaluation</button>
       <button class="nav" data-page="pathway" data-i18n="navPathway">Course Pathway</button>
       <button class="nav" data-page="advisor" data-i18n="navAdvisor">Advisor Report</button>
-      <button class="nav" data-page="assistant" data-i18n="navAssistant">AI Assistant</button>
+      <button class="nav" data-page="assistant" data-i18n="navAssistant">AI Guided Planner</button>
     </aside>
 
     <main class="main">
       <header class="topbar">
         <div class="top-left">
-<strong>Course Registration Prototype</strong>
+          <strong>Course Registration Prototype</strong>
           <span>ZOLAR</span>
         </div>
 
@@ -78,41 +80,46 @@
       <section id="dashboard" class="page active-page">
         <div class="page-title">
           <h2 data-i18n="dashboardTitle">Dashboard</h2>
-          <p data-i18n="dashboardSubtitle">A redesigned SOLAR experience for safer, clearer, and more connected course registration.</p>
+          <p data-i18n="dashboardSubtitle">A redesigned course registration experience for safer, clearer, and more evidence based course decisions.</p>
         </div>
+
         <div class="disclaimer-card">
-  This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.
-</div>
+          This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.
+        </div>
 
         <div class="grid three">
           <div class="card">
-            <h3 data-i18n="needOneTitle">Integrated Academic Information</h3>
-            <p data-i18n="needOneText">Course search, evaluation data, grade distribution, workload comments, and schedule information are shown in one place.</p>
+            <h3 data-i18n="needOneTitle">Integrated Course Decision Hub</h3>
+            <p data-i18n="needOneText">When a student searches for one course, ZOLAR combines registration status, evaluation patterns, grade distribution, workload, timetable fit, sequence risk, and advisor next steps on one decision page.</p>
           </div>
 
           <div class="card">
-            <h3 data-i18n="needTwoTitle">Personalized Decision Support</h3>
-            <p data-i18n="needTwoText">ZOLAR checks major requirements, selected courses, degree sequence, schedule pressure, and possible advisor support.</p>
+            <h3 data-i18n="needTwoTitle">Evidence Based Course Planning</h3>
+            <p data-i18n="needTwoText">The prototype turns separated information into usable decision evidence, including course evaluation data, student comment patterns, grade counts, and workload signals.</p>
           </div>
 
           <div class="card">
-            <h3 data-i18n="needThreeTitle">Clear Visual Feedback</h3>
-            <p data-i18n="needThreeText">Students can see conflicts, workload pressure, course risk, and backup options before making a final registration decision.</p>
+            <h3 data-i18n="needThreeTitle">Human Support Pathway</h3>
+            <p data-i18n="needThreeText">When a course may create a sequence or registration problem, ZOLAR prepares backup options, advisor evidence, and a message draft instead of leaving the student to guess alone.</p>
           </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="scenarioTitle">Student Scenario Context</h3>
+          <p data-i18n="scenarioText">This prototype is designed around a sophomore Biochemistry student who is trying to avoid a math sequence mistake while balancing course load, work hours, and a stable weekly schedule.</p>
         </div>
 
         <div class="card">
           <h3 data-i18n="keyFeaturesTitle">Key Features Included</h3>
           <div class="feature-chip-wrap">
-            <span>Integrated Course Evaluation Preview</span>
-            <span>Visual Timetable Builder</span>
-            <span>Sorting System</span>
+            <span>Integrated Course Decision Hub</span>
             <span>Course Evaluation DNA</span>
+            <span>Visual Timetable Builder</span>
             <span>Backup Option Generator</span>
-            <span>AI Course Planning Assistant</span>
-            <span>Guided Language Support</span>
             <span>Peer Pathway Map</span>
+            <span>AI Guided Planning Assistant</span>
             <span>Advisor Ready Evidence Pack</span>
+            <span>Guided Language Support</span>
             <span>Chatbot Support</span>
           </div>
         </div>
@@ -123,7 +130,7 @@
       <section id="search" class="page">
         <div class="page-title">
           <h2 data-i18n="searchTitle">Course Search</h2>
-          <p data-i18n="searchSubtitle">Search courses and review registration status, evaluation data, course risk, and planning support in one screen.</p>
+          <p data-i18n="searchSubtitle">Search courses and review registration status, evaluation data, grade counts, workload patterns, course risk, timetable fit, and advisor support in one screen.</p>
         </div>
 
         <div class="search-panel">
@@ -214,7 +221,7 @@
       <section id="timetable" class="page">
         <div class="page-title">
           <h2 data-i18n="timetableTitle">Visual Timetable Builder</h2>
-          <p data-i18n="timetableSubtitle">Add and drop courses directly from the weekly timetable.</p>
+          <p data-i18n="timetableSubtitle">Add and drop courses directly from the weekly timetable while checking schedule pressure and time conflicts.</p>
         </div>
 
         <div class="toolbar">
@@ -239,8 +246,8 @@
 
       <section id="evaluation" class="page">
         <div class="page-title">
-          <h2 data-i18n="evaluationTitle">Course Evaluation Preview</h2>
-          <p data-i18n="evaluationSubtitle">View evaluation scores, grade distribution, workload information, and student comment patterns by semester.</p>
+          <h2 data-i18n="evaluationTitle">Course Evaluation DNA</h2>
+          <p data-i18n="evaluationSubtitle">Evaluation data is translated into decision categories such as workload, exam difficulty, grading fairness, clarity, group work, and usefulness.</p>
         </div>
 
         <div id="evaluationContent"></div>
@@ -249,7 +256,7 @@
       <section id="pathway" class="page">
         <div class="page-title">
           <h2 data-i18n="pathwayTitle">Course Pathway</h2>
-          <p data-i18n="pathwaySubtitle">Review past, current, and future course decisions before enrollment.</p>
+          <p data-i18n="pathwaySubtitle">Review past preparation, current registration choices, peer pathways, and future degree sequence risks before enrollment.</p>
         </div>
 
         <div id="pathwayContent"></div>
@@ -266,8 +273,8 @@
 
       <section id="assistant" class="page">
         <div class="page-title">
-          <h2 data-i18n="assistantTitle">AI Course Planning Assistant</h2>
-          <p data-i18n="assistantSubtitle">Identify the problem, explain the risk, suggest alternatives, and connect the student to human support.</p>
+          <h2 data-i18n="assistantTitle">AI Guided Planning Assistant</h2>
+          <p data-i18n="assistantSubtitle">The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, suggests safer alternatives, and prepares the student to contact the correct support office.</p>
         </div>
 
         <div id="assistantContent"></div>
@@ -303,7 +310,8 @@
   </div>
 
   <script src="script.js"></script>
+
   <script data-goatcounter="https://zolar-prototype.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+          async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
