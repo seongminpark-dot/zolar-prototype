@@ -44,14 +44,11 @@ const translations = {
     advisorTitle: "Advisor Ready Evidence Pack",
     advisorSubtitle: "Create a short advisor report with the blocked course, detected rule, degree risk, alternatives, and an email draft.",
     assistantTitle: "AI Guided Planning Assistant",
-assistantSubtitle: "The assistant does not replace human advising.",
-notificationTitle: "Notifications",
-notificationEmpty: "No new notifications.",
-messageTitle: "Messages",
-messageEmpty: "No new messages."
-notificationEmpty: "No new notifications.",
-messageTitle: "Messages",
-messageEmpty: "No new messages."
+    assistantSubtitle: "The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, suggests safer alternatives, and prepares the student to contact the correct support office.",
+    notificationTitle: "Notifications",
+    notificationEmpty: "No new notifications.",
+    messageTitle: "Messages",
+    messageEmpty: "No new messages."
   },
   ko: {
     prototypeLabel: "수강신청 지원 시스템",
@@ -97,14 +94,14 @@ messageEmpty: "No new messages."
     pathwaySubtitle: "수강 전 과거 준비, 현재 선택, 비슷한 학생들의 경로, 미래 졸업 순서 위험을 검토합니다.",
     advisorTitle: "어드바이저 제출용 근거 패키지",
     advisorSubtitle: "막힌 과목, 감지된 규칙, 졸업 경로 위험, 대안, 이메일 초안을 포함한 짧은 보고서를 만듭니다.",
-  assistantSubtitle: "이 도우미는 사람의 advising을 대체하지 않습니다. 등록 문제를 파악하고, 가능한 규칙을 설명하고, 더 안전한 대안을 제시하며, 학생이 적절한 지원 부서에 연락할 수 있도록 준비시킵니다.",
-notificationTitle: "알림",
-notificationEmpty: "새로운 알림이 없습니다.",
-messageTitle: "메시지",
-messageEmpty: "새로운 메시지가 없습니다."
-
-let currentLang = "en"
-let currentPage = "dashboard"
+    assistantTitle: "AI 수강 계획 도우미",
+    assistantSubtitle: "이 도우미는 사람의 advising을 대체하지 않습니다. 등록 문제를 파악하고, 가능한 규칙을 설명하고, 더 안전한 대안을 제시하며, 학생이 적절한 지원 부서에 연락할 수 있도록 준비시킵니다.",
+    notificationTitle: "알림",
+    notificationEmpty: "새로운 알림이 없습니다.",
+    messageTitle: "메시지",
+    messageEmpty: "새로운 메시지가 없습니다."
+  }
+}
 let selectedCourseId = null
 let selectedTerm = "Fall 2026"
 let plannedCourses = []
@@ -849,7 +846,6 @@ if (signOutButton && loginScreen && appScreen) {
     loginScreen.classList.remove("hidden")
   })
 }
-})
 
 document.getElementById("chatbotButton").addEventListener("click", () => {
   const windowEl = document.getElementById("chatbotWindow")
