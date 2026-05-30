@@ -60,8 +60,21 @@
         </div>
 
         <div class="top-right">
-          <button class="icon-button">🔔</button>
-          <button class="icon-button">✉️</button>
+   <div class="top-icon-wrap">
+  <button id="notificationButton" class="icon-button" title="Notifications">🔔</button>
+  <div id="notificationPopup" class="top-popup hidden">
+    <strong data-i18n="notificationTitle">Notifications</strong>
+    <p data-i18n="notificationEmpty">No new notifications.</p>
+  </div>
+</div>
+
+<div class="top-icon-wrap">
+  <button id="messageButton" class="icon-button" title="Messages">✉️</button>
+  <div id="messagePopup" class="top-popup hidden">
+    <strong data-i18n="messageTitle">Messages</strong>
+    <p data-i18n="messageEmpty">No new messages.</p>
+  </div>
+</div>
 
           <div class="user-menu">
             <button id="userMenuButton" class="user-button">
