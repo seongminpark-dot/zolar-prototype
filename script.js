@@ -828,14 +828,24 @@ document.getElementById("userMenuButton").addEventListener("click", () => {
   document.getElementById("userDropdown").classList.toggle("hidden")
 })
 
-document.getElementById("signOutButton").addEventListener("click", () => {
-  document.getElementById("app").classList.add("hidden")
-  document.getElementById("loginScreen").classList.remove("hidden")
-})
+const signInButton = document.getElementById("signInButton")
+const signOutButton = document.getElementById("signOutButton")
+const loginScreen = document.getElementById("loginScreen")
+const appScreen = document.getElementById("app")
 
-document.getElementById("signInButton").addEventListener("click", () => {
-  document.getElementById("loginScreen").classList.add("hidden")
-  document.getElementById("app").classList.remove("hidden")
+if (signInButton && loginScreen && appScreen) {
+  signInButton.addEventListener("click", () => {
+    loginScreen.classList.add("hidden")
+    appScreen.classList.remove("hidden")
+  })
+}
+
+if (signOutButton && loginScreen && appScreen) {
+  signOutButton.addEventListener("click", () => {
+    appScreen.classList.add("hidden")
+    loginScreen.classList.remove("hidden")
+  })
+}
 })
 
 document.getElementById("chatbotButton").addEventListener("click", () => {
