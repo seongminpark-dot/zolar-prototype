@@ -44,8 +44,11 @@ const translations = {
     advisorTitle: "Advisor Ready Evidence Pack",
     advisorSubtitle: "Create a short advisor report with the blocked course, detected rule, degree risk, alternatives, and an email draft.",
     assistantTitle: "AI Guided Planning Assistant",
-    assistantSubtitle: "The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, suggests safer alternatives, and prepares the student to contact the correct support office.",
+assistantSubtitle: "The assistant does not replace human advising.",
 notificationTitle: "Notifications",
+notificationEmpty: "No new notifications.",
+messageTitle: "Messages",
+messageEmpty: "No new messages."
 notificationEmpty: "No new notifications.",
 messageTitle: "Messages",
 messageEmpty: "No new messages."
