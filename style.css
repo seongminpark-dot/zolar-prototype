@@ -1141,3 +1141,79 @@ input::placeholder {
 .degree-card {
   grid-column: 1 / -1;
 }
+.search-result-header {
+  margin-bottom: 18px;
+}
+
+.warning-note {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff7ed;
+  color: #9a3412;
+  font-weight: 700;
+}
+
+.course-list {
+  display: grid;
+  gap: 18px;
+}
+
+.course-result-card {
+  background: white;
+  border: 1px solid #d8dee9;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.course-result-card.risk-card {
+  border-color: #8a0030;
+  box-shadow: 0 12px 30px rgba(138, 0, 48, 0.12);
+}
+
+.course-main-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.course-main-row h3 {
+  margin: 0 0 8px;
+}
+
+.course-main-row p {
+  margin: 0;
+  color: #52606d;
+  line-height: 1.5;
+}
+
+.status-pill {
+  white-space: nowrap;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.status-pill.safe {
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.status-pill.risk {
+  background: #ffe4e6;
+  color: #9f1239;
+}
+
+.course-detail-line {
+  margin-top: 14px;
+  line-height: 1.55;
+  color: #1f2933;
+}
+
+.toolbar button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
