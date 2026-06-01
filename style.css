@@ -1138,3 +1138,6 @@ input::placeholder {
     grid-template-columns: 1fr;
   }
 }
+.degree-card {
+  grid-column: 1 / -1;
+}
