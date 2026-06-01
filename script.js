@@ -423,20 +423,29 @@ function renderTimetable() {
   const summary = document.getElementById("scheduleSummary")
   const heatmap = document.getElementById("heatmap")
 
+  if (!grid || !summary || !heatmap) return
+
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+  const times = ["9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM"]
+
   grid.classList.add("hourly")
-  const times =const times = ["9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM"] ["9 AM", "11 AM", "1 PM", "3 PM", "6 PM"]
 
   let html = `<div class="time"></div>`
-  days.forEach(day => html += `<div class="day">${day}</div>`)
+
+  days.forEach(day => {
+    html += `<div class="day">${day}</div>`
+  })
 
   times.forEach(time => {
     html += `<div class="time">${time}</div>`
+
     days.forEach(day => {
-      const block = plannedCourses.map(code => courses[code]).find(course => {
-        const off = getOffering(course)
-        return getPrimaryDay(off.days) === day && getTimeSlot(off.start) === time
-      })
+      const block = plannedCourses
+        .map(code => courses[code])
+        .find(course => {
+          const off = getOffering(course)
+          return getPrimaryDay(off.days) === day && getTimeSlot(off.start) === time
+        })
 
       if (block) {
         const off = getOffering(block)
@@ -465,8 +474,8 @@ function renderTimetable() {
   grid.innerHTML = html
 
   if (plannedCourses.length === 0) {
-    summary.innerHTML = `<p>No courses added yet. Return to Course Search and add a course to the plan.</p>`
-    heatmap.innerHTML = ["low", "low", "low", "low", "low"].map(x => `<span class="${x}"></span>`).join("")
+    summary.innerHTML = `<p>${lang("No courses added yet. Return to Course Search and add a course to the plan.", "아직 추가된 과목이 없습니다. 과목 검색으로 돌아가 과목을 계획에 추가하세요.")}</p>`
+    heatmap.innerHTML = ["low", "low", "low", "low", "low"].map(level => `<span class="${level}"></span>`).join("")
     return
   }
 
@@ -477,8 +486,15 @@ function renderTimetable() {
   }).join("")
 
   const hasRisk = plannedCourses.some(code => isRisk(getOffering(courses[code])))
-  heatmap.innerHTML = (hasRisk ? ["mid", "high", "mid", "mid", "low"] : ["low", "mid", "mid", "low", "low"])
-    .map(x => `<span class="${x}"></span>`).join("")
+  const heavyCount = plannedCourses.filter(code => workloadScore(getOffering(courses[code]).dna.workload) >= 4).length
+
+  if (hasRisk && heavyCount >= 2) {
+    heatmap.innerHTML = ["high", "mid", "high", "mid", "low"].map(level => `<span class="${level}"></span>`).join("")
+  } else if (hasRisk) {
+    heatmap.innerHTML = ["mid", "high", "mid", "mid", "low"].map(level => `<span class="${level}"></span>`).join("")
+  } else {
+    heatmap.innerHTML = ["low", "mid", "mid", "low", "low"].map(level => `<span class="${level}"></span>`).join("")
+  }
 }
 
 function getPrimaryDay(days) {
