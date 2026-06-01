@@ -498,8 +498,11 @@ function renderTimetable() {
 }
 
 function getPrimaryDay(days) {
+  if (!days) return "Mon"
+  if (days.includes("Mon")) return "Mon"
   if (days.includes("Tue")) return "Tue"
   if (days.includes("Wed")) return "Wed"
+  if (days.includes("Thu")) return "Thu"
   if (days.includes("Fri")) return "Fri"
   return "Mon"
 }
