@@ -48,7 +48,17 @@ const translations = {
     notificationTitle: "Notifications",
     notificationEmpty: "No new notifications.",
     messageTitle: "Messages",
-    messageEmpty: "No new messages."
+    messageEmpty: "No new messages.",
+degreeWorksTitle: "Degree Works Audit Preview",
+degreeWorksText: "ZOLAR connects course decisions to a Degree Works style audit preview, showing the student’s major, GPA, completed requirements, missing requirements, and whether a selected course helps complete a degree requirement.",
+openDegreeWorks: "Open Audit Preview",
+degreeWorksModalTitle: "Degree Works Audit Preview",
+degreeWorksModalNote: "This prototype does not replace Degree Works. It shows how a course registration system could use degree audit style information before a student confirms enrollment.",
+studentRecordTitle: "Student Record",
+requirementProgressTitle: "Requirement Progress",
+selectedCourseFitTitle: "Selected Course Fit",
+advisorNoteTitle: "Advisor Note",
+advisorNoteText: "Degree audit information can guide planning, but students should confirm unusual sequence or transfer questions with an advisor."
   },
   ko: {
     prototypeLabel: "수강신청 지원 시스템",
@@ -99,9 +109,19 @@ const translations = {
     notificationTitle: "알림",
     notificationEmpty: "새로운 알림이 없습니다.",
     messageTitle: "메시지",
-    messageEmpty: "새로운 메시지가 없습니다."
-  }
+messageEmpty: "새로운 메시지가 없습니다.",
+degreeWorksTitle: "Degree Works 감사 미리보기",
+degreeWorksText: "ZOLAR는 과목 선택을 Degree Works 방식의 졸업요건 감사 정보와 연결하여 학생의 전공, GPA, 충족된 요건, 남은 요건, 선택한 과목이 졸업요건에 적용되는지를 보여줍니다.",
+openDegreeWorks: "감사 미리보기 열기",
+degreeWorksModalTitle: "Degree Works 감사 미리보기",
+degreeWorksModalNote: "이 프로토타입은 Degree Works를 대체하지 않습니다. 학생이 수강을 확정하기 전에 수강신청 시스템이 degree audit 방식의 정보를 어떻게 활용할 수 있는지 보여줍니다.",
+studentRecordTitle: "학생 기록",
+requirementProgressTitle: "요건 진행 상황",
+selectedCourseFitTitle: "선택 과목 적용 여부",
+advisorNoteTitle: "어드바이저 참고 사항",
+advisorNoteText: "Degree audit 정보는 계획을 도울 수 있지만, 특이한 수강 순서나 transfer 관련 질문은 어드바이저와 확인해야 합니다."  }
 }
+let currentPage = "dashboard"
 let selectedCourseId = null
 let selectedTerm = "Fall 2026"
 let plannedCourses = []
@@ -404,7 +424,8 @@ function renderTimetable() {
   const heatmap = document.getElementById("heatmap")
 
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-  const times = ["9 AM", "11 AM", "1 PM", "3 PM", "6 PM"]
+  grid.classList.add("hourly")
+  const times =const times = ["9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM"] ["9 AM", "11 AM", "1 PM", "3 PM", "6 PM"]
 
   let html = `<div class="time"></div>`
   days.forEach(day => html += `<div class="day">${day}</div>`)
@@ -469,11 +490,18 @@ function getPrimaryDay(days) {
 
 function getTimeSlot(start) {
   if (start.includes("9:")) return "9 AM"
-  if (start.includes("10:") || start.includes("11:")) return "11 AM"
-  if (start.includes("12:") || start.includes("1:")) return "1 PM"
-  if (start.includes("2:") || start.includes("3:") || start.includes("4:")) return "3 PM"
+  if (start.includes("10:")) return "10 AM"
+  if (start.includes("11:")) return "11 AM"
+  if (start.includes("12:")) return "12 PM"
+  if (start.includes("1:")) return "1 PM"
+  if (start.includes("2:")) return "2 PM"
+  if (start.includes("3:")) return "3 PM"
+  if (start.includes("4:")) return "4 PM"
+  if (start.includes("5:")) return "5 PM"
   if (start.includes("6:")) return "6 PM"
-  return "11 AM"
+  if (start.includes("7:")) return "7 PM"
+  if (start.includes("8:")) return "8 PM"
+  return "9 AM"
 }
 
 function renderEvaluation() {
@@ -898,4 +926,73 @@ document.addEventListener("click", event => {
     messagePopup.classList.add("hidden")
   }
 })
+const openDegreeWorksButton = document.getElementById("openDegreeWorksButton")
+const closeDegreeWorksButton = document.getElementById("closeDegreeWorksButton")
+const degreeWorksModal = document.getElementById("degreeWorksModal")
+
+function updateDegreeWorksFit() {
+  const fit = document.getElementById("degreeWorksCourseFit")
+  if (!fit) return
+
+  const course = getCourse()
+
+  if (!course) {
+    fit.textContent = lang(
+      "Select a course to check how it may apply to the degree audit.",
+      "선택한 과목이 졸업요건에 어떻게 적용될 수 있는지 확인하려면 먼저 과목을 선택하세요."
+    )
+    return
+  }
+
+  if (course.code === "MAT 123") {
+    fit.textContent = lang(
+      "MAT 123 may not safely satisfy the current calculus sequence unless the required condition is confirmed. Advisor confirmation is recommended.",
+      "MAT 123은 필요한 조건을 확인하지 않으면 현재 미적분 수강 순서에 안전하게 적용되지 않을 수 있습니다. 어드바이저 확인이 권장됩니다."
+    )
+    return
+  }
+
+  if (course.code.startsWith("BIO")) {
+    fit.textContent = lang(
+      `${course.code} may apply toward the introductory Biology requirement, but lab or sequence requirements should still be checked.`,
+      `${course.code}는 introductory Biology requirement에 적용될 수 있지만, lab 또는 sequence requirement는 계속 확인해야 합니다.`
+    )
+    return
+  }
+
+  if (course.code.startsWith("EST")) {
+    fit.textContent = lang(
+      `${course.code} may support the technology or elective requirement depending on the student’s degree audit block.`,
+      `${course.code}는 학생의 degree audit block에 따라 technology 또는 elective requirement에 적용될 수 있습니다.`
+    )
+    return
+  }
+
+  fit.textContent = lang(
+    `${course.code} should be checked against the degree audit before final enrollment.`,
+    `${course.code}는 최종 수강 확정 전에 degree audit과 비교해 확인해야 합니다.`
+  )
+}
+
+if (openDegreeWorksButton && degreeWorksModal) {
+  openDegreeWorksButton.addEventListener("click", event => {
+    event.stopPropagation()
+    updateDegreeWorksFit()
+    degreeWorksModal.classList.remove("hidden")
+  })
+}
+
+if (closeDegreeWorksButton && degreeWorksModal) {
+  closeDegreeWorksButton.addEventListener("click", () => {
+    degreeWorksModal.classList.add("hidden")
+  })
+}
+
+if (degreeWorksModal) {
+  degreeWorksModal.addEventListener("click", event => {
+    if (event.target === degreeWorksModal) {
+      degreeWorksModal.classList.add("hidden")
+    }
+  })
+}
 applyLanguage()
