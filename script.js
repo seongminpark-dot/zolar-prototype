@@ -1,4 +1,4 @@
-const translations = {
+ const translations = {
   en: {
     prototypeLabel: "Course Registration Support",
     navDashboard: "Dashboard",
@@ -11,54 +11,41 @@ const translations = {
     dashboardTitle: "Dashboard",
     dashboardSubtitle: "A redesigned course registration experience for safer, clearer, and more evidence based course decisions.",
     needOneTitle: "Integrated Course Decision Hub",
-    needOneText: "When a student searches for one course, ZOLAR combines registration status, evaluation patterns, grade distribution, workload, timetable fit, sequence risk, and advisor next steps on one decision page.",
-    needTwoTitle: "Evidence Based Course Planning",
-    needTwoText: "The prototype turns separated information into usable decision evidence, including course evaluation data, student comment patterns, grade counts, and workload signals.",
-    needThreeTitle: "Human Support Pathway",
-    needThreeText: "When a course may create a sequence or registration problem, ZOLAR prepares backup options, advisor evidence, and a message draft instead of leaving the student to guess alone.",
+    needOneText: "When a student searches for one course, ZOLAR combines registration status, course evaluation patterns, grade distribution, workload, timetable fit, four year roadmap impact, possible consequences, and advisor next steps on one decision page.",
+    needTwoTitle: "Four Year Study Roadmap",
+    needTwoText: "ZOLAR shows how a selected course fits into a student’s first year through fourth year plan. This helps students see whether one course supports foundation requirements, major sequence, upper division study, or graduation preparation.",
+    needThreeTitle: "Decision Assistant With Consequences",
+    needThreeText: "When a course creates a sequence, workload, seat, or graduation risk, ZOLAR explains the possible consequence and gives a safer next step before the student commits to enrollment.",
     scenarioTitle: "Student Scenario Context",
-    scenarioText: "This prototype is designed around a sophomore Biochemistry student who is trying to avoid a math sequence mistake while balancing course load, work hours, and a stable weekly schedule.",
+    scenarioText: "This prototype can switch among representative majors such as Biochemistry, Technology and Society, Business Management, and Psychology. Each major has a sample four year roadmap and course decision risks.",
     keyFeaturesTitle: "Key Features Included",
     startSearch: "Start Course Search",
     searchTitle: "Course Search",
-    searchSubtitle: "Search courses and review registration status, evaluation data, grade counts, workload patterns, course risk, timetable fit, and advisor support in one screen.",
-    searchCourseLabel: "Search course",
-    departmentLabel: "Department",
-    levelLabel: "Course Level",
-    termLabel: "Term",
-    searchButton: "Search",
-    clearFilters: "Clear all",
-    searchResultsTitle: "Search Results",
-    emptySearchTitle: "Supported prototype courses",
-    emptySearchText: "All supported sample courses are shown first. Search by course code, title, or department to narrow the list.",
+    searchSubtitle: "Search courses and review registration status, evaluation data, grade counts, workload patterns, roadmap impact, course risk, timetable fit, and advisor support in one screen.",
     timetableTitle: "Visual Timetable Builder",
     timetableSubtitle: "Add and drop courses directly from the weekly timetable while checking schedule pressure and time conflicts.",
-    simulateDrag: "Simulate Drag and Drop",
-    returnSearch: "Return to Course Search",
-    schedulePanelTitle: "Schedule Summary",
-    stressTitle: "Schedule Stress Heatmap",
     evaluationTitle: "Course Evaluation DNA",
     evaluationSubtitle: "Evaluation data is translated into decision categories such as workload, exam difficulty, grading fairness, clarity, group work, and usefulness.",
-    pathwayTitle: "Course Pathway",
-    pathwaySubtitle: "Review past preparation, current registration choices, peer pathways, and future degree sequence risks before enrollment.",
+    pathwayTitle: "Course Pathway and Four Year Roadmap",
+    pathwaySubtitle: "Review how a selected course affects preparation, current registration, future semesters, and the student’s four year degree plan.",
     advisorTitle: "Advisor Ready Evidence Pack",
-    advisorSubtitle: "Create a short advisor report with the blocked course, detected rule, degree risk, alternatives, and an email draft.",
+    advisorSubtitle: "Create a short advisor report with the selected course, detected rule, degree path risk, possible consequences, alternatives, and an email draft.",
     assistantTitle: "AI Guided Planning Assistant",
-    assistantSubtitle: "The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, suggests safer alternatives, and prepares the student to contact the correct support office.",
+    assistantSubtitle: "The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, shows possible consequences, suggests safer alternatives, and prepares the student to contact the correct support office.",
     notificationTitle: "Notifications",
     notificationEmpty: "No new notifications.",
     messageTitle: "Messages",
     messageEmpty: "No new messages.",
     degreeWorksTitle: "Degree Works Audit Preview",
-    degreeWorksText: "ZOLAR connects course decisions to a Degree Works style audit preview, showing the student's major, GPA, completed requirements, missing requirements, and whether a selected course helps complete a degree requirement.",
+    degreeWorksText: "ZOLAR connects course decisions to a Degree Works style audit preview, showing the student’s major, GPA, completed requirements, missing requirements, and whether a selected course helps complete a degree requirement.",
     openDegreeWorks: "Open Audit Preview",
     degreeWorksModalTitle: "Degree Works Audit Preview",
-    degreeWorksModalNote: "This prototype does not replace Degree Works. It shows how a course registration system could use degree audit style information before a student confirms enrollment.",
+    degreeWorksModalNote: "This prototype does not replace Degree Works. It shows how course registration could use degree audit style information before a student confirms enrollment.",
     studentRecordTitle: "Student Record",
     requirementProgressTitle: "Requirement Progress",
     selectedCourseFitTitle: "Selected Course Fit",
     advisorNoteTitle: "Advisor Note",
-    advisorNoteText: "Degree audit information can guide planning, but students should confirm unusual sequence or transfer questions with an advisor."
+    advisorNoteText: "Degree audit information can guide planning, but students should confirm unusual sequence, transfer, or exception questions with an advisor."
   },
   ko: {
     prototypeLabel: "수강신청 지원 시스템",
@@ -72,40 +59,27 @@ const translations = {
     dashboardTitle: "대시보드",
     dashboardSubtitle: "더 안전하고 명확하며 근거 중심적인 수강 결정을 위한 수강신청 개선 프로토타입입니다.",
     needOneTitle: "통합 과목 결정 허브",
-    needOneText: "학생이 하나의 과목을 검색하면 ZOLAR는 수강 상태, 강의 평가 패턴, 성적 분포, 과제량, 시간표 적합성, 수강 순서 위험, 어드바이저 다음 단계를 한 결정 페이지에 함께 보여줍니다.",
-    needTwoTitle: "근거 기반 수강 계획",
-    needTwoText: "이 프로토타입은 흩어진 정보를 강의 평가 자료, 학생 의견 패턴, 성적 수치, 과제량 신호처럼 실제 결정에 필요한 근거로 바꿔 보여줍니다.",
-    needThreeTitle: "사람의 도움으로 이어지는 경로",
-    needThreeText: "과목이 수강 순서나 등록 문제를 만들 수 있을 때, ZOLAR는 학생이 혼자 추측하지 않도록 대체 선택지, 어드바이저용 근거, 메시지 초안을 준비합니다.",
+    needOneText: "학생이 하나의 과목을 검색하면 ZOLAR는 수강 상태, 강의 평가 패턴, 성적 분포, 과제량, 시간표 적합성, 4년 로드맵 영향, 가능한 결과, 어드바이저 다음 단계를 한 화면에 보여줍니다.",
+    needTwoTitle: "4년 학업 로드맵",
+    needTwoText: "ZOLAR는 선택한 과목이 1학년부터 4학년까지의 계획 중 어디에 해당하는지 보여줍니다. 이를 통해 학생은 한 과목이 기초 요건, 전공 순서, 고학년 수업, 졸업 준비 중 무엇을 지원하는지 확인할 수 있습니다.",
+    needThreeTitle: "결과를 보여주는 의사결정 도우미",
+    needThreeText: "과목이 수강 순서, 과제량, 좌석 제한, 졸업 위험을 만들 수 있을 때, ZOLAR는 학생이 수강을 확정하기 전에 가능한 결과와 더 안전한 다음 단계를 설명합니다.",
     scenarioTitle: "학생 시나리오 맥락",
-    scenarioText: "이 프로토타입은 수업 부담, 근무 시간, 안정적인 주간 일정을 유지하면서 수학 수강 순서 실수를 피하려는 Biochemistry 전공 2학년 학생을 중심으로 설계되었습니다.",
+    scenarioText: "이 프로토타입은 Biochemistry, Technology and Society, Business Management, Psychology 같은 대표 전공을 전환해 볼 수 있습니다. 각 전공에는 예시 4년 로드맵과 과목 결정 위험이 포함됩니다.",
     keyFeaturesTitle: "포함된 주요 기능",
     startSearch: "과목 검색 시작",
     searchTitle: "과목 검색",
-    searchSubtitle: "수강 상태, 강의 평가, 성적 수치, 과제량 패턴, 과목 위험, 시간표 적합성, 어드바이저 지원을 한 화면에서 확인합니다.",
-    searchCourseLabel: "과목 검색",
-    departmentLabel: "학과",
-    levelLabel: "과목 레벨",
-    termLabel: "학기",
-    searchButton: "검색",
-    clearFilters: "초기화",
-    searchResultsTitle: "검색 결과",
-    emptySearchTitle: "지원되는 프로토타입 과목",
-    emptySearchText: "지원되는 예시 과목이 먼저 표시됩니다. 과목 코드, 제목, 학과를 검색하면 목록이 좁혀집니다.",
+    searchSubtitle: "수강 상태, 강의 평가, 성적 수치, 과제량 패턴, 로드맵 영향, 과목 위험, 시간표 적합성, 어드바이저 지원을 한 화면에서 확인합니다.",
     timetableTitle: "시각 시간표",
     timetableSubtitle: "주간 시간표에서 과목을 직접 추가하거나 삭제하면서 시간표 부담과 시간 충돌을 확인합니다.",
-    simulateDrag: "드래그 앤 드롭 시뮬레이션",
-    returnSearch: "과목 검색으로 돌아가기",
-    schedulePanelTitle: "시간표 요약",
-    stressTitle: "시간표 부담 히트맵",
     evaluationTitle: "강의 평가 DNA",
     evaluationSubtitle: "강의 평가 자료를 과제량, 시험 난이도, 채점 공정성, 명확성, 그룹 활동, 유용성 같은 결정 기준으로 바꿔 보여줍니다.",
-    pathwayTitle: "수강 경로",
-    pathwaySubtitle: "수강 전 과거 준비, 현재 선택, 비슷한 학생들의 경로, 미래 졸업 순서 위험을 검토합니다.",
+    pathwayTitle: "수강 경로와 4년 로드맵",
+    pathwaySubtitle: "선택한 과목이 준비 과정, 현재 수강신청, 미래 학기, 4년 학업 계획에 어떤 영향을 주는지 검토합니다.",
     advisorTitle: "어드바이저 제출용 근거 패키지",
-    advisorSubtitle: "막힌 과목, 감지된 규칙, 졸업 경로 위험, 대안, 이메일 초안을 포함한 짧은 보고서를 만듭니다.",
+    advisorSubtitle: "선택 과목, 감지된 규칙, 졸업 경로 위험, 가능한 결과, 대안, 이메일 초안을 포함한 짧은 보고서를 만듭니다.",
     assistantTitle: "AI 수강 계획 도우미",
-    assistantSubtitle: "이 도우미는 사람의 advising을 대체하지 않습니다. 등록 문제를 파악하고, 가능한 규칙을 설명하고, 더 안전한 대안을 제시하며, 학생이 적절한 지원 부서에 연락할 수 있도록 준비시킵니다.",
+    assistantSubtitle: "이 도우미는 사람의 advising을 대체하지 않습니다. 등록 문제를 파악하고 가능한 규칙을 설명하며, 가능한 결과를 보여주고, 더 안전한 대안을 제시하며, 학생이 적절한 지원 부서에 연락할 수 있도록 준비시킵니다.",
     notificationTitle: "알림",
     notificationEmpty: "새로운 알림이 없습니다.",
     messageTitle: "메시지",
@@ -119,7 +93,7 @@ const translations = {
     requirementProgressTitle: "요건 진행 상황",
     selectedCourseFitTitle: "선택 과목 적용 여부",
     advisorNoteTitle: "어드바이저 참고 사항",
-    advisorNoteText: "Degree audit 정보는 계획을 도울 수 있지만, 특이한 수강 순서나 transfer 관련 질문은 어드바이저와 확인해야 합니다."
+    advisorNoteText: "Degree audit 정보는 계획을 도울 수 있지만, 특이한 수강 순서, transfer, 예외 관련 질문은 어드바이저와 확인해야 합니다."
   }
 }
 
@@ -127,8 +101,140 @@ let currentLang = "en"
 let currentPage = "dashboard"
 let selectedCourseId = null
 let selectedTerm = "Fall 2026"
+let selectedMajor = "Biochemistry"
 let plannedCourses = ["BIO 201", "MAT 123", "CHE 131", "AMS 151", "EST 207", "BUS 348"]
 let moved = false
+
+const majors = {
+  "Biochemistry": {
+    title: "Biochemistry",
+    gpa: "3.24",
+    student: "Kevin Ruiz",
+    summary: "A science student who needs strict sequencing across biology, chemistry, calculus, and advanced laboratory requirements.",
+    years: [
+      {
+        year: "Year 1",
+        focus: "Foundation science and writing",
+        courses: ["BIO 201", "CHE 131", "WRT 102", "MAT 123"],
+        note: "Builds the science and math foundation needed before advanced biology and chemistry."
+      },
+      {
+        year: "Year 2",
+        focus: "Major sequence and calculus continuation",
+        courses: ["BIO 202", "CHE 132", "AMS 151", "BIO 204"],
+        note: "A wrong math or chemistry sequence can delay later lab and upper division requirements."
+      },
+      {
+        year: "Year 3",
+        focus: "Advanced biochemistry and laboratory work",
+        courses: ["BIO 203", "BIO 205", "BIO 361", "BCH 401"],
+        note: "Advanced courses depend on earlier biology, chemistry, and math preparation."
+      },
+      {
+        year: "Year 4",
+        focus: "Research, capstone, and graduation audit",
+        courses: ["BCH 402", "BIO 459", "Advanced Lab", "Remaining SBC"],
+        note: "Final year should confirm remaining requirements before graduation filing."
+      }
+    ]
+  },
+  "Technology and Society": {
+    title: "Technology and Society",
+    gpa: "3.18",
+    student: "Kevin Ruiz",
+    summary: "A technology and society student who needs to connect SBC, EST core courses, upper division requirements, and specialization planning.",
+    years: [
+      {
+        year: "Year 1",
+        focus: "General education and introductory technology studies",
+        courses: ["WRT 102", "EST 194", "EST 202", "MAT 123"],
+        note: "Early courses introduce technology, society, writing, and quantitative preparation."
+      },
+      {
+        year: "Year 2",
+        focus: "Core design and technology assessment",
+        courses: ["EST 205", "EST 207", "EST 240", "AMS 151"],
+        note: "Students begin connecting interaction design, digital media, assessment, and math requirements."
+      },
+      {
+        year: "Year 3",
+        focus: "Upper division specialization",
+        courses: ["EST 320", "EST 326", "EST 330", "EST 331"],
+        note: "Upper division EST courses should match the student’s specialization and remaining degree audit blocks."
+      },
+      {
+        year: "Year 4",
+        focus: "Capstone, internship, and final audit",
+        courses: ["EST 392", "EST 441", "Advanced EST Elective", "Remaining SBC"],
+        note: "Final planning should confirm upper division credits, specialization completion, and graduation timing."
+      }
+    ]
+  },
+  "Business Management": {
+    title: "Business Management",
+    gpa: "3.31",
+    student: "Kevin Ruiz",
+    summary: "A business student who needs to balance prerequisite business courses, quantitative preparation, group work, and capstone timing.",
+    years: [
+      {
+        year: "Year 1",
+        focus: "Business foundation and general education",
+        courses: ["BUS 115", "ECO 108", "WRT 102", "PSY 103"],
+        note: "Students build communication, economics, and social science foundations."
+      },
+      {
+        year: "Year 2",
+        focus: "Core business and quantitative preparation",
+        courses: ["BUS 215", "BUS 220", "AMS 151", "EST 202"],
+        note: "Quantitative and management foundations prepare students for advanced business courses."
+      },
+      {
+        year: "Year 3",
+        focus: "Advanced business concentration",
+        courses: ["BUS 330", "BUS 340", "BUS 348", "BUS Elective"],
+        note: "Reserved seats, group work, and workload patterns become important decision factors."
+      },
+      {
+        year: "Year 4",
+        focus: "Strategy, internship, and graduation audit",
+        courses: ["BUS 441", "Internship", "Advanced BUS Elective", "Remaining SBC"],
+        note: "Students should check capstone timing and remaining graduation requirements."
+      }
+    ]
+  },
+  "Psychology": {
+    title: "Psychology",
+    gpa: "3.27",
+    student: "Kevin Ruiz",
+    summary: "A psychology student who needs to connect introductory psychology, statistics, research methods, upper division electives, and graduation planning.",
+    years: [
+      {
+        year: "Year 1",
+        focus: "Introductory social science and writing",
+        courses: ["PSY 103", "WRT 102", "BIO 201", "SBC Elective"],
+        note: "Students begin with introductory psychology and general education requirements."
+      },
+      {
+        year: "Year 2",
+        focus: "Statistics and research preparation",
+        courses: ["PSY 220", "PSY 230", "AMS 151", "BIO 202"],
+        note: "Statistics and research methods support later upper division psychology work."
+      },
+      {
+        year: "Year 3",
+        focus: "Upper division psychology courses",
+        courses: ["PSY 310", "PSY 334", "PSY 349", "Advanced PSY Elective"],
+        note: "Students should compare workload, exam difficulty, and research expectations."
+      },
+      {
+        year: "Year 4",
+        focus: "Seminar, internship, and graduation audit",
+        courses: ["PSY 447", "Research Seminar", "Internship", "Remaining SBC"],
+        note: "Final year should confirm upper division credits and remaining general education."
+      }
+    ]
+  }
+}
 
 const courses = {
   "BIO 201": makeCourse("BIO 201", "Biology I", "BIO", "200", "Life Sciences Building 038", "4 credits", {
@@ -141,20 +247,55 @@ const courses = {
     "Spring 2026": offer("Section 02", "Mon Wed Fri", "10:00 AM", "10:50 AM", 205, 77, 4.0, 68, 61, 49, 27, "Available", "Moderate", "Medium", "Mixed Positive", "Low", "Moderate High"),
     "Summer 2026": offer("Section 90", "Mon Tue Wed Thu", "1:00 PM", "2:15 PM", 80, 33, 3.8, 24, 24, 20, 12, "Intensive Format", "High", "Medium High", "Mixed", "Low", "Moderate")
   }),
+  "BIO 203": makeCourse("BIO 203", "Cell and Organ Physiology", "BIO", "200", "Life Sciences Building 038", "3 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "2:30 PM", "3:50 PM", 174, 68, 3.9, 52, 54, 43, 25, "Available", "High", "High", "Mixed", "Low", "Moderate"),
+    "Spring 2026": offer("Section 01", "Tue Thu", "1:00 PM", "2:20 PM", 160, 62, 3.8, 45, 51, 42, 22, "High Workload", "High", "High", "Mixed", "Low", "Moderate"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
+  "BIO 204": makeCourse("BIO 204", "Biology Laboratory I", "BIO", "200", "Life Sciences Building 102", "2 credits", {
+    "Fall 2026": offer("Lab 01", "Wed", "2:00 PM", "4:50 PM", 96, 40, 4.0, 35, 30, 21, 10, "Limited Seats", "Moderate High", "Medium", "Positive", "High", "Moderate High"),
+    "Spring 2026": offer("Lab 02", "Fri", "9:00 AM", "11:50 AM", 92, 36, 3.9, 31, 30, 22, 9, "Limited Seats", "Moderate High", "Medium", "Mixed Positive", "High", "Moderate"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
+  "BIO 205": makeCourse("BIO 205", "Biology Laboratory II", "BIO", "200", "Life Sciences Building 102", "2 credits", {
+    "Fall 2026": offer("Lab 03", "Thu", "2:00 PM", "4:50 PM", 88, 34, 3.8, 26, 28, 22, 12, "Limited Seats", "High", "Medium", "Mixed", "High", "Moderate"),
+    "Spring 2026": offer("Lab 01", "Tue", "2:00 PM", "4:50 PM", 94, 37, 3.9, 29, 30, 24, 11, "Available", "Moderate High", "Medium", "Mixed Positive", "High", "Moderate"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
+  "BIO 361": makeCourse("BIO 361", "Biochemistry I", "BIO", "300", "Life Sciences Building 038", "3 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "11:30 AM", "12:50 PM", 142, 55, 3.7, 36, 43, 39, 24, "High Workload", "Very High", "High", "Mixed", "Low", "Moderate"),
+    "Spring 2026": offer("Section 01", "Tue Thu", "10:30 AM", "11:50 AM", 138, 51, 3.8, 38, 41, 37, 22, "Available", "High", "High", "Mixed Positive", "Low", "Moderate"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
+  "BCH 401": makeCourse("BCH 401", "Advanced Biochemistry", "BCH", "400", "Chemistry Building 130", "3 credits", {
+    "Fall 2026": offer("Section 01", "Tue Thu", "3:30 PM", "4:50 PM", 70, 24, 3.8, 19, 20, 18, 13, "Prerequisite Sensitive", "High", "High", "Mixed", "Low", "Moderate"),
+    "Spring 2026": offer("Section 01", "Mon Wed", "4:00 PM", "5:20 PM", 64, 22, 3.9, 18, 19, 16, 11, "Available", "High", "High", "Mixed Positive", "Low", "Moderate"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
   "MAT 123": makeCourse("MAT 123", "Calculus I", "MAT", "100", "Math Tower P 131", "4 credits", {
     "Fall 2026": offer("Section 01", "Mon Wed", "10:00 AM", "11:20 AM", 180, 62, 3.8, 48, 55, 50, 27, "Sequence Risk", "High", "High", "Mixed", "Low", "Moderate"),
     "Spring 2026": offer("Section 03", "Tue Thu", "9:00 AM", "10:20 AM", 166, 58, 3.6, 39, 50, 48, 29, "Sequence Risk", "High", "High", "Mixed", "Low", "Low Moderate"),
     "Summer 2026": offer("External Equivalent", "Online or Partner Campus", "Varies", "Varies", 72, 28, 3.7, 21, 20, 19, 12, "External Option Recommended", "Intensive", "High", "Mixed", "Low", "Varies by institution")
+  }),
+  "AMS 151": makeCourse("AMS 151", "Applied Calculus I", "AMS", "100", "Engineering Building 143", "3 credits", {
+    "Fall 2026": offer("Section 02", "Tue Thu", "2:00 PM", "3:20 PM", 240, 95, 4.1, 88, 76, 52, 24, "Available", "Moderate", "Medium", "Positive", "Low", "High"),
+    "Spring 2026": offer("Section 01", "Mon Wed", "12:30 PM", "1:50 PM", 230, 82, 4.0, 80, 75, 53, 22, "Available", "Moderate", "Medium", "Positive", "Low", "Moderate High"),
+    "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 104, 41, 3.9, 34, 31, 25, 14, "Available Online", "Moderate High", "Medium", "Mixed", "Low", "Moderate")
+  }),
+  "AMS 161": makeCourse("AMS 161", "Applied Calculus II", "AMS", "100", "Engineering Building 143", "3 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "3:30 PM", "4:50 PM", 210, 80, 3.9, 68, 70, 49, 23, "Prerequisite Sensitive", "High", "High", "Mixed Positive", "Low", "Moderate"),
+    "Spring 2026": offer("Section 02", "Tue Thu", "12:30 PM", "1:50 PM", 215, 83, 4.0, 72, 68, 50, 25, "Available", "Moderate High", "High", "Positive", "Low", "Moderate High"),
+    "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 95, 35, 3.8, 29, 30, 23, 13, "Available Online", "High", "High", "Mixed", "Low", "Moderate")
   }),
   "CHE 131": makeCourse("CHE 131", "General Chemistry I", "CHE", "100", "Chemistry Building 100", "4 credits", {
     "Fall 2026": offer("Section 03", "Tue Thu", "11:00 AM", "12:20 PM", 310, 130, 3.6, 72, 90, 96, 52, "High Workload", "Very High", "High", "Mixed", "Low", "Moderate"),
     "Spring 2026": offer("Section 04", "Mon Wed", "2:30 PM", "3:50 PM", 276, 101, 3.7, 70, 82, 83, 41, "Available", "High", "High", "Mixed", "Low", "Moderate"),
     "Summer 2026": offer("Section 90", "Mon Tue Wed Thu", "9:00 AM", "10:50 AM", 118, 47, 3.4, 24, 34, 38, 22, "Intensive Format", "Intensive", "High", "Mixed Negative", "Low", "Moderate")
   }),
-  "AMS 151": makeCourse("AMS 151", "Applied Calculus I", "AMS", "100", "Engineering Building 143", "3 credits", {
-    "Fall 2026": offer("Section 02", "Tue Thu", "2:00 PM", "3:20 PM", 240, 95, 4.1, 88, 76, 52, 24, "Available", "Moderate", "Medium", "Positive", "Low", "High"),
-    "Spring 2026": offer("Section 01", "Mon Wed", "12:30 PM", "1:50 PM", 230, 82, 4.0, 80, 75, 53, 22, "Available", "Moderate", "Medium", "Positive", "Low", "Moderate High"),
-    "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 104, 41, 3.9, 34, 31, 25, 14, "Available Online", "Moderate High", "Medium", "Mixed", "Low", "Moderate")
+  "CHE 132": makeCourse("CHE 132", "General Chemistry II", "CHE", "100", "Chemistry Building 100", "4 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "12:30 PM", "1:50 PM", 288, 109, 3.7, 71, 83, 89, 45, "Prerequisite Sensitive", "High", "High", "Mixed", "Low", "Moderate"),
+    "Spring 2026": offer("Section 03", "Tue Thu", "11:00 AM", "12:20 PM", 295, 115, 3.8, 79, 85, 86, 45, "Available", "High", "High", "Mixed Positive", "Low", "Moderate"),
+    "Summer 2026": offer("Section 90", "Mon Tue Wed Thu", "11:00 AM", "12:50 PM", 105, 44, 3.5, 21, 31, 34, 19, "Intensive Format", "Intensive", "High", "Mixed", "Low", "Moderate")
   }),
   "EST 194": makeCourse("EST 194", "Decision Making in Technology", "EST", "100", "Academic Building A 301", "3 credits", {
     "Fall 2026": offer("Section 01", "Mon Wed", "4:00 PM", "5:20 PM", 46, 34, 4.3, 20, 15, 8, 3, "Project Based", "Moderate", "Low", "Positive", "High", "High"),
@@ -181,10 +322,40 @@ const courses = {
     "Spring 2026": offer("Section 02", "Mon Wed", "2:30 PM", "3:50 PM", 37, 28, 4.2, 15, 12, 7, 3, "Project Based", "Moderate", "Low", "Positive", "High", "High"),
     "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 24, 18, 4.0, 8, 8, 5, 3, "Online Available", "Moderate", "Low", "Mixed Positive", "Moderate", "Moderate High")
   }),
+  "EST 320": makeCourse("EST 320", "Communication Technology Systems", "EST", "300", "Computer Science Building 2208", "3 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "10:00 AM", "11:20 AM", 34, 25, 4.1, 13, 11, 7, 3, "Prerequisite Sensitive", "Moderate High", "Medium", "Positive", "Moderate", "High"),
+    "Spring 2026": offer("Section 01", "Tue Thu", "2:00 PM", "3:20 PM", 32, 23, 4.0, 12, 10, 7, 3, "Available", "Moderate", "Medium", "Mixed Positive", "Moderate", "Moderate High"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
+  "EST 326": makeCourse("EST 326", "Management for Engineers and Scientists", "EST", "300", "Academic Building B 310", "3 credits", {
+    "Fall 2026": offer("Section 01", "Tue Thu", "11:00 AM", "12:20 PM", 45, 32, 4.2, 18, 15, 8, 4, "Available", "Moderate", "Low", "Positive", "High", "High"),
+    "Spring 2026": offer("Section 02", "Mon Wed", "5:30 PM", "6:50 PM", 40, 28, 4.1, 15, 14, 8, 3, "Project Based", "Moderate", "Low", "Mixed Positive", "High", "Moderate High"),
+    "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 22, 15, 4.0, 8, 7, 5, 2, "Online Available", "Moderate", "Low", "Mixed Positive", "Moderate", "Moderate")
+  }),
+  "EST 330": makeCourse("EST 330", "Natural Disasters and Society", "EST", "300", "Academic Building A 312", "3 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "3:30 PM", "4:50 PM", 48, 34, 4.3, 20, 15, 9, 4, "Available", "Moderate", "Medium", "Positive", "Moderate", "High"),
+    "Spring 2026": offer("Section 01", "Tue Thu", "9:30 AM", "10:50 AM", 46, 31, 4.2, 18, 14, 9, 5, "Available", "Moderate", "Medium", "Positive", "Moderate", "High"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
+  "EST 331": makeCourse("EST 331", "Science Technology and Public Policy", "EST", "300", "Academic Building B 214", "3 credits", {
+    "Fall 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available"),
+    "Spring 2026": offer("Section 01", "Mon Wed", "11:30 AM", "12:50 PM", 36, 25, 4.0, 13, 10, 8, 5, "Available", "Moderate High", "Medium", "Mixed Positive", "Moderate", "Moderate"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
+  }),
   "PSY 103": makeCourse("PSY 103", "Introduction to Psychology", "PSY", "100", "Javits Lecture Center 100", "3 credits", {
     "Fall 2026": offer("Section 04", "Tue Thu", "9:30 AM", "10:50 AM", 280, 110, 4.0, 90, 88, 70, 32, "Available", "Moderate", "Medium", "Positive", "Low", "High"),
     "Spring 2026": offer("Section 02", "Mon Wed", "4:00 PM", "5:20 PM", 255, 93, 3.9, 78, 82, 68, 27, "Available", "Moderate", "Medium", "Mixed Positive", "Low", "Moderate High"),
     "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 142, 61, 3.8, 44, 45, 36, 17, "Online Available", "Moderate High", "Medium", "Mixed", "Low", "Moderate")
+  }),
+  "PSY 220": makeCourse("PSY 220", "Survey in Developmental Psychology", "PSY", "200", "Psychology Building 105", "3 credits", {
+    "Fall 2026": offer("Section 01", "Mon Wed", "1:00 PM", "2:20 PM", 145, 56, 4.1, 50, 46, 34, 15, "Available", "Moderate", "Medium", "Positive", "Low", "High"),
+    "Spring 2026": offer("Section 02", "Tue Thu", "2:00 PM", "3:20 PM", 138, 51, 4.0, 46, 43, 34, 15, "Available", "Moderate", "Medium", "Positive", "Low", "Moderate High"),
+    "Summer 2026": offer("Online Section", "Online", "Asynchronous", "Asynchronous", 76, 30, 3.9, 23, 24, 20, 9, "Online Available", "Moderate", "Medium", "Mixed Positive", "Low", "Moderate")
+  }),
+  "PSY 230": makeCourse("PSY 230", "Research and Statistical Methods", "PSY", "200", "Psychology Building 210", "4 credits", {
+    "Fall 2026": offer("Section 01", "Tue Thu", "11:00 AM", "12:20 PM", 120, 48, 3.8, 34, 36, 32, 18, "High Workload", "High", "Medium High", "Mixed", "Moderate", "Moderate"),
+    "Spring 2026": offer("Section 02", "Mon Wed", "10:00 AM", "11:20 AM", 116, 45, 3.9, 35, 34, 31, 16, "Available", "Moderate High", "Medium", "Mixed Positive", "Moderate", "Moderate High"),
+    "Summer 2026": offer("Not Offered", "Not Offered", "Not Offered", "Not Offered", 0, 0, 0, 0, 0, 0, 0, "Not Offered", "Not Available", "Not Available", "Not Available", "Not Available", "Not Available")
   }),
   "BUS 348": makeCourse("BUS 348", "Strategic Management", "BUS", "300", "Harriman Hall 137", "3 credits", {
     "Fall 2026": offer("Section 01", "Wed", "6:00 PM", "8:50 PM", 160, 58, 3.9, 50, 48, 42, 20, "Reserved Seats", "Moderate High", "Medium", "Mixed", "High", "Moderate"),
@@ -222,59 +393,10 @@ function makeComment(status, workload) {
   if (status.includes("Reserved")) return "Students mention that seat restrictions should be confirmed before relying on this course."
   if (status.includes("Project")) return "Students mention that projects are useful when instructions, milestones, and team roles are clear."
   if (status.includes("Writing")) return "Students mention that steady writing work is manageable when drafts are started early."
+  if (status.includes("Prerequisite")) return "Students recommend confirming prerequisites before building a later semester plan around this course."
   if (status.includes("High") || workload.includes("High")) return "Students mention heavy weekly workload and the need for steady preparation."
   if (status.includes("Not Offered")) return "This course is not offered during the selected term in this prototype."
   return "Students mention clear organization, manageable workload, and predictable grading."
-}
-
-function courseAdvice(course, offering) {
-  if (offering.status.includes("Sequence")) return "This course may not fit the required sequence. Check MAT 119, MAP 103, or an approved equivalent before enrolling."
-  if (offering.status.includes("Reserved")) return "This course may show open seats but still block enrollment because some seats are reserved for specific student groups."
-  if (offering.status.includes("Not Offered")) return "This course is not offered in the selected term. Use the backup option generator to find another term or course."
-  if (offering.status.includes("External")) return "This option should be confirmed with Academic and Transfer Advising Services before registration."
-  if (offering.status.includes("High") || offering.dna.workload.includes("High")) return "This course is possible, but the student should check workload concentration before adding another difficult course."
-  return "This course appears manageable, but the student should still review evaluation patterns and weekly schedule fit."
-}
-
-function plainSupport(course, offering) {
-  if (offering.status.includes("Sequence")) {
-    return {
-      en: "Sequence risk means the course may look available, but it may not fit the order required for graduation.",
-      ko: "Sequence risk는 과목이 수강 가능해 보여도 졸업에 필요한 순서에 맞지 않을 수 있다는 뜻입니다."
-    }
-  }
-  if (offering.status.includes("Reserved")) {
-    return {
-      en: "Reserved seats means some seats are saved for specific student groups. The class can look open but still block enrollment.",
-      ko: "Reserved seats는 특정 학생 그룹을 위해 남겨진 좌석이라는 뜻입니다. 수업이 open으로 보여도 수강이 막힐 수 있습니다."
-    }
-  }
-  if (offering.status.includes("Not Offered")) {
-    return {
-      en: "Not offered means the course is not available in the selected term in this prototype.",
-      ko: "Not offered는 이 프로토타입에서 선택한 학기에 해당 과목이 제공되지 않는다는 뜻입니다."
-    }
-  }
-  if (offering.status.includes("High") || offering.dna.workload.includes("High")) {
-    return {
-      en: "High workload means the course may require more weekly study time than a regular course.",
-      ko: "High workload는 일반 과목보다 더 많은 주간 학습 시간이 필요할 수 있다는 뜻입니다."
-    }
-  }
-  return {
-    en: "Available means the course is open in this prototype, but requirement fit should still be checked.",
-    ko: "Available은 이 프로토타입에서 수강 가능하다는 뜻이지만, 졸업 요건 충족 여부는 확인해야 합니다."
-  }
-}
-
-function isRisk(offering) {
-  return offering.status.includes("Risk") ||
-    offering.status.includes("Reserved") ||
-    offering.status.includes("High") ||
-    offering.status.includes("Intensive") ||
-    offering.status.includes("External") ||
-    offering.status.includes("Limited") ||
-    offering.status.includes("Not Offered")
 }
 
 function getCourse() {
@@ -309,6 +431,7 @@ function translateStatus(value) {
     "Project Based": "프로젝트 중심",
     "Writing Intensive": "글쓰기 중심",
     "Reserved Seats": "예약 좌석",
+    "Prerequisite Sensitive": "선수 과목 주의",
     "Not Offered": "미개설",
     "Moderate": "보통",
     "Medium": "중간",
@@ -328,6 +451,181 @@ function translateStatus(value) {
   }
 
   return map[value] || value
+}
+
+function isRisk(offering) {
+  if (!offering) return false
+  return offering.status.includes("Risk") ||
+    offering.status.includes("Reserved") ||
+    offering.status.includes("High") ||
+    offering.status.includes("Intensive") ||
+    offering.status.includes("External") ||
+    offering.status.includes("Limited") ||
+    offering.status.includes("Prerequisite") ||
+    offering.status.includes("Not Offered")
+}
+
+function riskLevel(offering) {
+  if (!offering) return "Low"
+  if (offering.status.includes("Sequence") || offering.status.includes("Not Offered")) return "High"
+  if (offering.status.includes("High") || offering.status.includes("Reserved") || offering.status.includes("Intensive")) return "Medium High"
+  if (offering.status.includes("Limited") || offering.status.includes("Prerequisite") || offering.status.includes("External")) return "Medium"
+  return "Low"
+}
+
+function courseAdvice(course, offering) {
+  if (!course || !offering) return ""
+  if (offering.status.includes("Sequence")) return "This course may not fit the required sequence. Check MAP 103, MAT 119, or an approved equivalent before enrolling."
+  if (offering.status.includes("Reserved")) return "This course may show open seats but still block enrollment because some seats are reserved for specific student groups."
+  if (offering.status.includes("Not Offered")) return "This course is not offered in the selected term. Use the backup option generator to find another term or course."
+  if (offering.status.includes("External")) return "This option should be confirmed with Academic and Transfer Advising Services before registration."
+  if (offering.status.includes("Prerequisite")) return "This course should be checked against prerequisite and degree audit rules before final enrollment."
+  if (offering.status.includes("High") || offering.dna.workload.includes("High")) return "This course is possible, but the student should check workload concentration before adding another difficult course."
+  return "This course appears manageable, but the student should still review evaluation patterns and weekly schedule fit."
+}
+
+function possibleConsequences(course, offering) {
+  if (!course || !offering) return []
+
+  const items = []
+
+  if (offering.status.includes("Sequence")) {
+    items.push({
+      title: "Graduation sequence risk",
+      text: "If the required math condition is not met, this course may not count as the correct next step and can delay later calculus or major requirements.",
+      action: "Check the degree audit, confirm MAP 103 or MAT 119 status, and generate an advisor report before enrollment."
+    })
+  }
+
+  if (offering.status.includes("Reserved")) {
+    items.push({
+      title: "Enrollment block risk",
+      text: "The class may appear open, but reserved seats can prevent the student from enrolling after planning around it.",
+      action: "Check another section or contact the department coordinator before depending on this course."
+    })
+  }
+
+  if (offering.status.includes("High") || offering.dna.workload.includes("High") || offering.dna.workload.includes("Intensive")) {
+    items.push({
+      title: "Workload overload risk",
+      text: "Adding this course with other high workload courses may increase weekly stress and reduce performance in major requirements.",
+      action: "Use the Visual Timetable Builder to check workload concentration and consider moving another difficult course."
+    })
+  }
+
+  if (offering.status.includes("Prerequisite")) {
+    items.push({
+      title: "Prerequisite chain risk",
+      text: "If prerequisite completion is unclear, later courses that depend on this course may also be delayed.",
+      action: "Open the four year roadmap and confirm where this course sits in the major sequence."
+    })
+  }
+
+  if (offering.status.includes("Not Offered")) {
+    items.push({
+      title: "Term availability risk",
+      text: "This course is not available in the selected term, so relying on it can leave a missing requirement in the plan.",
+      action: "Choose another term, select a substitute, or ask an advisor about an approved alternative."
+    })
+  }
+
+  if (items.length === 0) {
+    items.push({
+      title: "Low immediate risk",
+      text: "This course appears to fit the selected term and does not show a major registration warning in the prototype.",
+      action: "Still compare evaluation data, timetable fit, and roadmap placement before final enrollment."
+    })
+  }
+
+  return items
+}
+
+function plainSupport(course, offering) {
+  if (!offering) {
+    return {
+      en: "Select a course first.",
+      ko: "먼저 과목을 선택하세요."
+    }
+  }
+
+  if (offering.status.includes("Sequence")) {
+    return {
+      en: "Sequence risk means the course may look available, but it may not fit the order required for graduation.",
+      ko: "Sequence risk는 과목이 수강 가능해 보여도 졸업에 필요한 순서에 맞지 않을 수 있다는 뜻입니다."
+    }
+  }
+
+  if (offering.status.includes("Reserved")) {
+    return {
+      en: "Reserved seats means some seats are saved for specific student groups. The class can look open but still block enrollment.",
+      ko: "Reserved seats는 특정 학생 그룹을 위해 남겨진 좌석이라는 뜻입니다. 수업이 open으로 보여도 수강이 막힐 수 있습니다."
+    }
+  }
+
+  if (offering.status.includes("Not Offered")) {
+    return {
+      en: "Not offered means the course is not available in the selected term in this prototype.",
+      ko: "Not offered는 이 프로토타입에서 선택한 학기에 해당 과목이 제공되지 않는다는 뜻입니다."
+    }
+  }
+
+  return {
+    en: "Available means the course is open in this prototype, but requirement fit should still be checked.",
+    ko: "Available은 이 프로토타입에서 수강 가능하다는 뜻이지만, 졸업 요건 충족 여부는 확인해야 합니다."
+  }
+}
+
+function roadmapImpact(course) {
+  const major = majors[selectedMajor]
+  if (!course || !major) {
+    return {
+      year: "Not selected",
+      focus: "Select a course",
+      text: "Select a course to see its roadmap impact."
+    }
+  }
+
+  for (const year of major.years) {
+    if (year.courses.includes(course.code)) {
+      return {
+        year: year.year,
+        focus: year.focus,
+        text: `${course.code} appears in ${year.year} of the ${major.title} sample roadmap. It supports ${year.focus.toLowerCase()}.`
+      }
+    }
+  }
+
+  if (course.dept === "EST" && selectedMajor === "Technology and Society") {
+    return {
+      year: "Year 2 or Year 3",
+      focus: "Major or specialization requirement",
+      text: `${course.code} may support the technology or specialization portion of the TSM roadmap depending on the student’s audit block.`
+    }
+  }
+
+  if (course.dept === "BIO" && selectedMajor === "Biochemistry") {
+    return {
+      year: "Year 1 to Year 3",
+      focus: "Science sequence",
+      text: `${course.code} may support the Biology sequence and should be checked against lab and prerequisite requirements.`
+    }
+  }
+
+  return {
+    year: "Elective or support course",
+    focus: "Degree audit confirmation needed",
+    text: `${course.code} is not a required course in the selected roadmap, but it may still count as an elective, SBC, or support course.`
+  }
+}
+
+function backupOptions(course, off) {
+  if (!course || !off) return []
+  if (off.status.includes("Sequence")) return ["Check whether MAT 119 can be added.", "Find an approved summer equivalent course.", "Replace this course with another requirement this semester."]
+  if (off.status.includes("Reserved")) return ["Check whether reserved seats apply to this student.", "Choose another section.", "Contact the department coordinator."]
+  if (off.status.includes("Not Offered")) return ["Choose Fall or Spring.", "Select a different course.", "Ask an advisor for an approved substitute."]
+  if (off.status.includes("Prerequisite")) return ["Confirm prerequisites in Degree Works.", "Check whether transfer credit has been posted.", "Ask an advisor before building later courses around this selection."]
+  if (off.dna.workload.includes("High")) return ["Move one heavy course to another semester.", "Choose a lighter elective.", "Review workload comments before enrolling."]
+  return ["Keep the course if it fits the schedule.", "Compare evaluation comments.", "Confirm requirement fit if needed."]
 }
 
 function showPage(pageId) {
@@ -356,10 +654,10 @@ function renderCurrentPage() {
 
 function getSearchElements() {
   return {
-    resultsEl: document.getElementById("courseSearchResults"),
+    resultsEl: document.getElementById("courseSearchResults") || document.getElementById("searchResults"),
     detailEl: document.getElementById("courseDetail"),
     inputEl: document.getElementById("courseSearchInput"),
-    termEl: document.getElementById("courseSearchTerm"),
+    termEl: document.getElementById("courseSearchTerm") || document.getElementById("termSelect"),
     deptEl: document.getElementById("departmentFilter"),
     levelEl: document.getElementById("levelFilter"),
     dayEl: document.getElementById("dayFilter"),
@@ -416,14 +714,10 @@ function renderSearch() {
   let fallbackMessage = ""
 
   if (results.length === 0) {
-    results = Object.values(courses).filter(course => {
-      const offering = getOffering(course, term)
-      return dept === "All" || course.dept === dept || !offering
-    })
-
+    results = Object.values(courses)
     fallbackMessage = lang(
-      "No exact match was found. Showing supported prototype courses instead.",
-      "정확히 일치하는 과목이 없어 이 프로토타입에서 지원하는 과목 목록을 보여줍니다."
+      "No exact match was found. Showing all supported prototype courses instead.",
+      "정확히 일치하는 과목이 없어 이 프로토타입에서 지원하는 전체 과목 목록을 보여줍니다."
     )
   }
 
@@ -438,23 +732,18 @@ function renderSearch() {
   resultsEl.innerHTML = `
     <div class="result-header">
       <div>
-        <h3>${t("searchResultsTitle")}</h3>
-        <p>${query ? lang("Filtered by your search.", "검색어에 따라 필터링되었습니다.") : t("emptySearchText")}</p>
+        <h3>${lang("Search Results", "검색 결과")}</h3>
+        <p>${query ? lang("Filtered by your search.", "검색어에 따라 필터링되었습니다.") : lang("All supported sample courses are shown first. Search by course code, title, or department to narrow the list.", "지원되는 예시 과목이 먼저 표시됩니다. 과목 코드, 제목, 학과를 검색하면 목록이 좁혀집니다.")}</p>
         ${fallbackMessage ? `<p class="warning-note">${fallbackMessage}</p>` : ""}
       </div>
-      <select id="quickDepartmentSelect">
-        <option value="All">${lang("All", "전체")}</option>
-        <option value="BIO">BIO</option>
-        <option value="EST">EST</option>
-        <option value="MAT">MAT</option>
-        <option value="CHE">CHE</option>
-        <option value="AMS">AMS</option>
-        <option value="PSY">PSY</option>
-        <option value="BUS">BUS</option>
+      <select id="majorSelectorSearch">
+        ${Object.keys(majors).map(major => `<option value="${major}" ${major === selectedMajor ? "selected" : ""}>${major}</option>`).join("")}
       </select>
     </div>
+
     ${results.map(course => {
       const offering = getOffering(course, term)
+      const impact = roadmapImpact(course)
       return `
         <div class="result-card ${selectedCourseId === course.code ? "active" : ""}" data-select="${course.code}">
           <h4>${course.code}</h4>
@@ -462,17 +751,16 @@ function renderSearch() {
           <p>${term} · ${offering.section} · ${offering.days} · ${offering.start} to ${offering.end}</p>
           <span class="badge ${isRisk(offering) ? "warning" : "safe"}">${translateStatus(offering.status)}</span>
           <p>${offering.evaluation.enrolled} ${lang("enrolled", "수강 인원")} · ${offering.evaluation.responses} ${lang("responses", "응답")} · ${offering.evaluation.rating} / 5</p>
+          <p><strong>${lang("Roadmap", "로드맵")}:</strong> ${impact.year} · ${impact.focus}</p>
         </div>
       `
     }).join("")}
   `
 
-  const quickDepartmentSelect = document.getElementById("quickDepartmentSelect")
-  if (quickDepartmentSelect) {
-    quickDepartmentSelect.value = dept
-    quickDepartmentSelect.addEventListener("change", event => {
-      const deptEl = document.getElementById("departmentFilter")
-      if (deptEl) deptEl.value = event.target.value
+  const majorSelectorSearch = document.getElementById("majorSelectorSearch")
+  if (majorSelectorSearch) {
+    majorSelectorSearch.addEventListener("change", event => {
+      selectedMajor = event.target.value
       renderSearch()
     })
   }
@@ -498,8 +786,8 @@ function renderCourseDetail() {
   if (!course) {
     detailEl.innerHTML = `
       <div class="empty-state">
-        <h3>${t("emptySearchTitle")}</h3>
-        <p>${t("emptySearchText")}</p>
+        <h3>${lang("Supported prototype courses", "지원되는 프로토타입 과목")}</h3>
+        <p>${lang("Select a course to see evaluation data, roadmap impact, possible consequences, and advisor support.", "강의 평가, 로드맵 영향, 가능한 결과, 어드바이저 지원을 보려면 과목을 선택하세요.")}</p>
       </div>
     `
     return
@@ -508,6 +796,8 @@ function renderCourseDetail() {
   const offering = getOffering(course)
   const data = offering.evaluation
   const support = plainSupport(course, offering)
+  const impact = roadmapImpact(course)
+  const consequences = possibleConsequences(course, offering)
 
   detailEl.innerHTML = `
     <div class="detail-hero">
@@ -525,38 +815,32 @@ function renderCourseDetail() {
       <div class="metric"><strong>${data.A}</strong><span>${lang("A grades", "A 성적 수")}</span></div>
     </div>
 
+    <div class="detail-section">
+      <h4>${lang("Four Year Roadmap Impact", "4년 로드맵 영향")}</h4>
+      <p><strong>${selectedMajor}</strong> · ${impact.year} · ${impact.focus}</p>
+      <p>${impact.text}</p>
+    </div>
+
+    <div class="detail-section consequence-box">
+      <h4>${lang("Possible Consequences Before Enrollment", "수강 확정 전 가능한 결과")}</h4>
+      ${consequences.map(item => `
+        <div class="consequence-item">
+          <strong>${item.title}</strong>
+          <p>${item.text}</p>
+          <p><em>${item.action}</em></p>
+        </div>
+      `).join("")}
+    </div>
+
     <p><strong>${lang("ZOLAR recommendation", "ZOLAR 추천")}:</strong> ${courseAdvice(course, offering)}</p>
 
     <div class="detail-actions">
       <button class="primary" data-action="addCourse">${plannedCourses.includes(course.code) ? lang("Added to Plan", "계획에 추가됨") : lang("Add to Plan", "계획에 추가")}</button>
       <button data-go="evaluation">${lang("View Evaluation DNA", "강의 평가 DNA 보기")}</button>
       <button data-go="timetable">${lang("Open Timetable", "시간표 열기")}</button>
-      <button data-go="pathway">${lang("Check Pathway", "수강 경로 확인")}</button>
+      <button data-go="pathway">${lang("Open Four Year Roadmap", "4년 로드맵 열기")}</button>
       <button data-go="advisor">${lang("Prepare Advisor Report", "어드바이저 보고서 준비")}</button>
       <button data-go="assistant">${lang("Ask AI Guided Planner", "AI 수강 계획 도우미에게 묻기")}</button>
-    </div>
-
-    <div class="detail-section">
-      <h4>${lang("Integrated Course Decision Hub", "통합 과목 결정 허브")}</h4>
-      <p>${lang(
-        "This page combines registration status, evaluation data, grade counts, workload comments, timetable fit, sequence risk, backup options, and advisor next steps before the student confirms enrollment.",
-        "이 페이지는 학생이 최종 수강 결정을 하기 전에 수강 상태, 강의 평가, 성적 수치, 과제량 의견, 시간표 적합성, 수강 순서 위험, 대체 선택지, 어드바이저 다음 단계를 함께 보여줍니다."
-      )}</p>
-    </div>
-
-    <div class="detail-section">
-      <h4>${lang("Course Evaluation DNA", "강의 평가 DNA")}</h4>
-      <p>${lang(
-        "Course Evaluation DNA translates student evaluation data into decision categories such as workload, exam difficulty, grading fairness, clarity, group work, and usefulness.",
-        "강의 평가 DNA는 학생 평가 자료를 과제량, 시험 난이도, 채점 공정성, 명확성, 그룹 활동, 유용성 같은 결정 기준으로 바꿔 보여줍니다."
-      )}</p>
-      <ul class="feature-list">
-        <li>${lang("Workload", "과제량")}: ${translateStatus(offering.dna.workload)}</li>
-        <li>${lang("Exam Difficulty", "시험 난이도")}: ${translateStatus(offering.dna.exam)}</li>
-        <li>${lang("Grading Fairness", "채점 공정성")}: ${translateStatus(offering.dna.fairness)}</li>
-        <li>${lang("Group Work", "그룹 활동")}: ${translateStatus(offering.dna.group)}</li>
-        <li>${lang("Clarity", "명확성")}: ${translateStatus(offering.dna.clarity)}</li>
-      </ul>
     </div>
 
     <div class="detail-section">
@@ -704,10 +988,7 @@ function renderEvaluation() {
 
     <div class="card">
       <h3>${lang("Course Evaluation DNA", "강의 평가 DNA")}</h3>
-      <p>${lang(
-        "Course Evaluation DNA translates student evaluation data into decision categories instead of showing only a score.",
-        "강의 평가 DNA는 단순 점수만 보여주는 대신 학생 평가 자료를 결정 기준으로 바꿔 보여줍니다."
-      )}</p>
+      <p>${lang("Course Evaluation DNA translates student evaluation data into decision categories instead of showing only a score.", "강의 평가 DNA는 단순 점수만 보여주는 대신 학생 평가 자료를 결정 기준으로 바꿔 보여줍니다.")}</p>
       <ul class="dna">
         <li>Workload: ${translateStatus(off.dna.workload)}</li>
         <li>Exam Difficulty: ${translateStatus(off.dna.exam)}</li>
@@ -738,28 +1019,62 @@ function renderPathway() {
   const course = getCourse()
   if (!el) return
 
-  if (!course) {
-    el.innerHTML = `<div class="card empty-state"><h3>${lang("No course selected", "선택된 과목이 없습니다")}</h3><p>${lang("Search and select a course first.", "먼저 과목을 검색하고 선택하세요.")}</p></div>`
-    return
-  }
-
-  const off = getOffering(course)
-  const options = backupOptions(course, off)
+  const major = majors[selectedMajor]
+  const off = course ? getOffering(course) : null
+  const impact = course ? roadmapImpact(course) : null
+  const consequences = course ? possibleConsequences(course, off) : []
+  const options = course ? backupOptions(course, off) : []
 
   el.innerHTML = `
-    <div class="pathway">
-      <div class="path-item done">${lang("Past", "과거")}<br>${course.dept} ${lang("preparation", "준비")}</div>
-      <div class="path-item ${isRisk(off) ? "risk-path" : "done"}">${lang("Current", "현재")}<br>${course.code} ${lang("selected", "선택됨")}</div>
-      <div class="path-item future">${lang("Future", "미래")}<br>${futurePath(course)}</div>
+    <div class="card roadmap-control">
+      <div>
+        <h3>${lang("Student Four Year Study Roadmap", "학생 4년 학업 로드맵")}</h3>
+        <p>${major.summary}</p>
+      </div>
+      <select id="majorSelectorPathway">
+        ${Object.keys(majors).map(majorName => `<option value="${majorName}" ${majorName === selectedMajor ? "selected" : ""}>${majorName}</option>`).join("")}
+      </select>
+    </div>
+
+    <div class="roadmap-grid">
+      ${major.years.map(year => `
+        <div class="roadmap-card">
+          <span>${year.year}</span>
+          <h3>${year.focus}</h3>
+          <div class="roadmap-courses">
+            ${year.courses.map(code => `<button class="${course && course.code === code ? "selected-roadmap-course" : ""}" data-roadmap-course="${code}">${code}</button>`).join("")}
+          </div>
+          <p>${year.note}</p>
+        </div>
+      `).join("")}
+    </div>
+
+    <div class="grid two">
+      <div class="card">
+        <h3>${lang("Selected Course Roadmap Impact", "선택 과목의 로드맵 영향")}</h3>
+        ${course ? `
+          <p><strong>${course.code} ${course.title}</strong></p>
+          <p>${impact.year} · ${impact.focus}</p>
+          <p>${impact.text}</p>
+        ` : `<p>${lang("Select a course to see roadmap impact.", "로드맵 영향을 보려면 과목을 선택하세요.")}</p>`}
+      </div>
+
+      <div class="card consequence-box">
+        <h3>${lang("Possible Consequences", "가능한 결과")}</h3>
+        ${course ? consequences.map(item => `
+          <div class="consequence-item">
+            <strong>${item.title}</strong>
+            <p>${item.text}</p>
+            <p><em>${item.action}</em></p>
+          </div>
+        `).join("") : `<p>${lang("Select a course to see possible consequences.", "가능한 결과를 보려면 과목을 선택하세요.")}</p>`}
+      </div>
     </div>
 
     <div class="grid two">
       <div class="card">
         <h3>${lang("Peer Pathway Map", "비슷한 학생 경로 지도")}</h3>
-        <p>${lang(
-          "Similar students in the same major usually compare course sequence, workload, and future requirement fit before enrollment. This helps students avoid relying only on informal advice from friends.",
-          "같은 전공의 비슷한 학생들은 보통 수강 전에 수강 순서, 과제량, 미래 요건 적합성을 비교합니다. 이는 친구의 비공식 조언에만 의존하는 문제를 줄여줍니다."
-        )}</p>
+        <p>${lang("Similar students in the same major usually compare course sequence, workload, and future requirement fit before enrollment. This helps students avoid relying only on informal advice from friends.", "같은 전공의 비슷한 학생들은 보통 수강 전에 수강 순서, 과제량, 미래 요건 적합성을 비교합니다. 이는 친구의 비공식 조언에만 의존하는 문제를 줄여줍니다.")}</p>
         <ol>
           <li>${lang("Check prerequisite or requirement category", "선수 과목 또는 요건 범주 확인")}</li>
           <li>${lang("Compare course evaluation and weekly schedule pressure", "강의 평가와 주간 시간표 부담 비교")}</li>
@@ -769,28 +1084,19 @@ function renderPathway() {
 
       <div class="card">
         <h3>${lang("Backup Option Generator", "대체 선택지 생성기")}</h3>
-        ${options.map(option => `<p><strong>${lang("Option", "선택지")}:</strong> ${option}</p>`).join("")}
+        ${course ? options.map(option => `<p><strong>${lang("Option", "선택지")}:</strong> ${option}</p>`).join("") : `<p>${lang("Select a course first.", "먼저 과목을 선택하세요.")}</p>`}
         <button class="primary" data-go="advisor">${lang("Prepare Advisor Report", "어드바이저 보고서 준비")}</button>
       </div>
     </div>
   `
-}
 
-function backupOptions(course, off) {
-  if (off.status.includes("Sequence")) return ["Check whether MAT 119 can be added.", "Find an approved summer equivalent course.", "Replace MAT 123 with another required course this semester."]
-  if (off.status.includes("Reserved")) return ["Check whether reserved seats apply to this student.", "Choose another section.", "Contact the department coordinator."]
-  if (off.status.includes("Not Offered")) return ["Choose Fall or Spring.", "Select a different course.", "Ask an advisor for an approved substitute."]
-  if (off.dna.workload.includes("High")) return ["Move one heavy course to another semester.", "Choose a lighter elective.", "Review workload comments before enrolling."]
-  return ["Keep the course if it fits the schedule.", "Compare evaluation comments.", "Confirm requirement fit if needed."]
-}
-
-function futurePath(course) {
-  if (course.code === "MAT 123") return "AMS 161 may be delayed"
-  if (course.code.startsWith("BIO")) return "BIO sequence or lab requirement"
-  if (course.code.startsWith("CHE")) return "CHE 132 or lab sequence"
-  if (course.code.startsWith("EST")) return "Upper division technology requirement"
-  if (course.code === "BUS 348") return "Capstone or graduation requirement"
-  return "Next degree requirement"
+  const majorSelectorPathway = document.getElementById("majorSelectorPathway")
+  if (majorSelectorPathway) {
+    majorSelectorPathway.addEventListener("change", event => {
+      selectedMajor = event.target.value
+      renderPathway()
+    })
+  }
 }
 
 function renderAdvisor() {
@@ -805,11 +1111,26 @@ function renderAdvisor() {
 
   const off = getOffering(course)
   const recipient = off.status.includes("Sequence") ? "Academic and Transfer Advising Services" : off.status.includes("Reserved") ? "Department Coordinator" : "Academic Advisor"
+  const consequences = possibleConsequences(course, off)
+  const impact = roadmapImpact(course)
 
   el.innerHTML = `
     <div class="card">
       <h3>${lang("Detected Problem", "감지된 문제")}</h3>
       <p>${courseAdvice(course, off)}</p>
+
+      <h3>${lang("Four Year Roadmap Evidence", "4년 로드맵 근거")}</h3>
+      <p>${selectedMajor} · ${impact.year} · ${impact.focus}</p>
+      <p>${impact.text}</p>
+
+      <h3>${lang("Possible Consequences", "가능한 결과")}</h3>
+      ${consequences.map(item => `
+        <div class="consequence-item">
+          <strong>${item.title}</strong>
+          <p>${item.text}</p>
+          <p><em>${item.action}</em></p>
+        </div>
+      `).join("")}
 
       <h3>${lang("Recommended Office", "권장 연락 부서")}</h3>
       <p>${recipient}</p>
@@ -823,7 +1144,7 @@ function renderAdvisor() {
       <h3>${lang("Email Draft", "이메일 초안")}</h3>
       <div class="email-box">
         Dear ${recipient},<br><br>
-        I am reviewing ${course.code} ${course.title} for ${selectedTerm}. ZOLAR shows the following issue: ${courseAdvice(course, off)}
+        I am reviewing ${course.code} ${course.title} for ${selectedTerm}. ZOLAR shows that this course may affect my ${selectedMajor} four year roadmap. The detected issue is: ${courseAdvice(course, off)}
         Could you confirm whether this course fits my degree path, or whether I should choose one of the recommended alternatives?<br><br>
         Thank you.
       </div>
@@ -846,39 +1167,45 @@ function renderAssistant() {
 
   const off = getOffering(course)
   const support = plainSupport(course, off)
+  const impact = roadmapImpact(course)
+  const consequences = possibleConsequences(course, off)
 
   el.innerHTML = `
     <div class="grid two">
       <div class="card">
         <h3>${lang("AI Guided Planning Assistant", "AI 수강 계획 도우미")}</h3>
-        <p>${lang(
-          "The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, suggests safer alternatives, and prepares the student to contact the correct human support office.",
-          "이 도우미는 사람의 advising을 대체하지 않습니다. 등록 문제를 파악하고 가능한 규칙을 설명하며, 더 안전한 대안을 제시하고 학생이 올바른 지원 부서에 연락할 수 있도록 준비시킵니다."
-        )}</p>
+        <p>${lang("The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, shows possible consequences, suggests safer alternatives, and prepares the student to contact the correct human support office.", "이 도우미는 사람의 advising을 대체하지 않습니다. 등록 문제를 파악하고 가능한 규칙을 설명하며, 가능한 결과를 보여주고, 더 안전한 대안을 제시하고 학생이 올바른 지원 부서에 연락할 수 있도록 준비시킵니다.")}</p>
+        <div class="ai-box"><strong>${lang("Selected major", "선택 전공")}:</strong> ${selectedMajor}</div>
         <div class="ai-box"><strong>${lang("Selected course", "선택 과목")}:</strong> ${course.code} ${course.title}</div>
-        <div class="ai-box"><strong>${lang("Detected risk", "감지된 위험")}:</strong> ${translateStatus(off.status)}</div>
+        <div class="ai-box"><strong>${lang("Roadmap placement", "로드맵 위치")}:</strong> ${impact.year} · ${impact.focus}</div>
+        <div class="ai-box"><strong>${lang("Detected risk", "감지된 위험")}:</strong> ${translateStatus(off.status)} · ${translateStatus(riskLevel(off))}</div>
         <div class="ai-box"><strong>${lang("Planning advice", "계획 조언")}:</strong> ${courseAdvice(course, off)}</div>
       </div>
 
-      <div class="card">
-        <h3>${lang("Guided Language Support", "안내 언어 지원")}</h3>
-        <div class="language-box">
-          <strong>Plain English</strong>
-          <p>${support.en}</p>
-          <strong>Korean</strong>
-          <p>${support.ko}</p>
-        </div>
+      <div class="card consequence-box">
+        <h3>${lang("Possible Consequences", "가능한 결과")}</h3>
+        ${consequences.map(item => `
+          <div class="consequence-item">
+            <strong>${item.title}</strong>
+            <p>${item.text}</p>
+            <p><em>${item.action}</em></p>
+          </div>
+        `).join("")}
       </div>
     </div>
 
-    <div class="chat">
-      <div class="message user">Why should I check ${course.code} before enrolling?</div>
-      <div class="message bot">ZOLAR detected this issue: ${courseAdvice(course, off)}</div>
-      <div class="message bot">Recommended next step: review backup options or prepare an advisor report.</div>
+    <div class="card">
+      <h3>${lang("Guided Language Support", "안내 언어 지원")}</h3>
+      <div class="language-box">
+        <strong>Plain English</strong>
+        <p>${support.en}</p>
+        <strong>Korean</strong>
+        <p>${support.ko}</p>
+      </div>
     </div>
 
     <div class="toolbar">
-      <button data-go="pathway">${lang("View Pathway", "수강 경로 보기")}</button>
+      <button data-go="pathway">${lang("View Four Year Roadmap", "4년 로드맵 보기")}</button>
       <button data-go="advisor">${lang("Generate Advisor Report", "어드바이저 보고서 생성")}</button>
       <button data-go="search">${lang("Return to Search", "검색으로 돌아가기")}</button>
     </div>
@@ -890,14 +1217,8 @@ function renderChatbotGreeting() {
   if (!chatMessages) return
 
   chatMessages.innerHTML = `
-    <div class="chatbot-message bot">${lang(
-      "Hi. I am ZOLAR Chat. I can explain course risk, backup options, advisor reports, and schedule issues.",
-      "안녕하세요. 저는 ZOLAR Chat입니다. 과목 위험, 대체 선택지, 어드바이저 보고서, 시간표 문제를 설명할 수 있습니다."
-    )}</div>
-    <div class="chatbot-message bot">${lang(
-      "Search and select a course first, or ask a general question such as “What should I do if MAT 123 is risky?”",
-      "먼저 과목을 검색하고 선택하거나, “MAT 123이 위험하면 어떻게 해야 하나요?” 같은 일반 질문을 입력하세요."
-    )}</div>
+    <div class="chatbot-message bot">${lang("Hi. I am ZOLAR Chat. I can explain course risk, four year roadmap impact, backup options, advisor reports, and schedule issues.", "안녕하세요. 저는 ZOLAR Chat입니다. 과목 위험, 4년 로드맵 영향, 대체 선택지, 어드바이저 보고서, 시간표 문제를 설명할 수 있습니다.")}</div>
+    <div class="chatbot-message bot">${lang("Search and select a course first, or ask a general question such as “What happens if MAT 123 is risky?”", "먼저 과목을 검색하고 선택하거나, “MAT 123이 위험하면 어떤 결과가 생기나요?” 같은 일반 질문을 입력하세요.")}</div>
   `
 }
 
@@ -920,13 +1241,24 @@ function getChatbotResponse(text) {
   const course = getCourse()
   const off = course ? getOffering(course) : null
 
+  if (lower.includes("roadmap") || lower.includes("4 year") || lower.includes("four year")) {
+    if (!course) return "Select a course first. Then I can explain where it fits in the selected major roadmap."
+    const impact = roadmapImpact(course)
+    return `${course.code} appears as ${impact.year} in the ${selectedMajor} roadmap. ${impact.text}`
+  }
+
+  if (lower.includes("consequence") || lower.includes("happen") || lower.includes("risk")) {
+    if (!course || !off) return "Select a course first. Then I can show possible consequences before enrollment."
+    return possibleConsequences(course, off).map(item => `• ${item.title}: ${item.text}`).join("<br>")
+  }
+
   if (lower.includes("mat 123")) {
     selectedCourseId = "MAT 123"
-    return "MAT 123 has a sequence risk in this prototype. ZOLAR recommends checking MAT 119, MAP 103, or an approved summer equivalent before enrollment."
+    return "MAT 123 has a sequence risk in this prototype. Possible consequence: later calculus or major requirements may be delayed if the required condition is not confirmed."
   }
 
   if (lower.includes("est")) {
-    return "The prototype supports EST 194, EST 202, EST 205, EST 207, and EST 240. Search EST in Course Search to compare them together."
+    return "The prototype supports EST 194, EST 202, EST 205, EST 207, EST 240, EST 320, EST 326, EST 330, and EST 331. Search EST in Course Search to compare them together."
   }
 
   if (lower.includes("backup") || lower.includes("alternative")) {
@@ -936,20 +1268,10 @@ function getChatbotResponse(text) {
 
   if (lower.includes("advisor") || lower.includes("email")) {
     if (!course || !off) return "Search and select a course first. Then I can prepare an advisor ready evidence pack."
-    return `For ${course.code}, the advisor report should include the detected issue, course information, possible alternatives, and a short email draft. You can open Advisor Report from the left menu.`
+    return `For ${course.code}, the advisor report should include the detected issue, roadmap placement, possible consequences, possible alternatives, and a short email draft.`
   }
 
-  if (lower.includes("risk") || lower.includes("risky")) {
-    if (!course || !off) return "Search and select a course first. Then I can explain the exact course risk."
-    return courseAdvice(course, off)
-  }
-
-  if (lower.includes("schedule") || lower.includes("time")) {
-    if (!course || !off) return "Add a course to the plan, then open Visual Timetable to check schedule conflicts."
-    return `${course.code} meets ${off.days}, ${off.start} to ${off.end}, at ${course.location}. Add it to the plan to see it on the timetable.`
-  }
-
-  return "I can help with course risk, backup options, advisor reports, course evaluation, or timetable planning. Try asking about MAT 123 risk, EST courses, or backup options."
+  return "I can help with course risk, four year roadmap impact, possible consequences, backup options, advisor reports, course evaluation, or timetable planning."
 }
 
 function updateDegreeWorksFit() {
@@ -959,40 +1281,14 @@ function updateDegreeWorksFit() {
   const course = getCourse()
 
   if (!course) {
-    fit.textContent = lang(
-      "Select a course to check how it may apply to the degree audit.",
-      "선택한 과목이 졸업요건에 어떻게 적용될 수 있는지 확인하려면 먼저 과목을 선택하세요."
-    )
+    fit.textContent = lang("Select a course to check how it may apply to the degree audit.", "선택한 과목이 졸업요건에 어떻게 적용될 수 있는지 확인하려면 먼저 과목을 선택하세요.")
     return
   }
 
-  if (course.code === "MAT 123") {
-    fit.textContent = lang(
-      "MAT 123 may not safely satisfy the current calculus sequence unless the required condition is confirmed. Advisor confirmation is recommended.",
-      "MAT 123은 필요한 조건을 확인하지 않으면 현재 미적분 수강 순서에 안전하게 적용되지 않을 수 있습니다. 어드바이저 확인이 권장됩니다."
-    )
-    return
-  }
-
-  if (course.code.startsWith("BIO")) {
-    fit.textContent = lang(
-      `${course.code} may apply toward the introductory Biology requirement, but lab or sequence requirements should still be checked.`,
-      `${course.code}는 introductory Biology requirement에 적용될 수 있지만, lab 또는 sequence requirement는 계속 확인해야 합니다.`
-    )
-    return
-  }
-
-  if (course.code.startsWith("EST")) {
-    fit.textContent = lang(
-      `${course.code} may support the technology or elective requirement depending on the student's degree audit block.`,
-      `${course.code}는 학생의 degree audit block에 따라 technology 또는 elective requirement에 적용될 수 있습니다.`
-    )
-    return
-  }
-
+  const impact = roadmapImpact(course)
   fit.textContent = lang(
-    `${course.code} should be checked against the degree audit before final enrollment.`,
-    `${course.code}는 최종 수강 확정 전에 degree audit과 비교해 확인해야 합니다.`
+    `${course.code} is checked against the ${selectedMajor} roadmap. ${impact.text}`,
+    `${course.code}는 ${selectedMajor} 로드맵과 비교됩니다. ${impact.text}`
   )
 }
 
@@ -1021,6 +1317,16 @@ document.addEventListener("click", event => {
   if (select) {
     selectedCourseId = select.dataset.select
     renderSearch()
+    return
+  }
+
+  const roadmapCourse = event.target.closest("[data-roadmap-course]")
+  if (roadmapCourse) {
+    const code = roadmapCourse.dataset.roadmapCourse
+    if (courses[code]) {
+      selectedCourseId = code
+      renderPathway()
+    }
     return
   }
 
@@ -1072,7 +1378,7 @@ const courseSearchButton = document.getElementById("courseSearchButton")
 const courseSearchInput = document.getElementById("courseSearchInput")
 
 if (courseSearchInput) {
-  courseSearchInput.placeholder = "Search BIO 201, BIO 202, MAT 123, AMS 151, CHE 131, EST 194, EST 202, EST 205, EST 207, EST 240, PSY 103, BUS 348"
+  courseSearchInput.placeholder = "Search BIO, EST, MAT 123, AMS 151, CHE 131, PSY, BUS, or any supported course"
   courseSearchInput.addEventListener("input", renderSearch)
   courseSearchInput.addEventListener("keydown", event => {
     if (event.key === "Enter") renderSearch()
@@ -1083,12 +1389,12 @@ if (courseSearchButton) {
   courseSearchButton.addEventListener("click", renderSearch)
 }
 
-;["departmentFilter", "levelFilter", "dayFilter", "riskFilter", "sortFilter", "courseSearchTerm"].forEach(id => {
+;["departmentFilter", "levelFilter", "dayFilter", "riskFilter", "sortFilter", "courseSearchTerm", "termSelect"].forEach(id => {
   const el = document.getElementById(id)
   if (!el) return
 
   el.addEventListener("change", () => {
-    if (id === "courseSearchTerm") selectedTerm = el.value
+    if (id === "courseSearchTerm" || id === "termSelect") selectedTerm = el.value
     renderSearch()
   })
 })
