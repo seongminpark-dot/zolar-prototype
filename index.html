@@ -1,389 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZOLAR Prototype</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZOLAR Course Registration Prototype</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <section id="loginScreen" class="login-screen">
-    <div class="login-brand">
-      <div class="shield">Z</div>
-      <h1>Course Registration <span>Prototype</span></h1>
-    </div>
+  <div id="loginScreen" class="login-shell">
+    <header class="login-header">
+      <div class="brand-mark small">Z</div>
+      <div class="login-title">Course Registration <span>Prototype</span></div>
+    </header>
 
-    <div class="login-card">
-      <h2>ZOLAR Prototype Login</h2>
+    <main class="login-main">
+      <section class="login-card">
+        <h1>ZOLAR Prototype Login</h1>
+        <label for="studentId">Stony Brook ID</label>
+        <input id="studentId" type="text" value="0000000" autocomplete="off" />
+        <label for="studentPassword">Password</label>
+        <input id="studentPassword" type="password" value="zolar2026" autocomplete="off" />
+        <div class="login-actions">
+          <button id="signInButton" class="primary-button" type="button">Sign In</button>
+          <button class="text-button" type="button">Forgot Password?</button>
+        </div>
+        <p class="prototype-note">This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.</p>
+      </section>
+    </main>
+  </div>
 
-      <label>Stony Brook ID</label>
-      <input id="loginId" type="text" value="0000000">
-
-      <label>Password</label>
-      <input id="loginPassword" type="password" value="password">
-
-      <div class="login-row">
-        <button id="signInButton" class="primary">Sign In</button>
-        <button class="text-button">Forgot Password?</button>
-      </div>
-
-      <p class="login-note">
-        This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.
-      </p>
-    </div>
-  </section>
-
-  <div id="app" class="app hidden">
+  <div id="app" class="app-shell hidden">
     <aside class="sidebar">
-      <div class="brand">
-        <div class="logo">Z</div>
+      <div class="sidebar-brand">
+        <div class="brand-mark">Z</div>
         <div>
-          <h1>ZOLAR</h1>
-          <p data-i18n="prototypeLabel">Course Registration Support</p>
+          <h2>ZOLAR</h2>
+          <p data-i18n="systemSubtitle">Course Registration Support</p>
         </div>
       </div>
 
-      <button class="nav active" data-page="dashboard" data-i18n="navDashboard">Dashboard</button>
-      <button class="nav" data-page="search" data-i18n="navSearch">Course Search</button>
-      <button class="nav" data-page="timetable" data-i18n="navTimetable">Visual Timetable</button>
-      <button class="nav" data-page="evaluation" data-i18n="navEvaluation">Course Evaluation</button>
-      <button class="nav" data-page="pathway" data-i18n="navPathway">Course Pathway</button>
-      <button class="nav" data-page="advisor" data-i18n="navAdvisor">Advisor Report</button>
-      <button class="nav" data-page="assistant" data-i18n="navAssistant">AI Guided Planner</button>
+      <nav class="sidebar-nav" aria-label="Prototype navigation">
+        <button class="nav active" data-page="dashboard" data-i18n="navDashboard" type="button">Dashboard</button>
+        <button class="nav" data-page="personas" data-i18n="navPersonas" type="button">Persona Needs</button>
+        <button class="nav" data-page="search" data-i18n="navSearch" type="button">Integrated Course Search</button>
+        <button class="nav" data-page="pathway" data-i18n="navPathway" type="button">Pathway Planner</button>
+        <button class="nav" data-page="advisor" data-i18n="navAdvisor" type="button">Advisor Evidence Pack</button>
+      </nav>
     </aside>
 
-    <main class="main">
+    <section class="workspace">
       <header class="topbar">
-        <div class="top-left">
-          <strong>Course Registration Prototype</strong>
-          <span>ZOLAR</span>
+        <div class="topbar-title">
+          <div class="brand-mark top">Z</div>
+          <div>
+            <h1 data-i18n="topTitle">Course Registration Prototype</h1>
+            <p data-i18n="topDescription">Integrated search, evaluation, pathway, and advising support.</p>
+          </div>
         </div>
 
-        <div class="top-right">
-   <div class="top-icon-wrap">
-  <button id="notificationButton" class="icon-button" title="Notifications">🔔</button>
-  <div id="notificationPopup" class="top-popup hidden">
-    <strong data-i18n="notificationTitle">Notifications</strong>
-    <p data-i18n="notificationEmpty">No new notifications.</p>
-  </div>
-</div>
-
-<div class="top-icon-wrap">
-  <button id="messageButton" class="icon-button" title="Messages">✉️</button>
-  <div id="messagePopup" class="top-popup hidden">
-    <strong data-i18n="messageTitle">Messages</strong>
-    <p data-i18n="messageEmpty">No new messages.</p>
-  </div>
-</div>
-
-          <div class="user-menu">
-            <button id="userMenuButton" class="user-button">
+        <div class="topbar-actions">
+          <button id="noticeButton" class="icon-button" aria-label="Notifications" type="button">🔔</button>
+          <button id="messageButton" class="icon-button" aria-label="Messages" type="button">✉️</button>
+          <div class="user-area">
+            <button id="userMenuButton" class="user-button" type="button">
               <span class="avatar">K</span>
-              <span>Kevin Ruiz</span>
-              <span>▾</span>
+              <span>Kevin<br />Ruiz</span>
+              <span aria-hidden="true">▾</span>
             </button>
-
-            <div id="userDropdown" class="user-dropdown hidden">
-              <button id="signOutButton">Sign Out</button>
+            <div id="userDropdown" class="dropdown hidden">
+              <button id="signOutButton" type="button">Sign Out</button>
             </div>
           </div>
         </div>
       </header>
 
-      <section id="dashboard" class="page active-page">
-        <div class="page-title">
-          <h2 data-i18n="dashboardTitle">Dashboard</h2>
-          <p data-i18n="dashboardSubtitle">A redesigned course registration experience for safer, clearer, and more evidence based course decisions.</p>
-        </div>
+      <div id="noticePanel" class="floating-panel hidden">
+        <strong data-i18n="notificationTitle">Notifications</strong>
+        <p data-i18n="emptyNotification">No new notifications.</p>
+      </div>
 
-        <div class="disclaimer-card">
-          This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.
-        </div>
+      <div id="messagePanel" class="floating-panel hidden">
+        <strong data-i18n="messageTitle">Messages</strong>
+        <p data-i18n="emptyMessage">No new messages.</p>
+      </div>
 
-        <div class="grid three">
-          <div class="card degree-card" id="degreeWorksCard">
-  <div class="degree-visual">
-    <div class="degree-screen">
-      <div class="degree-line wide"></div>
-      <div class="degree-line"></div>
-      <div class="degree-check">✓ Major Requirements</div>
-      <div class="degree-check warning">○ Math Sequence Requirement</div>
-      <div class="degree-check">✓ SBC Requirements</div>
+      <main id="mainContent" class="content"></main>
+    </section>
+
+    <section id="chatPanel" class="chat-panel hidden" aria-label="AI chat assistant">
+      <div class="chat-head">
+        <strong data-i18n="chatTitle">ZOLAR AI Assistant</strong>
+        <button id="closeChatButton" class="icon-button" type="button">×</button>
+      </div>
+      <div id="chatMessages" class="chat-messages"></div>
+      <div class="chat-input-row">
+        <input id="chatInput" type="text" placeholder="Ask about prerequisites, workload, or pathway risk" />
+        <button id="sendChatButton" class="primary-button" type="button">Send</button>
+      </div>
+    </section>
+
+    <button id="openChatButton" class="chat-launch" aria-label="Open AI assistant" type="button">💬</button>
+
+    <div class="language-switch">
+      <button id="englishButton" class="lang active-lang" type="button">EN</button>
+      <button id="koreanButton" class="lang" type="button">한국어</button>
+    </div>
+
+    <div id="degreeModal" class="modal-backdrop hidden">
+      <section class="modal-card">
+        <button id="closeDegreeModal" class="modal-close" type="button">×</button>
+        <h2 data-i18n="degreeTitle">Degree Audit Preview</h2>
+        <p data-i18n="degreeIntro">This preview imitates how a degree audit can show completed, missing, and in progress requirements. It is part of the prototype, not an official audit.</p>
+        <div id="degreeAuditContent"></div>
+      </section>
     </div>
   </div>
 
-  <div>
-    <h3 data-i18n="degreeWorksTitle">Degree Works Audit Preview</h3>
-    <p data-i18n="degreeWorksText">
-      ZOLAR connects course decisions to a Degree Works style audit preview, showing the student’s major, GPA, completed requirements, missing requirements, and whether a selected course helps complete a degree requirement.
-    </p>
-    <button id="openDegreeWorksButton" class="primary" data-i18n="openDegreeWorks">Open Audit Preview</button>
-  </div>
-</div>
-          <div class="card">
-            <h3 data-i18n="needOneTitle">Integrated Course Decision Hub</h3>
-            <p data-i18n="needOneText">When a student searches for one course, ZOLAR combines registration status, evaluation patterns, grade distribution, workload, timetable fit, sequence risk, and advisor next steps on one decision page.</p>
-          </div>
-
-          <div class="card">
-            <h3 data-i18n="needTwoTitle">Evidence Based Course Planning</h3>
-            <p data-i18n="needTwoText">The prototype turns separated information into usable decision evidence, including course evaluation data, student comment patterns, grade counts, and workload signals.</p>
-          </div>
-
-          <div class="card">
-            <h3 data-i18n="needThreeTitle">Human Support Pathway</h3>
-            <p data-i18n="needThreeText">When a course may create a sequence or registration problem, ZOLAR prepares backup options, advisor evidence, and a message draft instead of leaving the student to guess alone.</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3 data-i18n="scenarioTitle">Student Scenario Context</h3>
-          <p data-i18n="scenarioText">This prototype is designed around a sophomore Biochemistry student who is trying to avoid a math sequence mistake while balancing course load, work hours, and a stable weekly schedule.</p>
-        </div>
-
-        <div class="card">
-          <h3 data-i18n="keyFeaturesTitle">Key Features Included</h3>
-          <div class="feature-chip-wrap">
-            <span>Integrated Course Decision Hub</span>
-            <span>Course Evaluation DNA</span>
-            <span>Visual Timetable Builder</span>
-            <span>Backup Option Generator</span>
-            <span>Peer Pathway Map</span>
-            <span>AI Guided Planning Assistant</span>
-            <span>Advisor Ready Evidence Pack</span>
-            <span>Guided Language Support</span>
-            <span>Chatbot Support</span>
-          </div>
-        </div>
-
-        <button class="primary" data-go="search" data-i18n="startSearch">Start Course Search</button>
-      </section>
-
-      <section id="search" class="page">
-        <div class="page-title">
-          <h2 data-i18n="searchTitle">Course Search</h2>
-          <p data-i18n="searchSubtitle">Search courses and review registration status, evaluation data, grade counts, workload patterns, course risk, timetable fit, and advisor support in one screen.</p>
-        </div>
-
-        <div class="search-panel">
-          <div class="search-row">
-            <div>
-              <label data-i18n="searchCourseLabel">Search course</label>
-<input id="courseSearchInput" type="text" placeholder="Search BIO 201, MAT 123, AMS 151, CHE 131, EST 194, EST 202, EST 205, EST 207, EST 240, PSY 103, BUS 348">            </div>
-
-            <div>
-              <label data-i18n="departmentLabel">Department</label>
-              <select id="departmentFilter">
-                <option value="All">All</option>
-                <option value="BIO">Biology</option>
-                <option value="MAT">Math</option>
-                <option value="CHE">Chemistry</option>
-                <option value="AMS">Applied Math</option>
-                <option value="EST">Technology</option>
-                <option value="PSY">Psychology</option>
-                <option value="BUS">Business</option>
-              </select>
-            </div>
-
-            <div>
-              <label data-i18n="levelLabel">Course Level</label>
-              <select id="levelFilter">
-                <option value="All">All</option>
-                <option value="100">100 level</option>
-                <option value="200">200 level</option>
-                <option value="300">300 level</option>
-              </select>
-            </div>
-
-            <div>
-              <label data-i18n="termLabel">Term</label>
-              <select id="courseSearchTerm">
-                <option value="Fall 2026">Fall 2026</option>
-                <option value="Spring 2026">Spring 2026</option>
-                <option value="Summer 2026">Summer 2026</option>
-              </select>
-            </div>
-
-            <button id="courseSearchButton" class="primary" data-i18n="searchButton">Search</button>
-          </div>
-
-          <div class="filter-row">
-            <select id="dayFilter">
-              <option value="Any">Any day</option>
-              <option value="Mon">Monday</option>
-              <option value="Tue">Tuesday</option>
-              <option value="Wed">Wednesday</option>
-              <option value="Thu">Thursday</option>
-              <option value="Fri">Friday</option>
-            </select>
-
-            <select id="riskFilter">
-              <option value="All">All risk levels</option>
-              <option value="Safe">Available or safe</option>
-              <option value="Risk">Risk or restriction</option>
-            </select>
-
-            <button id="clearFiltersButton" data-i18n="clearFilters">Clear all</button>
-          </div>
-        </div>
-
-        <div class="search-layout">
-          <div class="result-list">
-            <div class="result-header">
-              <h3 data-i18n="searchResultsTitle">Search Results</h3>
-              <select id="sortFilter">
-                <option value="relevance">Sort relevance</option>
-                <option value="rating">Sort rating</option>
-                <option value="workload">Sort workload</option>
-              </select>
-            </div>
-            <div id="courseSearchResults"></div>
-          </div>
-
-          <div class="result-detail" id="courseDetail">
-            <div class="empty-state">
-              <h3 data-i18n="emptySearchTitle">Search for a course</h3>
-              <p data-i18n="emptySearchText">Enter a course code or name to view evaluation data, pathway risk, timetable options, and advisor support.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="timetable" class="page">
-        <div class="page-title">
-          <h2 data-i18n="timetableTitle">Visual Timetable Builder</h2>
-          <p data-i18n="timetableSubtitle">Add and drop courses directly from the weekly timetable while checking schedule pressure and time conflicts.</p>
-        </div>
-
-        <div class="toolbar">
-          <button id="simulateMoveButton" class="primary" data-i18n="simulateDrag">Simulate Drag and Drop</button>
-          <button data-go="search" data-i18n="returnSearch">Return to Course Search</button>
-        </div>
-
-        <div class="timetable-wrap">
-          <div class="timetable-card">
-            <div id="timetableGrid" class="timetable-grid"></div>
-          </div>
-
-          <div class="side-panel">
-            <h3 data-i18n="schedulePanelTitle">Schedule Summary</h3>
-            <div id="scheduleSummary"></div>
-
-            <h3 data-i18n="stressTitle">Schedule Stress Heatmap</h3>
-            <div id="heatmap" class="heatmap"></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="evaluation" class="page">
-        <div class="page-title">
-          <h2 data-i18n="evaluationTitle">Course Evaluation DNA</h2>
-          <p data-i18n="evaluationSubtitle">Evaluation data is translated into decision categories such as workload, exam difficulty, grading fairness, clarity, group work, and usefulness.</p>
-        </div>
-
-        <div id="evaluationContent"></div>
-      </section>
-
-      <section id="pathway" class="page">
-        <div class="page-title">
-          <h2 data-i18n="pathwayTitle">Course Pathway</h2>
-          <p data-i18n="pathwaySubtitle">Review past preparation, current registration choices, peer pathways, and future degree sequence risks before enrollment.</p>
-        </div>
-
-        <div id="pathwayContent"></div>
-      </section>
-
-      <section id="advisor" class="page">
-        <div class="page-title">
-          <h2 data-i18n="advisorTitle">Advisor Ready Evidence Pack</h2>
-          <p data-i18n="advisorSubtitle">Create a short advisor report with the blocked course, detected rule, degree risk, alternatives, and an email draft.</p>
-        </div>
-
-        <div id="advisorContent"></div>
-      </section>
-
-      <section id="assistant" class="page">
-        <div class="page-title">
-          <h2 data-i18n="assistantTitle">AI Guided Planning Assistant</h2>
-          <p data-i18n="assistantSubtitle">The assistant does not replace human advising. It identifies the registration problem, explains the likely rule, suggests safer alternatives, and prepares the student to contact the correct support office.</p>
-        </div>
-
-        <div id="assistantContent"></div>
-      </section>
-    </main>
-<div id="degreeWorksModal" class="modal hidden">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h2 data-i18n="degreeWorksModalTitle">Degree Works Audit Preview</h2>
-      <button id="closeDegreeWorksButton">×</button>
-    </div>
-
-    <p class="modal-note" data-i18n="degreeWorksModalNote">
-      This prototype does not replace Degree Works. It shows how a course registration system could use degree audit style information before a student confirms enrollment.
-    </p>
-
-    <div class="audit-grid">
-      <div class="audit-box">
-        <h3 data-i18n="studentRecordTitle">Student Record</h3>
-        <p><strong>Major:</strong> Biochemistry</p>
-        <p><strong>Level:</strong> Sophomore</p>
-        <p><strong>GPA:</strong> 3.21</p>
-        <p><strong>Credits Completed:</strong> 42</p>
-      </div>
-
-      <div class="audit-box">
-        <h3 data-i18n="requirementProgressTitle">Requirement Progress</h3>
-        <p>✓ General Education Requirement</p>
-        <p>✓ Introductory Biology Requirement</p>
-        <p>○ Calculus Sequence Requirement</p>
-        <p>○ Upper Division Major Requirement</p>
-      </div>
-
-      <div class="audit-box">
-        <h3 data-i18n="selectedCourseFitTitle">Selected Course Fit</h3>
-        <p id="degreeWorksCourseFit">Select a course to check how it may apply to the degree audit.</p>
-      </div>
-
-      <div class="audit-box">
-        <h3 data-i18n="advisorNoteTitle">Advisor Note</h3>
-        <p data-i18n="advisorNoteText">
-          Degree audit information can guide planning, but students should confirm unusual sequence or transfer questions with an advisor.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-    <div class="language-toggle">
-      <button id="englishButton" class="active-lang">EN</button>
-      <button id="koreanButton">한국어</button>
-    </div>
-
-    <button id="chatbotButton" class="chatbot-button">💬</button>
-
-    <div id="chatbotWindow" class="chatbot-window hidden">
-      <div class="chatbot-header">
-        <span>ZOLAR Chat</span>
-        <button id="closeChatbot">×</button>
-      </div>
-
-      <div id="chatMessages" class="chatbot-messages"></div>
-
-      <div class="chatbot-actions">
-        <button data-chat-suggestion="Why is this course risky?">Course risk</button>
-        <button data-chat-suggestion="What should I ask my advisor?">Advisor help</button>
-        <button data-chat-suggestion="Show backup options.">Backup options</button>
-      </div>
-
-      <div class="chatbot-input-row">
-        <input id="chatInput" type="text" placeholder="Ask about course risk, backup options, or advisor support">
-        <button id="sendChatButton">➤</button>
-      </div>
-    </div>
-  </div>
-
+  <script data-goatcounter="https://zolar-prototype.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <script src="script.js"></script>
-
-  <script data-goatcounter="https://zolar-prototype.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
