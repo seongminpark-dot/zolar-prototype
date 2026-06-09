@@ -1,13 +1,13 @@
 const translations = {
   en: {
-    systemSubtitle: "Course Registration Support",
+    systemSubtitle: "Biochemistry Registration Support",
     navDashboard: "Dashboard",
     navPersonas: "Persona Needs",
     navSearch: "Integrated Course Search",
     navPathway: "Pathway Planner",
     navAdvisor: "Advisor Evidence Pack",
-    topTitle: "Course Registration Prototype",
-    topDescription: "Integrated search, evaluation, pathway, and advising support.",
+    topTitle: "Biochemistry Registration Prototype",
+    topDescription: "Personal course search, pathway, evaluation, and advising support.",
     notificationTitle: "Notifications",
     emptyNotification: "No new notifications.",
     messageTitle: "Messages",
@@ -16,19 +16,19 @@ const translations = {
     degreeTitle: "Degree Audit Preview",
     degreeIntro: "This prototype shows how Degree Works style information could support registration decisions. It is not an official degree audit.",
     projectNotice: "This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.",
-    searchPlaceholder: "Search by course, title, instructor, SBC, major, seat, workload",
-    chatbotWelcome: "Hi. I can explain prerequisites, reserved seats, workload, SBC requirements, major requirements, pathway risk, and advisor next steps.",
+    searchPlaceholder: "Search by course, title, instructor, SBC, requirement, workload, or consequence",
+    chatbotWelcome: "Hi Kevin. I can explain prerequisites, English and math placement, workload, SBC, Biochemistry pathway risk, and advisor next steps.",
     sentMessage: "Draft sent to Academic and Transfer Advising Services and the department coordinator in this prototype."
   },
   ko: {
-    systemSubtitle: "수강신청 지원 시스템",
+    systemSubtitle: "Biochemistry 수강신청 지원",
     navDashboard: "대시보드",
     navPersonas: "페르소나 필요 분석",
     navSearch: "통합 과목 검색",
     navPathway: "수강 경로 계획",
     navAdvisor: "어드바이저 보고서",
-    topTitle: "수강신청 개선 프로토타입",
-    topDescription: "검색, 강의 평가, 수강 경로, 상담 지원을 한곳에 통합합니다.",
+    topTitle: "Biochemistry 수강신청 프로토타입",
+    topDescription: "개인 맞춤 과목 검색, 수강 경로, 강의 평가, 상담 지원을 제공합니다.",
     notificationTitle: "알림",
     emptyNotification: "새로운 알림이 없습니다.",
     messageTitle: "메시지",
@@ -37,8 +37,8 @@ const translations = {
     degreeTitle: "Degree Audit 미리보기",
     degreeIntro: "이 화면은 Degree Works 방식의 정보를 수강신청 결정에 활용하는 방식을 보여주는 프로토타입입니다. 공식 degree audit이 아닙니다.",
     projectNotice: "이 웹사이트는 수업 프로젝트용 프로토타입입니다. 공식 Stony Brook University 또는 SOLAR 웹사이트가 아닙니다.",
-    searchPlaceholder: "과목, 제목, 교수, SBC, 전공, 좌석, workload로 검색",
-    chatbotWelcome: "안녕하세요. 선수 조건, reserved seats, workload, SBC 요건, 전공 요건, 수강 경로 위험, 어드바이저 다음 단계를 설명할 수 있습니다.",
+    searchPlaceholder: "과목, 제목, 교수, SBC, 요건, workload, 결과로 검색",
+    chatbotWelcome: "안녕하세요 Kevin. 선수 조건, 영어와 수학 placement, workload, SBC, Biochemistry 수강 경로 위험, 어드바이저 다음 단계를 설명할 수 있습니다.",
     sentMessage: "이 프로토타입에서는 Academic and Transfer Advising Services와 학과 코디네이터에게 초안이 전송된 것으로 표시됩니다."
   }
 };
@@ -46,425 +46,57 @@ const translations = {
 let currentLang = "en";
 let currentPage = "dashboard";
 let selectedCourseId = null;
-let selectedMajor = "TSM";
-let selectedTerm = "Fall 2026";
-let plannedCourses = ["EST202", "EST207", "MAT123"];
+let selectedDetailTab = "overview";
+let plannedCourses = [];
+let sentDraft = false;
 
-const departments = ["All", "AMS", "BIO", "BUS", "CHE", "CSE", "ECE", "EST", "MAT", "MEC", "PSY", "WRT"];
-const requirements = ["All", "Major", "SBC", "Prerequisite", "Writing", "Technical", "Elective"];
-const seatFilters = ["All", "Available", "Closed", "Waitlist", "Reserved"];
+const student = {
+  name: "Kevin Ruiz",
+  id: "0000000",
+  major: "Biochemistry BS",
+  standing: "First Year, Fall Semester",
+  englishLevel: "WRT 102 eligible",
+  mathLevel: "MAT 123 eligible. AMS 151 is not available until MAT 123 or equivalent preparation is completed.",
+  year: 1,
+  mathAccess: 1,
+  writingAccess: 1,
+  completed: [],
+  inProgress: []
+};
+
+const departments = ["All", "AMS", "BCH", "BIO", "CHE", "MAT", "MUS", "PHI", "PHY", "POL", "PSY", "WRT"];
+const requirements = ["All", "Major Foundation", "Math", "Writing", "SBC", "Advanced Major", "Lab", "Elective"];
+const statusFilters = ["All", "Available", "Caution", "Closed", "Waitlist", "Reserved"];
+const readinessFilters = ["All", "Ready", "Caution", "Blocked"];
 const workloadFilters = ["All", "Low", "Medium", "High"];
+const mathLevelNames = {
+  0: "No college math access",
+  1: "MAT 123 eligible",
+  2: "AMS 151 eligible",
+  3: "AMS 161 eligible"
+};
+
+function makeCourse(data) {
+  return {
+    term: "Sample Fall",
+    enrolled: 120,
+    responses: 40,
+    rating: 4.0,
+    grades: { A: 40, B: 35, C: 25, DF: 10 },
+    grading: "Mixed assignments and exams",
+    exam: "Medium",
+    group: "Low",
+    clarity: "Moderate",
+    usefulness: "High",
+    comments: "Students recommend checking workload and prerequisites before enrolling.",
+    consequences: ["May affect the Biochemistry sequence if taken too early or too late."],
+    backups: ["Advisor confirmed alternative", "Future term section", "Lighter SBC option"],
+    ...data
+  };
+}
 
 const courses = [
-  {
-    id: "MAT123",
-    code: "MAT 123",
-    title: "Precalculus",
-    instructor: "Dr. Andrew Miller",
-    department: "MAT",
-    level: "100",
-    credits: 3,
-    requirementType: "Prerequisite",
-    sbc: "QPS",
-    majorFit: { TSM: "Math prerequisite support before AMS 151", Biochemistry: "Math preparation before calculus" },
-    prerequisite: "Placement level, MAP 103, or advisor confirmed equivalent",
-    reservedSeats: "8 reserved seats for students in math sequence review",
-    status: "Available",
-    workload: "High",
-    time: { days: "Mon Wed", start: "10:00 AM", end: "11:20 AM", location: "Math Tower P 131" },
-    evaluation: { enrolled: 180, responses: 62, rating: 3.8, grades: { A: 48, B: 55, C: 50, DF: 27 } },
-    dna: { workload: "High", grading: "Exam based grading", exam: "High", group: "Low", clarity: "Moderate", usefulness: "High", comments: "Students say the course is useful but risky when taken without enough algebra preparation." },
-    catalog: "Precalculus course for students preparing for calculus and quantitative degree requirements.",
-    ai: "MAT 123 may be useful as preparation, but the student should confirm whether it is the correct next step before AMS 151 or AMS 161.",
-    impact: "If MAT 123 is delayed, AMS 151 and AMS 161 may move back by one semester and create a graduation sequence issue.",
-    consequences: ["Possible delay in the AMS 151 and AMS 161 sequence", "Possible overload if later math courses are compressed into winter or summer", "Advisor confirmation is needed before final enrollment"],
-    backups: ["MAP 103 review", "AMS 151 if eligible", "Advisor confirmed equivalent course"]
-  },
-  {
-    id: "AMS151",
-    code: "AMS 151",
-    title: "Applied Calculus I",
-    instructor: "Prof. Jennifer Lee",
-    department: "AMS",
-    level: "100",
-    credits: 3,
-    requirementType: "Major",
-    sbc: "QPS",
-    majorFit: { TSM: "Required quantitative foundation", Biochemistry: "Calculus option or support course" },
-    prerequisite: "Precalculus preparation or placement",
-    reservedSeats: "12 seats reserved for major sequence students",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Tue Thu", start: "2:00 PM", end: "3:20 PM", location: "Engineering Building 143" },
-    evaluation: { enrolled: 240, responses: 95, rating: 4.1, grades: { A: 88, B: 76, C: 52, DF: 24 } },
-    dna: { workload: "Moderate", grading: "Problem set and exam mix", exam: "Medium", group: "Low", clarity: "High", usefulness: "High", comments: "Students describe the course as manageable when weekly practice is consistent." },
-    catalog: "Applied calculus course used by technology, management, and science pathways.",
-    ai: "AMS 151 fits the TSM math path and can support future AMS 161 planning.",
-    impact: "Taking AMS 151 on time protects the later AMS 161 sequence and reduces future scheduling pressure.",
-    consequences: ["Protects the later AMS 161 requirement", "May be difficult if MAT 123 or equivalent preparation is weak", "Should be balanced with project heavy EST courses"],
-    backups: ["MAT 123 if not eligible", "Summer AMS 151", "Advisor approved equivalent"]
-  },
-  {
-    id: "AMS161",
-    code: "AMS 161",
-    title: "Applied Calculus II",
-    instructor: "Dr. Samuel Park",
-    department: "AMS",
-    level: "100",
-    credits: 3,
-    requirementType: "Major",
-    sbc: "QPS",
-    majorFit: { TSM: "Required quantitative continuation", Biochemistry: "Calculus continuation option" },
-    prerequisite: "AMS 151 or equivalent",
-    reservedSeats: "10 reserved seats for students continuing from AMS 151",
-    status: "Waitlist",
-    workload: "High",
-    time: { days: "Mon Wed", start: "3:30 PM", end: "4:50 PM", location: "Engineering Building 143" },
-    evaluation: { enrolled: 210, responses: 80, rating: 3.9, grades: { A: 68, B: 70, C: 49, DF: 23 } },
-    dna: { workload: "High", grading: "Exam heavy", exam: "High", group: "Low", clarity: "Moderate", usefulness: "High", comments: "Students recommend completing AMS 151 strongly before attempting this course." },
-    catalog: "Continuation of applied calculus with quantitative methods for applied fields.",
-    ai: "AMS 161 should not be selected until AMS 151 is completed or officially waived.",
-    impact: "If AMS 151 is not completed first, AMS 161 can break the math sequence and delay upper division planning.",
-    consequences: ["Broken prerequisite chain if AMS 151 is not completed", "Potential graduation delay if the course is only offered in limited terms", "Higher workload may conflict with upper division EST courses"],
-    backups: ["AMS 151", "Winter AMS 161 if available", "Advisor approved equivalent"]
-  },
-  {
-    id: "BIO201",
-    code: "BIO 201",
-    title: "Biology I",
-    instructor: "Dr. Elaine Mercer",
-    department: "BIO",
-    level: "200",
-    credits: 4,
-    requirementType: "Major",
-    sbc: "SNW",
-    majorFit: { TSM: "Natural science SBC option", Biochemistry: "Foundation biology requirement" },
-    prerequisite: "High school biology recommended",
-    reservedSeats: "18 reserved seats for life science majors",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Mon Wed Fri", start: "9:00 AM", end: "9:50 AM", location: "Life Sciences Building 038" },
-    evaluation: { enrolled: 220, responses: 86, rating: 4.2, grades: { A: 84, B: 70, C: 42, DF: 24 } },
-    dna: { workload: "Moderate", grading: "Weekly quiz and exam mix", exam: "Medium", group: "Low", clarity: "High", usefulness: "High", comments: "Students mention clear lectures, weekly quizzes, and manageable workload." },
-    catalog: "Introductory biology course covering major biological principles and scientific reasoning.",
-    ai: "BIO 201 satisfies SNW and supports Biochemistry foundation planning. For TSM, it can work as a natural science requirement.",
-    impact: "Taking BIO 201 early keeps the biology sequence open for BIO 202 and later laboratory work.",
-    consequences: ["Supports BIO 202 and later biology courses", "May add weekly quiz pressure", "Useful for students who need SNW evidence"],
-    backups: ["BIO 202 if prepared", "CHE 131", "PSY 103 for lighter SBC"]
-  },
-  {
-    id: "CHE131",
-    code: "CHE 131",
-    title: "General Chemistry I",
-    instructor: "Prof. Maya Singh",
-    department: "CHE",
-    level: "100",
-    credits: 4,
-    requirementType: "Major",
-    sbc: "SNW",
-    majorFit: { TSM: "Natural science SBC option", Biochemistry: "Chemistry foundation requirement" },
-    prerequisite: "Math placement or equivalent preparation",
-    reservedSeats: "15 seats reserved for science majors",
-    status: "Available",
-    workload: "High",
-    time: { days: "Tue Thu", start: "11:00 AM", end: "12:20 PM", location: "Chemistry Building 100" },
-    evaluation: { enrolled: 260, responses: 110, rating: 3.9, grades: { A: 82, B: 91, C: 55, DF: 32 } },
-    dna: { workload: "High", grading: "Frequent problem sets and exams", exam: "High", group: "Low", clarity: "Moderate", usefulness: "High", comments: "Students say chemistry is manageable only with steady weekly practice." },
-    catalog: "First general chemistry course covering atomic structure, bonding, stoichiometry, and equilibrium.",
-    ai: "CHE 131 supports Biochemistry and can satisfy SNW, but it should be balanced with other heavy courses.",
-    impact: "CHE 131 starts the chemistry sequence required for later CHE 132 and organic chemistry.",
-    consequences: ["Supports later CHE 132 and organic chemistry", "May create overload if paired with BIO 202 and AMS 161", "Requires steady weekly problem solving"],
-    backups: ["BIO 201", "MEC 104", "PSY 103"]
-  },
-  {
-    id: "CHE132",
-    code: "CHE 132",
-    title: "General Chemistry II",
-    instructor: "Prof. Maya Singh",
-    department: "CHE",
-    level: "100",
-    credits: 4,
-    requirementType: "Major",
-    sbc: "SNW",
-    majorFit: { TSM: "Natural science elective", Biochemistry: "Chemistry foundation continuation" },
-    prerequisite: "CHE 131",
-    reservedSeats: "Open after major priority period",
-    status: "Available",
-    workload: "High",
-    time: { days: "Mon Wed", start: "11:30 AM", end: "12:50 PM", location: "Chemistry Building 100" },
-    evaluation: { enrolled: 238, responses: 94, rating: 3.8, grades: { A: 73, B: 86, C: 52, DF: 27 } },
-    dna: { workload: "High", grading: "Exam and lab preparation", exam: "High", group: "Low", clarity: "Moderate", usefulness: "High", comments: "Students recommend not pairing it with too many demanding STEM courses." },
-    catalog: "Second general chemistry course and key prerequisite for organic chemistry.",
-    ai: "CHE 132 is important for Biochemistry, but it should follow CHE 131 and fit workload limits.",
-    impact: "Completing CHE 132 opens the path to organic chemistry and later biochemistry.",
-    consequences: ["Supports organic chemistry preparation", "Creates heavy workload with BIO 202", "Delay may affect upper division biochemistry"],
-    backups: ["CHE 131", "BIO 201", "AMS 151"]
-  },
-  {
-    id: "EST194",
-    code: "EST 194",
-    title: "Decision Making",
-    instructor: "Prof. Neal Dreamson",
-    department: "EST",
-    level: "100",
-    credits: 3,
-    requirementType: "Major",
-    sbc: "TECH",
-    majorFit: { TSM: "Introductory major requirement", Biochemistry: "Elective or TECH SBC" },
-    prerequisite: "None",
-    reservedSeats: "Reserved seats for TSM students during priority enrollment",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Tue Thu", start: "10:30 AM", end: "11:50 AM", location: "Academic Building A 301" },
-    evaluation: { enrolled: 44, responses: 33, rating: 4.2, grades: { A: 18, B: 16, C: 7, DF: 3 } },
-    dna: { workload: "Moderate", grading: "Project and participation based", exam: "Low", group: "High", clarity: "High", usefulness: "High", comments: "Students like the applied decision making format but mention group coordination." },
-    catalog: "Introduces decision making methods for technology and society problems.",
-    ai: "EST 194 is a strong early TSM course and supports the major foundation.",
-    impact: "Taking EST 194 in Year 1 supports later EST courses and project based work.",
-    consequences: ["Builds early TSM foundation", "Group work requires communication planning", "Useful before higher level EST courses"],
-    backups: ["EST 202", "EST 205", "EST 207"]
-  },
-  {
-    id: "EST202",
-    code: "EST 202",
-    title: "Introduction to Science, Technology, and Society",
-    instructor: "Prof. Anthony Pennings",
-    department: "EST",
-    level: "200",
-    credits: 3,
-    requirementType: "Major",
-    sbc: "STAS, TECH",
-    majorFit: { TSM: "Required major foundation", Biochemistry: "TECH or STAS elective" },
-    prerequisite: "None",
-    reservedSeats: "Open seats with TSM priority section",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Mon Wed", start: "9:30 AM", end: "10:50 AM", location: "Academic Building B 204" },
-    evaluation: { enrolled: 49, responses: 36, rating: 4.0, grades: { A: 17, B: 18, C: 9, DF: 5 } },
-    dna: { workload: "Moderate", grading: "Writing and presentation based", exam: "Low", group: "Medium", clarity: "Moderate", usefulness: "High", comments: "Students mention useful STS concepts and moderate writing workload." },
-    catalog: "Introduces social, ethical, institutional, and cultural dimensions of science and technology.",
-    ai: "EST 202 fits the TSM foundation and supports later STS analysis courses.",
-    impact: "Taking EST 202 early makes later EST 304, EST 331, and project based courses easier to contextualize.",
-    consequences: ["Supports later upper division EST analysis", "Writing workload should be checked", "Useful for STS based project work"],
-    backups: ["EST 194", "EST 205", "EST 240"]
-  },
-  {
-    id: "EST207",
-    code: "EST 207",
-    title: "Interaction Design",
-    instructor: "Prof. Neal Dreamson",
-    department: "EST",
-    level: "200",
-    credits: 3,
-    requirementType: "Major",
-    sbc: "TECH",
-    majorFit: { TSM: "Design and technology support", Biochemistry: "Elective only" },
-    prerequisite: "None",
-    reservedSeats: "Priority seats for TSM and design related students",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Mon Wed", start: "1:00 PM", end: "2:20 PM", location: "Computer Science Building 2120" },
-    evaluation: { enrolled: 39, responses: 30, rating: 4.4, grades: { A: 18, B: 12, C: 6, DF: 3 } },
-    dna: { workload: "Moderate", grading: "Prototype and group project based", exam: "Low", group: "High", clarity: "High", usefulness: "High", comments: "Students value prototype work but need clear project management." },
-    catalog: "Project based course focused on user needs, interface design, and interaction systems.",
-    ai: "EST 207 fits TSM students who need design and user experience project experience.",
-    impact: "This course supports Year 2 TSM design preparation and helps connect user analysis to prototype development.",
-    consequences: ["Strengthens prototype development ability", "Group project workload may increase near deadlines", "Useful for UX based TSM work"],
-    backups: ["EST 205", "EST 240", "EST 304"]
-  },
-  {
-    id: "EST240",
-    code: "EST 240",
-    title: "Visual Rhetoric and Digital Media",
-    instructor: "Prof. Anthony Pennings",
-    department: "EST",
-    level: "200",
-    credits: 3,
-    requirementType: "Major",
-    sbc: "TECH, STAS",
-    majorFit: { TSM: "Digital media and technology elective", Biochemistry: "Elective only" },
-    prerequisite: "None",
-    reservedSeats: "Open seats for technology and communication students",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Tue Thu", start: "5:30 PM", end: "6:50 PM", location: "Computer Science Building 2208" },
-    evaluation: { enrolled: 35, responses: 27, rating: 4.3, grades: { A: 16, B: 10, C: 6, DF: 3 } },
-    dna: { workload: "Moderate", grading: "Website and essay based", exam: "Low", group: "Medium", clarity: "High", usefulness: "High", comments: "Students mention creative assignments and manageable grading when drafts are revised." },
-    catalog: "Studies visual communication, digital media, and rhetorical design.",
-    ai: "EST 240 supports TSM digital communication and portfolio building.",
-    impact: "This course can strengthen Year 2 or Year 3 TSM specialization planning.",
-    consequences: ["Supports digital portfolio work", "Website and essay deadlines should be planned", "Useful for visual communication skills"],
-    backups: ["EST 202", "EST 207", "EST 304"]
-  },
-  {
-    id: "EST304",
-    code: "EST 304",
-    title: "Communication for Engineers and Scientists",
-    instructor: "Prof. Rachel Adams",
-    department: "EST",
-    level: "300",
-    credits: 3,
-    requirementType: "Writing",
-    sbc: "SPK",
-    majorFit: { TSM: "Professional communication support", Biochemistry: "Communication elective" },
-    prerequisite: "Upper division standing recommended",
-    reservedSeats: "Reserved seats for technical majors",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Tue Thu", start: "11:00 AM", end: "12:20 PM", location: "Academic Building B 310" },
-    evaluation: { enrolled: 46, responses: 33, rating: 4.2, grades: { A: 18, B: 15, C: 9, DF: 4 } },
-    dna: { workload: "Moderate", grading: "Presentation and writing based", exam: "Low", group: "High", clarity: "High", usefulness: "High", comments: "Students say feedback improves technical communication skills." },
-    catalog: "Technical communication course for scientific, engineering, and professional contexts.",
-    ai: "EST 304 is useful for TSM and can help with presentation or writing outcomes.",
-    impact: "Taking EST 304 before senior project work can improve communication readiness.",
-    consequences: ["Improves technical writing and presentation readiness", "Should be taken before advanced project work", "May support SPK requirement planning"],
-    backups: ["WRT 102", "EST 240", "EST 331"]
-  },
-  {
-    id: "EST320",
-    code: "EST 320",
-    title: "Communication Technology Systems",
-    instructor: "Dr. Brian Walsh",
-    department: "EST",
-    level: "300",
-    credits: 3,
-    requirementType: "Technical",
-    sbc: "TECH",
-    majorFit: { TSM: "Upper division technology requirement", Biochemistry: "Elective only" },
-    prerequisite: "Math and technology background recommended",
-    reservedSeats: "Reserved seats for TSM students",
-    status: "Waitlist",
-    workload: "High",
-    time: { days: "Mon Wed", start: "10:00 AM", end: "11:20 AM", location: "Computer Science Building 2208" },
-    evaluation: { enrolled: 34, responses: 25, rating: 4.1, grades: { A: 13, B: 11, C: 7, DF: 3 } },
-    dna: { workload: "High", grading: "Systems project and exam mix", exam: "Medium", group: "Medium", clarity: "High", usefulness: "High", comments: "Students recommend taking it after stronger technical preparation." },
-    catalog: "Upper division course on communication technology systems and their social context.",
-    ai: "EST 320 can fit the TSM path but should be checked against math and technical preparation.",
-    impact: "If taken without preparation, EST 320 can increase upper division workload pressure.",
-    consequences: ["May create workload pressure with AMS 161", "Technical preparation should be confirmed", "Waitlist status requires backup option"],
-    backups: ["EST 304", "EST 331", "ECE 101"]
-  },
-  {
-    id: "EST331",
-    code: "EST 331",
-    title: "Engineering Ethics and AI Technologies",
-    instructor: "Dr. Mira Collins",
-    department: "EST",
-    level: "300",
-    credits: 3,
-    requirementType: "Major",
-    sbc: "CER, STAS",
-    majorFit: { TSM: "Required ethics and technology course", Biochemistry: "Ethics or elective option" },
-    prerequisite: "Upper division standing recommended",
-    reservedSeats: "Major seats released after priority period",
-    status: "Closed",
-    workload: "Medium",
-    time: { days: "Mon Wed", start: "11:30 AM", end: "12:50 PM", location: "Academic Building B 214" },
-    evaluation: { enrolled: 36, responses: 25, rating: 4.0, grades: { A: 13, B: 10, C: 8, DF: 5 } },
-    dna: { workload: "Moderate", grading: "Essay and case analysis based", exam: "Medium", group: "High", clarity: "Moderate", usefulness: "High", comments: "Students find cases useful but want clearer grading rubrics." },
-    catalog: "Studies engineering ethics, AI systems, responsibility, and social impact.",
-    ai: "EST 331 is important for TSM but closed status means the student should prepare a backup.",
-    impact: "Missing EST 331 may affect upper division sequence and ethics requirement planning.",
-    consequences: ["Closed status requires an alternative section or future term", "Ethics requirement may be delayed", "Advisor confirmation may be needed if graduation timing is tight"],
-    backups: ["EST 304", "PHI 104", "EST 391"]
-  },
-  {
-    id: "ECE101",
-    code: "ECE 101",
-    title: "Introduction to Electrical and Computer Engineering",
-    instructor: "Prof. Daniel Cho",
-    department: "ECE",
-    level: "100",
-    credits: 3,
-    requirementType: "Technical",
-    sbc: "TECH",
-    majorFit: { TSM: "Technical support course", Biochemistry: "Elective only" },
-    prerequisite: "None",
-    reservedSeats: "Open seats with engineering priority",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Mon Wed", start: "2:30 PM", end: "3:50 PM", location: "Engineering Building 201" },
-    evaluation: { enrolled: 75, responses: 30, rating: 4.0, grades: { A: 25, B: 22, C: 18, DF: 10 } },
-    dna: { workload: "Moderate", grading: "Lab and quiz based", exam: "Medium", group: "Medium", clarity: "Moderate", usefulness: "High", comments: "Students say it is a useful technical introduction but requires regular lab attention." },
-    catalog: "Introductory electrical and computer engineering course used as a sample technical support course.",
-    ai: "ECE 101 can support TSM technical breadth but should be balanced with other technical courses.",
-    impact: "This course fits Year 2 TSM technical foundation planning.",
-    consequences: ["Adds technical breadth for TSM", "Lab time should be considered", "May support later technical specialization"],
-    backups: ["MEC 104", "CSE 114", "EST 207"]
-  },
-  {
-    id: "MEC104",
-    code: "MEC 104",
-    title: "Practical Science of Things",
-    instructor: "Prof. Laura Evans",
-    department: "MEC",
-    level: "100",
-    credits: 3,
-    requirementType: "Technical",
-    sbc: "SNW, TECH",
-    majorFit: { TSM: "Applied technical support course", Biochemistry: "Elective or SNW option" },
-    prerequisite: "None",
-    reservedSeats: "Open general seats",
-    status: "Available",
-    workload: "Low",
-    time: { days: "Tue Thu", start: "12:30 PM", end: "1:50 PM", location: "Engineering Building 115" },
-    evaluation: { enrolled: 68, responses: 28, rating: 4.1, grades: { A: 24, B: 22, C: 15, DF: 7 } },
-    dna: { workload: "Low", grading: "Project and quiz based", exam: "Low", group: "Medium", clarity: "High", usefulness: "Medium", comments: "Students like the applied format and practical examples." },
-    catalog: "Introductory applied engineering course used for technical literacy and natural science planning.",
-    ai: "MEC 104 is a safer technical support option when the student wants lower workload.",
-    impact: "This course can help Year 1 or Year 2 TSM students complete technical breadth without overload.",
-    consequences: ["Safer technical option for workload balance", "May help with SNW and TECH planning", "Does not replace upper division EST requirements"],
-    backups: ["ECE 101", "EST 207", "BIO 201"]
-  },
-  {
-    id: "BUS348",
-    code: "BUS 348",
-    title: "Principles of Marketing",
-    instructor: "Prof. Michelle Rivera",
-    department: "BUS",
-    level: "300",
-    credits: 3,
-    requirementType: "Elective",
-    sbc: "SBS",
-    majorFit: { TSM: "Management elective", Biochemistry: "Elective only" },
-    prerequisite: "Upper division standing recommended",
-    reservedSeats: "5 reserved seats for Business students",
-    status: "Available",
-    workload: "Medium",
-    time: { days: "Thu", start: "6:00 PM", end: "8:50 PM", location: "Harriman Hall 137" },
-    evaluation: { enrolled: 88, responses: 41, rating: 4.0, grades: { A: 31, B: 28, C: 20, DF: 9 } },
-    dna: { workload: "Moderate", grading: "Case and exam mix", exam: "Medium", group: "High", clarity: "Moderate", usefulness: "High", comments: "Students mention practical cases and manageable but steady weekly work." },
-    catalog: "Marketing course focused on consumer behavior, strategy, and applied business analysis.",
-    ai: "BUS 348 may support a management oriented TSM pathway, but it does not replace core EST requirements.",
-    impact: "This course can support career preparation but should not delay required major courses.",
-    consequences: ["Can support career preparation", "Evening schedule may affect commuting or work", "Should not replace required EST credits"],
-    backups: ["EST 392", "EST 393", "PSY 103"]
-  },
-  {
-    id: "PSY103",
-    code: "PSY 103",
-    title: "Introduction to Psychology",
-    instructor: "Dr. Olivia Grant",
-    department: "PSY",
-    level: "100",
-    credits: 3,
-    requirementType: "SBC",
-    sbc: "SBS",
-    majorFit: { TSM: "SBC or user research support", Biochemistry: "SBC option" },
-    prerequisite: "None",
-    reservedSeats: "Open general seats",
-    status: "Available",
-    workload: "Low",
-    time: { days: "Tue Thu", start: "9:30 AM", end: "10:50 AM", location: "Javits Lecture Center 100" },
-    evaluation: { enrolled: 280, responses: 110, rating: 4.0, grades: { A: 90, B: 88, C: 70, DF: 32 } },
-    dna: { workload: "Low", grading: "Exam and quiz based", exam: "Medium", group: "Low", clarity: "High", usefulness: "Medium", comments: "Students describe the course as broad, clear, and useful for understanding behavior." },
-    catalog: "Survey course introducing psychological concepts, research, and human behavior.",
-    ai: "PSY 103 can satisfy SBS and may help students who need a lighter SBC course.",
-    impact: "This course can fill an SBC category without strongly affecting major sequence planning.",
-    consequences: ["Useful as a lighter SBC course", "Does not move the TSM major sequence forward", "Can reduce semester workload pressure"],
-    backups: ["POL 102", "MUS 105", "AAS 102"]
-  },
-  {
+  makeCourse({
     id: "WRT102",
     code: "WRT 102",
     title: "Intermediate Writing Workshop",
@@ -474,51 +106,597 @@ const courses = [
     credits: 3,
     requirementType: "Writing",
     sbc: "WRT",
-    majorFit: { TSM: "Required writing foundation", Biochemistry: "Required writing foundation" },
-    prerequisite: "WRT 101 or placement",
-    reservedSeats: "Open writing seats by placement group",
     status: "Available",
     workload: "Medium",
-    time: { days: "Tue Thu", start: "11:00 AM", end: "12:20 PM", location: "Humanities Building 201" },
-    evaluation: { enrolled: 155, responses: 64, rating: 4.0, grades: { A: 63, B: 50, C: 30, DF: 12 } },
-    dna: { workload: "Moderate", grading: "Draft and revision based", exam: "Low", group: "Medium", clarity: "High", usefulness: "High", comments: "Students say revision feedback is helpful but deadlines require planning." },
-    catalog: "Required writing course focused on argument, evidence, revision, and academic research writing.",
-    ai: "WRT 102 should be completed early because it supports future upper division writing and communication tasks.",
-    impact: "Delaying WRT 102 can affect later writing in the discipline planning.",
-    consequences: ["Supports later academic writing", "Should be completed before upper division writing intensive work", "Revision deadlines require planning"],
-    backups: ["WRT 101", "EST 304", "Summer WRT 102"]
+    readiness: { math: 0, writing: 1, year: 1 },
+    prerequisite: "WRT 101 or writing placement",
+    reservedSeats: "Open writing seats by placement group",
+    days: "Tue Thu",
+    start: "11:00 AM",
+    end: "12:20 PM",
+    location: "Humanities Building 201",
+    catalog: "Sample writing course focused on argument, evidence, revision, and academic research writing.",
+    planning: "Kevin is eligible for WRT 102. Completing it in Year 1 protects later lab reports and upper division writing.",
+    impact: "Delaying WRT 102 can make later writing intensive work and lab reports harder.",
+    comments: "Students say revision feedback is helpful, but deadlines require planning.",
+    consequences: ["Writing requirement may remain unresolved after the first year.", "Upper division writing tasks may become harder without early practice.", "Advisor may ask for a writing completion plan."],
+    backups: ["WRT 101 if placement changes", "Summer WRT 102", "Advisor approved writing plan"]
+  }),
+  makeCourse({
+    id: "MAT123",
+    code: "MAT 123",
+    title: "Precalculus",
+    instructor: "Dr. Andrew Miller",
+    department: "MAT",
+    level: "100",
+    credits: 3,
+    requirementType: "Math",
+    sbc: "QPS",
+    status: "Available",
+    workload: "High",
+    readiness: { math: 1, writing: 0, year: 1 },
+    prerequisite: "Math placement, MAP 103, or advisor confirmed equivalent",
+    reservedSeats: "8 reserved seats for math sequence review",
+    days: "Mon Wed",
+    start: "10:00 AM",
+    end: "11:20 AM",
+    location: "Math Tower P 131",
+    catalog: "Sample precalculus course for students preparing for calculus and quantitative science requirements.",
+    planning: "Kevin can take MAT 123 now. This is the key math bridge before AMS 151.",
+    impact: "If MAT 123 is delayed, AMS 151 and AMS 161 may move back and later science planning becomes tighter.",
+    exam: "High",
+    consequences: ["AMS 151 cannot be taken until the math sequence is cleared.", "AMS 161 may be pushed into Year 2.", "Physics and advanced quantitative planning may become delayed."],
+    backups: ["MAP 103 review", "Math placement retake", "Advisor confirmed equivalent course"]
+  }),
+  makeCourse({
+    id: "AMS151",
+    code: "AMS 151",
+    title: "Applied Calculus I",
+    instructor: "Prof. Jennifer Lee",
+    department: "AMS",
+    level: "100",
+    credits: 3,
+    requirementType: "Math",
+    sbc: "QPS",
+    status: "Caution",
+    workload: "Medium",
+    readiness: { math: 2, writing: 0, year: 1 },
+    prerequisite: "MAT 123, placement, or equivalent preparation",
+    reservedSeats: "12 seats reserved for major sequence students",
+    days: "Tue Thu",
+    start: "2:00 PM",
+    end: "3:20 PM",
+    location: "Engineering Building 143",
+    catalog: "Sample applied calculus course used by science and applied fields.",
+    planning: "Kevin should not treat AMS 151 as fully ready until MAT 123 or an equivalent placement is completed.",
+    impact: "Taking AMS 151 on time protects AMS 161 and later science sequencing.",
+    clarity: "High",
+    comments: "Students describe the course as manageable when weekly practice is consistent.",
+    consequences: ["Blocked until math preparation is cleared.", "Taking it too early could create grade risk.", "Delaying it too long may compress later STEM terms."],
+    backups: ["MAT 123", "Math placement retake", "Summer AMS 151 after preparation"]
+  }),
+  makeCourse({
+    id: "AMS161",
+    code: "AMS 161",
+    title: "Applied Calculus II",
+    instructor: "Dr. Samuel Park",
+    department: "AMS",
+    level: "100",
+    credits: 3,
+    requirementType: "Math",
+    sbc: "QPS",
+    status: "Waitlist",
+    workload: "High",
+    readiness: { math: 3, writing: 0, year: 1 },
+    prerequisite: "AMS 151 or equivalent",
+    reservedSeats: "10 reserved seats for continuing calculus students",
+    days: "Mon Wed",
+    start: "3:30 PM",
+    end: "4:50 PM",
+    location: "Engineering Building 143",
+    catalog: "Sample continuation of applied calculus with quantitative methods for science pathways.",
+    planning: "AMS 161 is a future course for Kevin, not a first semester choice.",
+    impact: "AMS 161 should follow AMS 151 and should ideally be completed before later science overload.",
+    exam: "High",
+    consequences: ["Broken math sequence if AMS 151 is not completed.", "Waitlist status requires a backup plan.", "High workload can conflict with organic chemistry."],
+    backups: ["AMS 151", "Winter or summer AMS 161 if available", "Advisor approved equivalent"]
+  }),
+  makeCourse({
+    id: "CHE131",
+    code: "CHE 131",
+    title: "General Chemistry I",
+    instructor: "Prof. Maya Singh",
+    department: "CHE",
+    level: "100",
+    credits: 4,
+    requirementType: "Major Foundation",
+    sbc: "SNW",
+    status: "Available",
+    workload: "High",
+    readiness: { math: 1, writing: 0, year: 1 },
+    prerequisite: "Math placement or equivalent preparation",
+    reservedSeats: "15 seats reserved for science majors",
+    days: "Mon Wed Fri",
+    start: "9:00 AM",
+    end: "9:50 AM",
+    location: "Chemistry Building 100",
+    catalog: "Sample first general chemistry course covering atomic structure, bonding, stoichiometry, and equilibrium.",
+    planning: "CHE 131 is a strong first semester Biochemistry foundation course, but it should be balanced with MAT 123 workload.",
+    impact: "CHE 131 opens the path to CHE 132 and later organic chemistry.",
+    exam: "High",
+    comments: "Students say chemistry is manageable only with steady weekly practice.",
+    consequences: ["Delaying CHE 131 may delay CHE 132 and organic chemistry.", "High workload can create pressure with MAT 123.", "Lab corequisite should be checked."],
+    backups: ["BIO 201", "CHE 133 lab section", "Advisor supported chemistry plan"]
+  }),
+  makeCourse({
+    id: "CHE133",
+    code: "CHE 133",
+    title: "General Chemistry Laboratory I",
+    instructor: "Dr. Priya Nair",
+    department: "CHE",
+    level: "100",
+    credits: 1,
+    requirementType: "Lab",
+    sbc: "SNW",
+    status: "Available",
+    workload: "Medium",
+    readiness: { math: 1, writing: 0, year: 1 },
+    prerequisite: "CHE 131 corequisite or equivalent",
+    reservedSeats: "Lab seats tied to chemistry sequence",
+    days: "Thu",
+    start: "1:00 PM",
+    end: "3:50 PM",
+    location: "Chemistry Lab 212",
+    catalog: "Sample laboratory course supporting general chemistry concepts and scientific measurement.",
+    planning: "CHE 133 should normally be planned with CHE 131 for a clean chemistry sequence.",
+    impact: "Missing the lab can leave the chemistry sequence incomplete even if lecture is completed.",
+    group: "Medium",
+    consequences: ["Chemistry lab requirement may remain unresolved.", "Future lab scheduling may become crowded.", "Lecture and lab should be checked together."],
+    backups: ["Different CHE 133 section", "Future lab section", "Advisor confirmed lab sequence"]
+  }),
+  makeCourse({
+    id: "CHE132",
+    code: "CHE 132",
+    title: "General Chemistry II",
+    instructor: "Prof. Maya Singh",
+    department: "CHE",
+    level: "100",
+    credits: 4,
+    requirementType: "Major Foundation",
+    sbc: "SNW",
+    status: "Available",
+    workload: "High",
+    readiness: { math: 1, writing: 0, year: 1, requires: ["CHE131"] },
+    prerequisite: "CHE 131",
+    reservedSeats: "Open after science major priority period",
+    days: "Tue Thu",
+    start: "10:00 AM",
+    end: "11:20 AM",
+    location: "Chemistry Building 100",
+    catalog: "Sample second general chemistry course and key prerequisite for organic chemistry.",
+    planning: "CHE 132 should be planned after CHE 131, usually by the end of the first year.",
+    impact: "Delaying CHE 132 can push organic chemistry and upper division biochemistry later.",
+    exam: "High",
+    consequences: ["Organic chemistry sequence may be delayed.", "BIO and CHE workload may stack in Year 2.", "Advisor confirmation may be needed if CHE 131 is not complete."],
+    backups: ["CHE 131", "Summer CHE 132", "Advisor approved equivalent"]
+  }),
+  makeCourse({
+    id: "CHE134",
+    code: "CHE 134",
+    title: "General Chemistry Laboratory II",
+    instructor: "Dr. Priya Nair",
+    department: "CHE",
+    level: "100",
+    credits: 1,
+    requirementType: "Lab",
+    sbc: "SNW",
+    status: "Available",
+    workload: "Medium",
+    readiness: { math: 1, writing: 0, year: 1, requires: ["CHE133"] },
+    prerequisite: "CHE 133 and CHE 132 corequisite or equivalent",
+    reservedSeats: "Lab seats tied to chemistry sequence",
+    days: "Fri",
+    start: "1:00 PM",
+    end: "3:50 PM",
+    location: "Chemistry Lab 212",
+    catalog: "Sample second chemistry laboratory course supporting general chemistry continuation.",
+    planning: "CHE 134 should follow CHE 133 and align with CHE 132.",
+    impact: "Missing this lab can keep chemistry foundation incomplete.",
+    group: "Medium",
+    consequences: ["Lab sequence may be delayed.", "Organic chemistry preparation may look incomplete.", "Future lab sections may conflict with BIO labs."],
+    backups: ["CHE 133", "Future CHE 134 section", "Advisor confirmed lab substitute"]
+  }),
+  makeCourse({
+    id: "BIO201",
+    code: "BIO 201",
+    title: "Fundamentals of Biology",
+    instructor: "Dr. Elaine Mercer",
+    department: "BIO",
+    level: "200",
+    credits: 3,
+    requirementType: "Major Foundation",
+    sbc: "SNW",
+    status: "Available",
+    workload: "Medium",
+    readiness: { math: 0, writing: 0, year: 1 },
+    prerequisite: "High school biology recommended",
+    reservedSeats: "18 reserved seats for life science majors",
+    days: "Mon Wed",
+    start: "12:00 PM",
+    end: "1:20 PM",
+    location: "Life Sciences Building 038",
+    catalog: "Sample introductory biology course covering major biological principles and scientific reasoning.",
+    planning: "BIO 201 is appropriate for Kevin's first year and supports the Biochemistry foundation.",
+    impact: "BIO 201 keeps the biology sequence open for later BIO 202 and advanced biology.",
+    clarity: "High",
+    comments: "Students mention clear lectures, weekly quizzes, and manageable workload.",
+    consequences: ["Delaying BIO 201 can compress later biology requirements.", "Weekly quizzes require steady study.", "Useful evidence for science sequence planning."],
+    backups: ["CHE 131", "SBC course if STEM workload is too high", "BIO 202 only if advisor approves readiness"]
+  }),
+  makeCourse({
+    id: "BIO202",
+    code: "BIO 202",
+    title: "Molecular and Cellular Biology",
+    instructor: "Dr. Nathan Brooks",
+    department: "BIO",
+    level: "200",
+    credits: 3,
+    requirementType: "Major Foundation",
+    sbc: "SNW",
+    status: "Available",
+    workload: "High",
+    readiness: { math: 0, writing: 0, year: 1, requires: ["BIO201"] },
+    prerequisite: "BIO 201 recommended or required by sequence planning",
+    reservedSeats: "Life science major priority seats",
+    days: "Tue Thu",
+    start: "12:30 PM",
+    end: "1:50 PM",
+    location: "Life Sciences Building 038",
+    catalog: "Sample biology course focused on molecular and cellular concepts.",
+    planning: "BIO 202 is a future course for Kevin after BIO 201 foundation work.",
+    impact: "BIO 202 supports later advanced biology and biochemistry courses.",
+    exam: "High",
+    consequences: ["Taking it before BIO 201 may create concept gaps.", "Delay can affect advanced biology timing.", "High workload should be balanced with CHE 132."],
+    backups: ["BIO 201", "CHE 132", "Lighter SBC course"]
+  }),
+  makeCourse({
+    id: "BIO203",
+    code: "BIO 203",
+    title: "Cellular and Organ Physiology",
+    instructor: "Dr. Hannah Ortiz",
+    department: "BIO",
+    level: "200",
+    credits: 3,
+    requirementType: "Major Foundation",
+    sbc: "SNW",
+    status: "Waitlist",
+    workload: "High",
+    readiness: { math: 0, writing: 0, year: 2, requires: ["BIO201"] },
+    prerequisite: "BIO 201 and biology sequence preparation",
+    reservedSeats: "Seats prioritized for life science pathways",
+    days: "Mon Wed",
+    start: "2:00 PM",
+    end: "3:20 PM",
+    location: "Life Sciences Building 100",
+    catalog: "Sample physiology course used in the biology foundation sequence.",
+    planning: "BIO 203 is better planned after Year 1 foundation courses, not in Kevin's first fall semester.",
+    impact: "BIO 203 timing should be coordinated with chemistry and math workload.",
+    exam: "High",
+    consequences: ["High content load may overwhelm a first semester schedule.", "Waitlist status needs a backup.", "BIO foundation should be confirmed first."],
+    backups: ["BIO 201", "BIO 202", "PSY 103"]
+  }),
+  makeCourse({
+    id: "BIO204",
+    code: "BIO 204",
+    title: "Fundamentals of Scientific Inquiry in Biology I",
+    instructor: "Dr. Clara Kim",
+    department: "BIO",
+    level: "200",
+    credits: 2,
+    requirementType: "Lab",
+    sbc: "SNW",
+    status: "Reserved",
+    workload: "Medium",
+    readiness: { math: 0, writing: 1, year: 2, requires: ["BIO201"] },
+    prerequisite: "BIO 201 and writing readiness recommended",
+    reservedSeats: "Reserved biology lab seats",
+    days: "Wed",
+    start: "4:00 PM",
+    end: "6:50 PM",
+    location: "Biology Lab 240",
+    catalog: "Sample biology lab course focused on scientific inquiry and lab communication.",
+    planning: "BIO 204 is a later lab choice after Kevin has BIO foundation and stronger writing practice.",
+    impact: "Biology lab timing affects advanced biology readiness and writing practice.",
+    group: "High",
+    consequences: ["Reserved seats may require advisor evidence.", "Lab reports can be difficult without writing foundation.", "Later labs may conflict with organic chemistry."],
+    backups: ["BIO 201", "WRT 102", "Future BIO lab section"]
+  }),
+  makeCourse({
+    id: "CHE321",
+    code: "CHE 321",
+    title: "Organic Chemistry I",
+    instructor: "Prof. Victor Chen",
+    department: "CHE",
+    level: "300",
+    credits: 4,
+    requirementType: "Advanced Major",
+    sbc: "",
+    status: "Available",
+    workload: "High",
+    readiness: { math: 1, writing: 0, year: 2, requires: ["CHE132"] },
+    prerequisite: "CHE 132",
+    reservedSeats: "Science major priority",
+    days: "Tue Thu",
+    start: "3:30 PM",
+    end: "4:50 PM",
+    location: "Chemistry Building 100",
+    catalog: "Sample first organic chemistry course required for later biochemistry work.",
+    planning: "Organic chemistry is not a first semester course. Kevin should complete CHE 131 and CHE 132 first.",
+    impact: "CHE 321 timing is central to the later Biochemistry sequence.",
+    exam: "High",
+    consequences: ["Blocked until CHE 132 is complete.", "Delay can affect CHE 322 and BCH 361.", "High workload may conflict with AMS 161."],
+    backups: ["CHE 132", "BIO 202", "Advisor supported chemistry sequence"]
+  }),
+  makeCourse({
+    id: "CHE322",
+    code: "CHE 322",
+    title: "Organic Chemistry II",
+    instructor: "Prof. Victor Chen",
+    department: "CHE",
+    level: "300",
+    credits: 4,
+    requirementType: "Advanced Major",
+    sbc: "",
+    status: "Closed",
+    workload: "High",
+    readiness: { math: 1, writing: 0, year: 2, requires: ["CHE321"] },
+    prerequisite: "CHE 321",
+    reservedSeats: "Closed sample section",
+    days: "Mon Wed",
+    start: "3:30 PM",
+    end: "4:50 PM",
+    location: "Chemistry Building 100",
+    catalog: "Sample second organic chemistry course leading toward biochemistry requirements.",
+    planning: "CHE 322 is a later course and is blocked by CHE 321 in this prototype.",
+    impact: "CHE 322 completion supports later BCH and advanced biology planning.",
+    exam: "High",
+    consequences: ["Blocked until CHE 321 is complete.", "Closed section requires backup planning.", "Delay may affect BCH 361 timing."],
+    backups: ["CHE 321", "Different CHE 322 section", "Future term planning"]
+  }),
+  makeCourse({
+    id: "BCH361",
+    code: "BCH 361",
+    title: "Biochemistry I",
+    instructor: "Dr. Miriam Stone",
+    department: "BCH",
+    level: "300",
+    credits: 3,
+    requirementType: "Advanced Major",
+    sbc: "",
+    status: "Available",
+    workload: "High",
+    readiness: { math: 1, writing: 1, year: 3, requires: ["BIO202", "CHE322"] },
+    prerequisite: "BIO 202 and organic chemistry sequence recommended",
+    reservedSeats: "Biochemistry major priority",
+    days: "Tue Thu",
+    start: "9:30 AM",
+    end: "10:50 AM",
+    location: "Life Sciences Building 120",
+    catalog: "Sample advanced biochemistry course connecting chemistry and molecular biology foundations.",
+    planning: "BCH 361 is the major identity course, but it is not appropriate for a first semester freshman schedule.",
+    impact: "This course depends on earlier chemistry and biology sequencing.",
+    exam: "High",
+    consequences: ["Blocked by biology and organic chemistry preparation.", "Taking it early would create major academic risk.", "Should be planned around Year 3 readiness."],
+    backups: ["BIO 202", "CHE 322", "Advisor confirmed advanced course plan"]
+  }),
+  makeCourse({
+    id: "PHY131",
+    code: "PHY 131",
+    title: "Classical Physics I",
+    instructor: "Dr. Peter Walsh",
+    department: "PHY",
+    level: "100",
+    credits: 3,
+    requirementType: "Major Foundation",
+    sbc: "SNW",
+    status: "Available",
+    workload: "High",
+    readiness: { math: 2, writing: 0, year: 2 },
+    prerequisite: "Calculus readiness recommended",
+    reservedSeats: "Science sequence seats",
+    days: "Mon Wed",
+    start: "11:30 AM",
+    end: "12:50 PM",
+    location: "Physics Building 117",
+    catalog: "Sample physics course often planned after calculus preparation in science pathways.",
+    planning: "Physics should wait until Kevin's calculus preparation is stronger.",
+    impact: "Physics timing can affect later science credit completion.",
+    exam: "High",
+    consequences: ["May be risky before AMS 151 readiness.", "High workload can stack with organic chemistry.", "Should be placed after math planning."],
+    backups: ["AMS 151", "BIO 202", "Future physics sequence"]
+  }),
+  makeCourse({
+    id: "PSY103",
+    code: "PSY 103",
+    title: "Introduction to Psychology",
+    instructor: "Dr. Olivia Grant",
+    department: "PSY",
+    level: "100",
+    credits: 3,
+    requirementType: "SBC",
+    sbc: "SBS",
+    status: "Available",
+    workload: "Low",
+    readiness: { math: 0, writing: 0, year: 1 },
+    prerequisite: "None",
+    reservedSeats: "Open general seats",
+    days: "Tue Thu",
+    start: "9:30 AM",
+    end: "10:50 AM",
+    location: "Javits Lecture Center 100",
+    catalog: "Sample social science course used as an SBC option.",
+    planning: "PSY 103 can protect workload balance if Kevin already has heavy chemistry and math courses.",
+    impact: "This course fills an SBC area without moving the Biochemistry sequence forward.",
+    clarity: "High",
+    consequences: ["Useful for workload balance.", "Does not replace BIO or CHE foundation.", "Can help avoid an overloaded STEM first semester."],
+    backups: ["MUS 105", "PHI 104", "POL 102"]
+  }),
+  makeCourse({
+    id: "MUS105",
+    code: "MUS 105",
+    title: "Music Cultures",
+    instructor: "Prof. Yejin Park",
+    department: "MUS",
+    level: "100",
+    credits: 3,
+    requirementType: "SBC",
+    sbc: "ARTS, GLO",
+    status: "Available",
+    workload: "Low",
+    readiness: { math: 0, writing: 0, year: 1 },
+    prerequisite: "None",
+    reservedSeats: "Open general seats",
+    days: "Mon Wed",
+    start: "5:00 PM",
+    end: "6:20 PM",
+    location: "Staller Center 011",
+    catalog: "Sample arts and global cultures course used as an SBC option.",
+    planning: "MUS 105 can help Kevin avoid too many heavy STEM courses in the first semester.",
+    impact: "This course helps SBC progress but does not replace major science foundation.",
+    clarity: "High",
+    consequences: ["Good workload balance option.", "Evening time may affect commuting.", "Does not unlock later Biochemistry courses."],
+    backups: ["PSY 103", "PHI 104", "POL 102"]
+  }),
+  makeCourse({
+    id: "PHI104",
+    code: "PHI 104",
+    title: "Moral Reasoning",
+    instructor: "Dr. Julia Raymond",
+    department: "PHI",
+    level: "100",
+    credits: 3,
+    requirementType: "SBC",
+    sbc: "CER, HUM",
+    status: "Available",
+    workload: "Medium",
+    readiness: { math: 0, writing: 1, year: 1 },
+    prerequisite: "Writing readiness recommended",
+    reservedSeats: "Open general seats",
+    days: "Tue Thu",
+    start: "2:00 PM",
+    end: "3:20 PM",
+    location: "Humanities Building 204",
+    catalog: "Sample humanities and ethics course used as an SBC option.",
+    planning: "PHI 104 can add humanities and ethics balance, but Kevin should consider writing workload.",
+    impact: "This course supports SBC progress and ethical reasoning.",
+    group: "Medium",
+    consequences: ["Adds reading and writing workload.", "Does not unlock major sequence.", "Can be useful if STEM load is manageable."],
+    backups: ["PSY 103", "MUS 105", "POL 102"]
+  }),
+  makeCourse({
+    id: "POL102",
+    code: "POL 102",
+    title: "Introduction to American Government",
+    instructor: "Prof. Mark Hill",
+    department: "POL",
+    level: "100",
+    credits: 3,
+    requirementType: "SBC",
+    sbc: "SBS, USA",
+    status: "Available",
+    workload: "Medium",
+    readiness: { math: 0, writing: 0, year: 1 },
+    prerequisite: "None",
+    reservedSeats: "Open general seats",
+    days: "Fri",
+    start: "10:00 AM",
+    end: "12:50 PM",
+    location: "Social Sciences 101",
+    catalog: "Sample social science course used as an SBC option.",
+    planning: "POL 102 is an SBC option, but the long Friday block should be checked against study routines.",
+    impact: "This course helps SBC progress but does not support the science sequence directly.",
+    consequences: ["May add reading workload.", "Does not unlock major courses.", "Friday block may affect schedule balance."],
+    backups: ["PSY 103", "MUS 105", "PHI 104"]
+  })
+];
+
+const biochemPathway = [
+  {
+    year: "Year 1",
+    focus: "Chemistry, biology, writing, and math placement foundation",
+    semesters: [
+      { name: "Fall", courses: ["WRT102", "MAT123", "CHE131", "CHE133", "BIO201"], note: "Finish WRT 102 and start MAT 123, CHE 131, and BIO 201 early." },
+      { name: "Spring", courses: ["CHE132", "CHE134", "BIO202", "AMS151", "PSY103"], note: "Move into CHE 132 and AMS 151 only after the first semester foundation is clear." }
+    ]
+  },
+  {
+    year: "Year 2",
+    focus: "Calculus continuation, biology continuation, and organic chemistry entry",
+    semesters: [
+      { name: "Fall", courses: ["AMS161", "BIO203", "BIO204", "CHE321"], note: "AMS 161 should ideally be finished by Year 2 to avoid later science overload." },
+      { name: "Spring", courses: ["CHE322", "PHY131", "PHI104"], note: "Organic Chemistry II and Physics should be balanced carefully." }
+    ]
+  },
+  {
+    year: "Year 3",
+    focus: "Advanced biochemistry and upper division biology preparation",
+    semesters: [
+      { name: "Fall", courses: ["BCH361"], note: "BCH 361 should wait until biology and organic chemistry foundations are ready." },
+      { name: "Spring", courses: ["BIO203", "BIO204"], note: "Advanced biology and lab planning should be checked with an advisor." }
+    ]
+  },
+  {
+    year: "Year 4",
+    focus: "Advanced electives, writing in the discipline, and graduation audit",
+    semesters: [
+      { name: "Fall", courses: ["BCH361", "PHI104"], note: "Confirm remaining advanced BIO, CHE, BCH, SBC, and writing requirements." },
+      { name: "Spring", courses: ["MUS105", "POL102"], note: "Do not leave writing, lab, or advanced requirement checks until the last month." }
+    ]
   }
 ];
 
-const roadmaps = {
-  TSM: {
-    name: "Technological Systems Management",
-    summary: "TSM planning combines writing, math, natural science, EST core, technical support, specialization, and senior project requirements.",
-    years: [
-      { year: "Year 1", focus: "Writing, math, SBC, and introductory EST foundation", courses: ["WRT102", "MAT123", "EST194", "EST202", "BIO201"], note: "Students should confirm writing and math placement early because delays can affect later EST and AMS planning." },
-      { year: "Year 2", focus: "EST foundation, applied math, and technical support", courses: ["AMS151", "AMS161", "EST207", "EST240", "ECE101", "MEC104"], note: "This year should balance project courses with technical courses to avoid workload concentration." },
-      { year: "Year 3", focus: "Upper division EST courses and specialization preparation", courses: ["EST304", "EST320", "EST331", "BUS348"], note: "Students should confirm upper division credits and technical specialization progress before senior year." },
-      { year: "Year 4", focus: "Advanced EST requirements and graduation audit", courses: ["EST331", "BUS348", "WRT102"], note: "The final year should not leave writing, capstone, or specialization requirements unresolved." }
-    ]
-  },
-  Biochemistry: {
-    name: "Biochemistry",
-    summary: "Biochemistry planning depends on biology, chemistry, calculus, laboratory sequence, advanced biology, and writing in the discipline.",
-    years: [
-      { year: "Year 1", focus: "General chemistry, biology, writing, and calculus preparation", courses: ["WRT102", "BIO201", "CHE131", "MAT123"], note: "CHE 131 and BIO 201 should be completed early to protect the science sequence." },
-      { year: "Year 2", focus: "Biology and chemistry continuation with calculus", courses: ["BIO201", "CHE132", "AMS151", "AMS161"], note: "Students should avoid combining too many high workload STEM courses in the same term." },
-      { year: "Year 3", focus: "Upper division biology and biochemistry preparation", courses: ["BIO201", "CHE132"], note: "Students should confirm prerequisites before advanced biology or biochemistry courses." },
-      { year: "Year 4", focus: "Advanced electives, writing, and graduation audit", courses: ["WRT102", "BIO201", "CHE132"], note: "Students should confirm remaining advanced biology, chemistry, and writing requirements." }
-    ]
-  }
-};
-
 const personas = [
-  ["Jihoon", "Language barrier and discomfort asking repeated advisor questions", "Guided Language Support and Advisor Evidence Pack"],
-  ["Kevin", "Cannot verify prerequisites, SBC, and major requirements in one place", "Integrated Course Search and AI Guided Planner"],
-  ["Thomas", "Needs quick comparison of open, closed, waitlist, and reserved seats", "Seat filter and Visual Timetable"],
-  ["Looche", "Needs trustworthy comparison of workload and grading styles", "Course Evaluation DNA"],
-  ["Inso", "Needs long term planning after returning from a break", "Pathway Planner and Degree Audit Preview"]
+  {
+    name: "Jihoon",
+    pd: "High power distance",
+    need: "Needs safe language support before asking repeated registration questions.",
+    response: "Guided Language Support explains prerequisites, reserved seats, and advisor questions in simple English and Korean."
+  },
+  {
+    name: "Kevin Ruiz",
+    pd: "Middle power distance",
+    need: "Needs a personal Biochemistry pathway because math and English placement change which courses are realistic.",
+    response: "The Course Decision Hub shows eligibility, blocked courses, possible consequences, and a four year Biochemistry roadmap."
+  },
+  {
+    name: "Thomas",
+    pd: "Low power distance",
+    need: "Does not fear asking questions, but still needs faster comparison because data is spread across registration, catalog, evaluation, and advising pages.",
+    response: "Integrated Course Search reduces information overload and shows evaluation, catalog, seats, and timetable in one decision panel."
+  },
+  {
+    name: "Looche",
+    pd: "Low power distance",
+    need: "Needs workload and grading transparency before choosing between science courses.",
+    response: "Course Evaluation DNA compares workload, clarity, exam difficulty, grading fairness, and student comment summaries."
+  },
+  {
+    name: "Inso",
+    pd: "High power distance",
+    need: "Needs evidence before contacting an advisor because challenging a registration block feels uncomfortable.",
+    response: "Advisor Evidence Pack creates blocked course evidence, detected rule, degree path risk, alternatives, and an email draft."
+  }
+];
+
+const sbcCategories = [
+  { code: "WRT", title: "Writing", examples: "WRT 102" },
+  { code: "QPS", title: "Quantitative Problem Solving", examples: "MAT 123, AMS 151, AMS 161" },
+  { code: "SNW", title: "Natural Sciences", examples: "BIO 201, CHE 131, CHE 132" },
+  { code: "SBS", title: "Social and Behavioral Sciences", examples: "PSY 103, POL 102" },
+  { code: "ARTS", title: "Arts", examples: "MUS 105" },
+  { code: "HUM", title: "Humanities", examples: "PHI 104" },
+  { code: "CER", title: "Ethics", examples: "PHI 104" },
+  { code: "GLO", title: "Global Issues", examples: "MUS 105" }
 ];
 
 function qs(selector) {
@@ -542,28 +720,85 @@ function getCourse(id = selectedCourseId) {
   return courses.find(course => course.id === id) || null;
 }
 
-function getMajorFit(course) {
-  return course.majorFit[selectedMajor] || course.majorFit.TSM || "Elective or requirement check needed";
+function safeList(items) {
+  return Array.isArray(items) ? items : [];
 }
 
-function statusClass(status) {
-  return status.toLowerCase();
+function isAdded(id) {
+  return plannedCourses.includes(id);
 }
 
-function riskLevel(course) {
-  if (course.status === "Closed" || course.workload === "High" || course.requirementType === "Prerequisite") return "High";
-  if (course.status === "Waitlist" || course.reservedSeats.toLowerCase().includes("reserved")) return "Medium";
-  return "Low";
+function normalizeClass(text) {
+  return String(text || "").toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9]/g, "");
+}
+
+function checkReadiness(course) {
+  const readiness = course.readiness || {};
+  const reasons = [];
+
+  if ((readiness.year || 1) > student.year) {
+    reasons.push(`Designed for ${readiness.year === 2 ? "Year 2" : readiness.year === 3 ? "Year 3" : "a later year"}`);
+  }
+
+  if ((readiness.math || 0) > student.mathAccess) {
+    reasons.push(`Math level needed: ${mathLevelNames[readiness.math]}`);
+  }
+
+  if ((readiness.writing || 0) > student.writingAccess) {
+    reasons.push("Writing placement or WRT 102 completion needed");
+  }
+
+  safeList(readiness.requires).forEach(id => {
+    if (!student.completed.includes(id) && !student.inProgress.includes(id)) {
+      const needed = getCourse(id);
+      reasons.push(`Requires ${needed ? needed.code : id}`);
+    }
+  });
+
+  if (course.status === "Closed") {
+    reasons.push("This sample section is closed");
+  }
+
+  if (course.status === "Reserved") {
+    reasons.push("Reserved seats require evidence or advisor confirmation");
+  }
+
+  const blocked = reasons.some(reason =>
+    reason.includes("Requires") ||
+    reason.includes("Math level") ||
+    reason.includes("Designed") ||
+    reason.includes("closed")
+  );
+
+  if (blocked) {
+    return { level: "Blocked", label: lang("Blocked", "제한됨"), reasons };
+  }
+
+  if (course.status === "Reserved" || course.status === "Waitlist" || course.workload === "High") {
+    return {
+      level: "Caution",
+      label: lang("Caution", "주의"),
+      reasons: reasons.length ? reasons : ["High workload or seat risk should be checked before adding"]
+    };
+  }
+
+  return {
+    level: "Ready",
+    label: lang("Ready", "수강 가능"),
+    reasons: ["Fits current first year Biochemistry planning"]
+  };
 }
 
 function getFilteredCourses() {
   const query = (qs("#courseSearchInput")?.value || "").trim().toLowerCase();
   const dept = qs("#departmentFilter")?.value || "All";
   const req = qs("#requirementFilter")?.value || "All";
-  const seat = qs("#seatFilter")?.value || "All";
-  const workload = qs("#workloadFilter")?.value || "All";
+  const seat = qs("#statusFilter")?.value || "All";
+  const ready = qs("#readinessFilter")?.value || "All";
+  const work = qs("#workloadFilter")?.value || "All";
 
   return courses.filter(course => {
+    const state = checkReadiness(course);
     const searchable = [
       course.code,
       course.title,
@@ -574,27 +809,37 @@ function getFilteredCourses() {
       course.status,
       course.workload,
       course.prerequisite,
-      getMajorFit(course)
+      course.catalog,
+      course.planning,
+      course.impact,
+      safeList(course.consequences).join(" "),
+      safeList(course.backups).join(" ")
     ].join(" ").toLowerCase();
 
-    const matchQuery = !query || searchable.includes(query);
-    const matchDept = dept === "All" || course.department === dept;
-    const matchReq = req === "All" || course.requirementType === req || course.sbc.includes(req);
-    const matchSeat = seat === "All" || course.status === seat || (seat === "Reserved" && course.reservedSeats.toLowerCase().includes("reserved"));
-    const matchWorkload = workload === "All" || course.workload === workload;
-
-    return matchQuery && matchDept && matchReq && matchSeat && matchWorkload;
+    return (!query || searchable.includes(query)) &&
+      (dept === "All" || course.department === dept) &&
+      (req === "All" || course.requirementType === req || (course.sbc || "").includes(req)) &&
+      (seat === "All" || course.status === seat || (seat === "Reserved" && String(course.reservedSeats).toLowerCase().includes("reserved"))) &&
+      (ready === "All" || state.level === ready) &&
+      (work === "All" || course.workload === work);
   });
 }
 
 function applyTranslations() {
   qsa("[data-i18n]").forEach(element => {
-    const key = element.dataset.i18n;
-    element.textContent = tr(key);
+    element.textContent = tr(element.dataset.i18n);
   });
 
   const input = qs("#courseSearchInput");
   if (input) input.placeholder = tr("searchPlaceholder");
+
+  const chatInput = qs("#chatInput");
+  if (chatInput) {
+    chatInput.placeholder = lang(
+      "Ask about prerequisites, workload, SBC, pathway risk, or advisor evidence",
+      "선수 조건, workload, SBC, 경로 위험, 상담 근거를 질문하세요"
+    );
+  }
 
   qs("#englishButton")?.classList.toggle("active-lang", currentLang === "en");
   qs("#koreanButton")?.classList.toggle("active-lang", currentLang === "ko");
@@ -619,42 +864,57 @@ function showPage(page) {
 function renderDashboard() {
   qs("#mainContent").innerHTML = `
     <section class="page-title">
-      <h2>${lang("Dashboard", "대시보드")}</h2>
-      <p>${lang("A redesigned course registration experience centered on evidence based course decisions.", "근거 중심의 수강 결정을 돕기 위해 재구성한 수강신청 프로토타입입니다.")}</p>
+      <h2>${lang("Personal Biochemistry Dashboard", "개인 Biochemistry 대시보드")}</h2>
+      <p>${lang("This version works like a personal SOLAR style registration page for Kevin Ruiz, a first year Biochemistry student.", "이 버전은 Biochemistry 신입생 Kevin Ruiz의 개인 SOLAR형 수강신청 화면처럼 작동합니다.")}</p>
     </section>
 
-    <section class="card notice-card">
-      <strong>${tr("projectNotice")}</strong>
+    <section class="card notice-card"><strong>${tr("projectNotice")}</strong></section>
+
+    <section class="card">
+      <h3>${lang("Student Profile", "학생 프로필")}</h3>
+      <div class="profile-card">
+        <div class="profile-item"><span>${lang("Student", "학생")}</span><strong>${student.name}</strong></div>
+        <div class="profile-item"><span>${lang("Major", "전공")}</span><strong>${student.major}</strong></div>
+        <div class="profile-item"><span>${lang("Standing", "학년")}</span><strong>${student.standing}</strong></div>
+        <div class="profile-item"><span>${lang("English level", "영어 레벨")}</span><strong>${student.englishLevel}</strong></div>
+        <div class="profile-item"><span>${lang("Math level", "수학 레벨")}</span><strong>${student.mathLevel}</strong></div>
+        <div class="profile-item"><span>${lang("Current planned courses", "현재 추가한 과목")}</span><strong>${plannedCourses.length} ${lang("courses", "개")}</strong></div>
+        <div class="profile-item"><span>${lang("System role", "시스템 역할")}</span><strong>${lang("Support decision, not replace advisor", "결정 지원, 어드바이저 대체 아님")}</strong></div>
+        <div class="profile-item"><span>${lang("Data type", "데이터 종류")}</span><strong>Sample prototype data</strong></div>
+      </div>
     </section>
 
     <section class="grid three" style="margin-top:20px">
       <article class="card">
-        <h3>${lang("Integrated Course Search", "통합 과목 검색")}</h3>
-        <p>${lang("Course search is the center of the prototype. It combines availability, catalog information, prerequisites, SBC, major fit, evaluation data, and advising next steps.", "과목 검색은 이 프로토타입의 중심 기능입니다. 수강 가능 여부, 카탈로그 정보, 선수 조건, SBC, 전공 적합성, 강의 평가, 상담 단계를 함께 보여줍니다.")}</p>
+        <h3>${lang("Integrated Course Decision Hub", "통합 과목 결정 허브")}</h3>
+        <p>${lang("Course Search is the center. It connects catalog data, prerequisites, evaluation DNA, grade distribution, timetable, consequences, and advising evidence.", "Course Search가 중심입니다. 카탈로그, 선수 조건, 강의 평가 DNA, 성적 분포, 시간표, possible consequence, 상담 근거를 연결합니다.")}</p>
       </article>
       <article class="card">
-        <h3>${lang("Evidence Based Course Planning", "근거 기반 수강 계획")}</h3>
-        <p>${lang("Students can compare grade distribution, workload, student comment patterns, and timetable pressure before enrollment.", "학생은 수강신청 전에 성적 분포, workload, 학생 의견 패턴, 시간표 부담을 비교할 수 있습니다.")}</p>
+        <h3>${lang("Placement Aware Planning", "레벨 반영 수강 계획")}</h3>
+        <p>${lang("Kevin can take WRT 102 and MAT 123, but higher calculus and advanced Biochemistry courses remain blocked until the sequence is completed.", "Kevin은 WRT 102와 MAT 123은 들을 수 있지만, 상위 미적분과 advanced Biochemistry 과목은 sequence가 끝날 때까지 제한됩니다.")}</p>
       </article>
       <article class="card">
         <h3>${lang("Human Support Pathway", "사람의 도움으로 이어지는 경로")}</h3>
-        <p>${lang("The system does not replace advisors. It prepares evidence, explains possible consequences, and helps students contact the right support office.", "이 시스템은 어드바이저를 대체하지 않습니다. 근거를 정리하고 가능한 결과를 설명하며 적절한 지원 부서에 연락하도록 돕습니다.")}</p>
+        <p>${lang("The Advisor Evidence Pack prepares a clear message for Academic and Transfer Advising Services and the department coordinator.", "Advisor Evidence Pack은 Academic and Transfer Advising Services와 학과 코디네이터에게 보낼 근거 있는 메시지를 준비합니다.")}</p>
       </article>
     </section>
 
     <section class="card" style="margin-top:20px">
-      <h3>${lang("Key Features Applied", "반영된 핵심 기능")}</h3>
+      <h3>${lang("Applied Prototype Features", "반영된 프로토타입 기능")}</h3>
       <div class="chip-wrap">
-        <span>Integrated Course Search</span>
-        <span>Course Evaluation DNA</span>
+        <span>Biochemistry only pathway</span>
+        <span>Placement level check</span>
+        <span>Course Evaluation DNA inside Search</span>
+        <span>Catalog inside Search</span>
+        <span>Added icon</span>
         <span>Visual Timetable</span>
-        <span>AI Guided Planner</span>
-        <span>Backup Options</span>
-        <span>Pathway Planner</span>
         <span>Advisor Evidence Pack</span>
         <span>Guided Language Support</span>
       </div>
-      <button class="primary-button" data-go="search" type="button" style="margin-top:18px">${lang("Start Course Search", "과목 검색 시작")}</button>
+      <div class="action-row">
+        <button class="primary-button" data-go="search" type="button">${lang("Start Course Search", "과목 검색 시작")}</button>
+        <button class="secondary-button" data-open-degree type="button">${lang("Open Degree Audit Preview", "Degree Audit 미리보기 열기")}</button>
+      </div>
     </section>
   `;
 }
@@ -662,8 +922,8 @@ function renderDashboard() {
 function renderPersonas() {
   qs("#mainContent").innerHTML = `
     <section class="page-title">
-      <h2>${lang("Persona Needs", "페르소나 필요 분석")}</h2>
-      <p>${lang("Each persona need is connected to a visible prototype feature.", "각 페르소나의 필요가 실제 프로토타입 기능과 연결됩니다.")}</p>
+      <h2>${lang("Persona Needs Applied to the Prototype", "프로토타입에 반영된 페르소나 필요")}</h2>
+      <p>${lang("The comparative analysis is not separated from the product. Each user need becomes a visible feature in the personal Biochemistry registration flow.", "비교 분석은 제품과 분리되지 않습니다. 각 사용자 필요가 개인 Biochemistry 수강신청 흐름 안의 실제 기능으로 연결됩니다.")}</p>
     </section>
 
     <section class="card">
@@ -671,25 +931,38 @@ function renderPersonas() {
         <thead>
           <tr>
             <th>${lang("Persona", "페르소나")}</th>
-            <th>${lang("User need", "사용자 필요")}</th>
+            <th>${lang("Power distance context", "Power distance 맥락")}</th>
+            <th>${lang("Specific need", "구체적 필요")}</th>
             <th>${lang("Prototype response", "프로토타입 대응")}</th>
           </tr>
         </thead>
         <tbody>
           ${personas.map(persona => `
             <tr>
-              <td><strong>${persona[0]}</strong></td>
-              <td>${persona[1]}</td>
-              <td>${persona[2]}</td>
+              <td><strong>${persona.name}</strong></td>
+              <td>${persona.pd}</td>
+              <td>${persona.need}</td>
+              <td>${persona.response}</td>
             </tr>
           `).join("")}
         </tbody>
       </table>
     </section>
 
-    <section class="card consequence-box">
-      <h3>${lang("Comparative Analysis Logic", "비교 분석 논리")}</h3>
-      <p>${lang("The prototype does not assume that all students need the same support. Some students need language support, some need faster comparison, some need long term planning, and some need evidence before contacting an advisor. ZOLAR connects these different needs through Course Search rather than separating them into disconnected pages.", "이 프로토타입은 모든 학생이 같은 지원을 필요로 한다고 가정하지 않습니다. 어떤 학생은 언어 지원이 필요하고, 어떤 학생은 빠른 비교가 필요하며, 어떤 학생은 장기 계획이 필요하고, 어떤 학생은 어드바이저에게 연락하기 전 근거가 필요합니다. ZOLAR는 이 요구들을 분리된 페이지가 아니라 Course Search를 중심으로 연결합니다.")}</p>
+    <section class="grid two" style="margin-top:20px">
+      <article class="card consequence-box">
+        <h3>${lang("High power distance logic", "High power distance 논리")}</h3>
+        <p>${lang("High power distance students may hesitate to challenge a blocked course, ask repeated questions, or admit confusion. ZOLAR reduces that barrier by creating evidence, a polite email draft, and bilingual explanations before the student contacts a human advisor.", "High power distance 학생은 수강 제한에 문제를 제기하거나 반복 질문을 하거나 헷갈린다고 말하는 것을 어려워할 수 있습니다. ZOLAR는 상담 전 근거, 정중한 이메일 초안, 이중언어 설명을 제공해 그 장벽을 낮춥니다.")}</p>
+      </article>
+      <article class="card info-box">
+        <h3>${lang("Low power distance logic", "Low power distance 논리")}</h3>
+        <p>${lang("Low power distance students are not helpless. Their problem is different. They may ask questions confidently, but still lose time because course catalog, evaluation data, seats, prerequisites, and pathway consequences are scattered across different systems. ZOLAR helps them compare faster and avoid information overload.", "Low power distance 학생은 도움이 전혀 필요 없는 학생이 아닙니다. 문제의 종류가 다릅니다. 질문은 적극적으로 할 수 있어도 catalog, evaluation, seats, prerequisite, pathway consequence가 여러 시스템에 흩어져 있어 시간과 판단 비용이 커집니다. ZOLAR는 비교를 빠르게 하고 정보 과부하를 줄입니다.")}</p>
+      </article>
+    </section>
+
+    <section class="card" style="margin-top:20px">
+      <h3>${lang("Final comparative analysis sentence", "비교 분석 마지막 문장 방향")}</h3>
+      <p>${lang("Jihoon and Inso need safer language and evidence before contacting authority figures. Kevin needs placement aware Biochemistry sequencing. Thomas needs faster cross system comparison. Looche needs workload and grading transparency. Therefore, the prototype uses Course Search as one decision hub rather than separating catalog, evaluation, pathway, and advising into disconnected tools.", "Jihoon과 Inso는 권위 있는 담당자에게 연락하기 전 안전한 언어 지원과 근거가 필요합니다. Kevin은 영어와 수학 레벨을 반영한 Biochemistry sequence가 필요합니다. Thomas는 여러 시스템에 흩어진 정보를 빠르게 비교해야 합니다. Looche는 workload와 grading transparency가 필요합니다. 따라서 이 프로토타입은 catalog, evaluation, pathway, advising을 분리된 도구가 아니라 Course Search 중심의 하나의 decision hub로 통합합니다.")}</p>
     </section>
   `;
 }
@@ -698,8 +971,10 @@ function renderSearch() {
   qs("#mainContent").innerHTML = `
     <section class="page-title">
       <h2>${lang("Integrated Course Search", "통합 과목 검색")}</h2>
-      <p>${lang("All supported sample courses are shown first. Use the search bar or filters to narrow the list.", "지원되는 모든 예시 과목이 먼저 표시됩니다. 검색창이나 필터를 사용해 목록을 좁힐 수 있습니다.")}</p>
+      <p>${lang("All sample courses for Kevin's Biochemistry plan are shown first. Selecting a card opens details. A course is added only when Kevin clicks Add to Timetable.", "Kevin의 Biochemistry 계획에 필요한 예시 과목이 먼저 모두 표시됩니다. 카드를 선택하면 세부 정보가 열리고, Add to Timetable을 눌렀을 때만 시간표에 추가됩니다.")}</p>
     </section>
+
+    <section class="card notice-card"><strong>${lang("Sample prototype data only. This is not official course availability, degree audit, or SOLAR information.", "예시 프로토타입 데이터입니다. 공식 수강 가능 여부, degree audit, SOLAR 정보가 아닙니다.")}</strong></section>
 
     <section class="search-panel">
       <div class="search-row">
@@ -717,7 +992,11 @@ function renderSearch() {
         </div>
         <div>
           <label>${lang("Seat status", "좌석 상태")}</label>
-          <select id="seatFilter">${seatFilters.map(x => `<option value="${x}">${x === "All" ? lang("All seat status", "모든 좌석 상태") : x}</option>`).join("")}</select>
+          <select id="statusFilter">${statusFilters.map(x => `<option value="${x}">${x === "All" ? lang("All status", "모든 상태") : x}</option>`).join("")}</select>
+        </div>
+        <div>
+          <label>${lang("Readiness", "수강 가능성")}</label>
+          <select id="readinessFilter">${readinessFilters.map(x => `<option value="${x}">${x === "All" ? lang("All readiness", "모든 가능성") : x}</option>`).join("")}</select>
         </div>
         <div>
           <label>Workload</label>
@@ -730,60 +1009,97 @@ function renderSearch() {
       <div class="result-list-panel">
         <div class="result-header">
           <div>
-            <h3>${lang("Search Results", "검색 결과")}</h3>
-            <p>${lang("Click a course to update the integrated decision panel.", "과목을 클릭하면 통합 결정 패널이 업데이트됩니다.")}</p>
+            <h3>${lang("Biochemistry Course Results", "Biochemistry 과목 결과")}</h3>
+            <p>${lang("Only Biochemistry related major, writing, math, lab, and SBC courses are included.", "Biochemistry 관련 전공, 영어, 수학, 실험, SBC 과목만 포함됩니다.")}</p>
           </div>
-          <select id="majorSelect">
-            <option value="TSM" ${selectedMajor === "TSM" ? "selected" : ""}>TSM</option>
-            <option value="Biochemistry" ${selectedMajor === "Biochemistry" ? "selected" : ""}>Biochemistry</option>
-          </select>
+          <button id="clearFiltersButton" class="small-button" type="button">${lang("Clear", "초기화")}</button>
         </div>
         <p id="courseCount" class="course-count"></p>
         <div id="courseList" class="result-list"></div>
       </div>
-
       <div id="courseDetail" class="result-detail"></div>
+    </section>
+
+    <section class="grid two" style="margin-top:20px">
+      <article class="card">
+        <h3>${lang("Visual Timetable", "시각적 시간표")}</h3>
+        <p class="muted">${lang("Add and drop courses from the detail panel or directly from the timetable blocks.", "세부 정보 패널이나 시간표 블록에서 과목을 추가하거나 삭제할 수 있습니다.")}</p>
+        <div id="visualTimetable"></div>
+      </article>
+      <article class="card">
+        <h3>${lang("SBC Explorer inside Course Search", "Course Search 안의 SBC 탐색")}</h3>
+        <p class="muted">${lang("This keeps Course Catalog and SBC information inside the search flow instead of separating them into another tool.", "Course Catalog와 SBC 정보를 별도 도구로 분리하지 않고 검색 흐름 안에 유지합니다.")}</p>
+        <div class="sbc-grid">
+          ${sbcCategories.map(item => `<div class="sbc-card"><strong>${item.code}</strong><p>${item.title}</p><small>${item.examples}</small></div>`).join("")}
+        </div>
+      </article>
     </section>
   `;
 
-  ["courseSearchInput", "departmentFilter", "requirementFilter", "seatFilter", "workloadFilter"].forEach(id => {
+  ["courseSearchInput", "departmentFilter", "requirementFilter", "statusFilter", "readinessFilter", "workloadFilter"].forEach(id => {
     qs("#" + id).addEventListener("input", updateCourseList);
     qs("#" + id).addEventListener("change", updateCourseList);
   });
 
-  qs("#majorSelect").addEventListener("change", event => {
-    selectedMajor = event.target.value;
+  qs("#clearFiltersButton").addEventListener("click", () => {
+    qs("#courseSearchInput").value = "";
+    ["departmentFilter", "requirementFilter", "statusFilter", "readinessFilter", "workloadFilter"].forEach(id => qs("#" + id).value = "All");
     updateCourseList();
-    renderCourseDetail();
   });
 
   updateCourseList();
   renderCourseDetail();
+  renderTimetable();
 }
 
 function updateCourseList() {
   const list = getFilteredCourses();
-  qs("#courseCount").textContent = `${list.length} ${lang("courses shown", "개 과목 표시")}`;
+  const count = qs("#courseCount");
+  const target = qs("#courseList");
+  if (!target) return;
 
-  qs("#courseList").innerHTML = list.length ? list.map(course => `
-    <button class="result-card ${selectedCourseId === course.id ? "active" : ""}" data-course="${course.id}" type="button">
-      <div class="result-title-row">
-        <div>
-          <h4>${course.code}</h4>
-          <p class="course-title">${course.title}</p>
-        </div>
-        <span class="badge ${statusClass(course.status)}">${course.status}</span>
+  count.textContent = `${list.length} ${lang("courses shown", "개 과목 표시 중")}`;
+
+  if (!list.length) {
+    target.innerHTML = `
+      <div class="empty-state">
+        <strong>${lang("No matching results", "검색 결과 없음")}</strong>
+        <p>${lang("Try clearing filters or searching by BIO, CHE, MAT, AMS, WRT, SBC, workload, or prerequisite.", "필터를 지우거나 BIO, CHE, MAT, AMS, WRT, SBC, workload, prerequisite으로 검색해보세요.")}</p>
       </div>
-      <p>${course.instructor} · ${course.time.days} · ${course.time.start} to ${course.time.end}</p>
-      <p><strong>SBC:</strong> ${course.sbc} · <strong>Workload:</strong> ${course.workload}</p>
-      <p><strong>${lang("Reserved seats", "Reserved seats")}:</strong> ${course.reservedSeats}</p>
-      <p><strong>${lang("Pathway", "수강 경로")}:</strong> ${getMajorFit(course)}</p>
-    </button>
-  `).join("") : `<div class="empty-state">${lang("No matching courses. Clear filters to return to the full list.", "일치하는 과목이 없습니다. 필터를 해제하면 전체 목록으로 돌아갑니다.")}</div>`;
+    `;
+    return;
+  }
 
-  qsa("[data-course]").forEach(button => {
-    button.addEventListener("click", () => {
-      selectedCourseId = button.dataset.course;
+  target.innerHTML = list.map(course => {
+    const state = checkReadiness(course);
+    const added = isAdded(course.id);
+    return `
+      <button class="result-card ${selectedCourseId === course.id ? "active" : ""} ${added ? "added-card" : ""}" data-course-id="${course.id}" type="button">
+        <div class="result-title-row">
+          <div>
+            <h4>${course.code}</h4>
+            <div class="course-title">${course.title}</div>
+          </div>
+          <div class="chip-wrap" style="margin-top:0;justify-content:flex-end">
+            ${added ? `<span class="badge added">✓ ${lang("Added", "추가됨")}</span>` : ""}
+            <span class="badge ${normalizeClass(state.level)}">${state.label}</span>
+          </div>
+        </div>
+        <p>${course.requirementType} · ${course.credits} credits · ${course.sbc || lang("Major only", "전공 전용")} · ${course.workload} workload</p>
+        <div class="chip-wrap">
+          <span>${course.department}</span>
+          <span>${course.status}</span>
+          <span>${course.days} ${course.start}</span>
+        </div>
+      </button>
+    `;
+  }).join("");
+
+  qsa(".result-card").forEach(card => {
+    card.addEventListener("click", () => {
+      selectedCourseId = card.dataset.courseId;
+      selectedDetailTab = "overview";
+      sentDraft = false;
       updateCourseList();
       renderCourseDetail();
     });
@@ -791,248 +1107,323 @@ function updateCourseList() {
 }
 
 function renderCourseDetail() {
+  const target = qs("#courseDetail");
   const course = getCourse();
+  if (!target) return;
 
   if (!course) {
-    qs("#courseDetail").innerHTML = `
+    target.innerHTML = `
       <div class="empty-state">
         <h3>${lang("Select a course", "과목을 선택하세요")}</h3>
-        <p>${lang("The integrated decision panel will show catalog information, prerequisites, evaluation DNA, AI planning advice, possible consequences, backup options, and timetable impact.", "통합 결정 패널에는 카탈로그 정보, 선수 조건, 강의 평가 DNA, AI 계획 조언, 가능한 결과, 대체 선택지, 시간표 영향이 표시됩니다.")}</p>
+        <p>${lang("Click any Biochemistry related course card to open catalog information, prerequisite check, evaluation DNA, grade distribution, AI planning advice, possible consequences, and Add to Timetable controls.", "Biochemistry 관련 과목 카드를 클릭하면 카탈로그 정보, 선수 조건 확인, 강의 평가 DNA, 성적 분포, AI 계획 조언, possible consequence, Add to Timetable 기능이 열립니다.")}</p>
       </div>
     `;
     return;
   }
 
-  const inPlan = plannedCourses.includes(course.id);
-  const gradeTotal = Object.values(course.evaluation.grades).reduce((a, b) => a + b, 0);
+  const state = checkReadiness(course);
+  const added = isAdded(course.id);
+  const blocked = state.level === "Blocked";
 
-  qs("#courseDetail").innerHTML = `
+  target.innerHTML = `
     <div class="detail-hero">
       <div>
-        <h3>${course.code} ${course.title}</h3>
-        <p>${course.instructor} · ${selectedTerm} · ${course.time.days} · ${course.time.start} to ${course.time.end} · ${course.time.location}</p>
+        <h3>${course.code}</h3>
+        <p class="course-title">${course.title}</p>
+        <div class="chip-wrap">
+          <span class="badge ${normalizeClass(course.status)}">${course.status}</span>
+          <span class="badge ${normalizeClass(state.level)}">${state.label}</span>
+          <span class="badge ${normalizeClass(course.workload)}">${course.workload} workload</span>
+          ${added ? `<span class="badge added">✓ ${lang("Added to timetable", "시간표 추가됨")}</span>` : ""}
+        </div>
       </div>
-      <span class="badge ${statusClass(course.status)}">${course.status}</span>
+      <div class="detail-actions">
+        ${added ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">${lang("Drop", "삭제")}</button>` : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked by Requirement", "요건 때문에 제한") : lang("Add to Timetable", "시간표에 추가")}</button>`}
+      </div>
     </div>
 
-    <div class="metric-grid">
-      <div class="metric"><strong>${course.evaluation.enrolled}</strong><span>${lang("Enrolled", "수강 인원")}</span></div>
-      <div class="metric"><strong>${course.evaluation.responses}</strong><span>${lang("Responses", "응답 수")}</span></div>
-      <div class="metric"><strong>${course.evaluation.rating}</strong><span>${lang("Rating", "평점")}</span></div>
-      <div class="metric"><strong>${riskLevel(course)}</strong><span>${lang("Risk", "위험도")}</span></div>
+    <div class="detail-tabs">
+      ${["overview", "evaluation", "catalog", "pathway", "advisor"].map(tab => `<button class="tab-button ${selectedDetailTab === tab ? "active-tab" : ""}" data-tab="${tab}" type="button">${tabLabel(tab)}</button>`).join("")}
     </div>
 
+    <div id="detailTabContent">${renderDetailTab(course)}</div>
+  `;
+
+  qsa("[data-tab]").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedDetailTab = button.dataset.tab;
+      renderCourseDetail();
+    });
+  });
+
+  qsa("[data-add-course]").forEach(button => {
+    button.addEventListener("click", () => addCourse(button.dataset.addCourse));
+  });
+
+  qsa("[data-drop-course]").forEach(button => {
+    button.addEventListener("click", () => dropCourse(button.dataset.dropCourse));
+  });
+}
+
+function tabLabel(tab) {
+  return {
+    overview: lang("Overview", "개요"),
+    evaluation: lang("Evaluation DNA", "강의 평가 DNA"),
+    catalog: lang("Catalog Check", "카탈로그 확인"),
+    pathway: lang("Pathway Impact", "경로 영향"),
+    advisor: lang("Advisor Evidence", "상담 근거")
+  }[tab] || tab;
+}
+
+function renderDetailTab(course) {
+  if (selectedDetailTab === "evaluation") return renderEvaluationTab(course);
+  if (selectedDetailTab === "catalog") return renderCatalogTab(course);
+  if (selectedDetailTab === "pathway") return renderPathwayTab(course);
+  if (selectedDetailTab === "advisor") return renderAdvisorTab(course);
+  return renderOverviewTab(course);
+}
+
+function renderOverviewTab(course) {
+  const state = checkReadiness(course);
+  return `
     <section class="detail-section">
-      <h4>${lang("Catalog and Requirement Check", "카탈로그와 요건 확인")}</h4>
-      <p>${course.catalog}</p>
-      <p><strong>${lang("Credits", "학점")}:</strong> ${course.credits}</p>
-      <p><strong>${lang("Prerequisite", "선수 조건")}:</strong> ${course.prerequisite}</p>
-      <p><strong>SBC:</strong> ${course.sbc}</p>
-      <p><strong>${lang("Major fit", "전공 적합성")}:</strong> ${getMajorFit(course)}</p>
-      <p><strong>${lang("Reserved seats", "Reserved seats")}:</strong> ${course.reservedSeats}</p>
+      <h4>${lang("Integrated Decision Summary", "통합 결정 요약")}</h4>
+      <div class="metric-grid">
+        <div class="metric"><strong>${course.credits}</strong><span>Credits</span></div>
+        <div class="metric"><strong>${course.rating}</strong><span>Rating</span></div>
+        <div class="metric"><strong>${course.responses}</strong><span>Responses</span></div>
+        <div class="metric"><strong>${state.level}</strong><span>Readiness</span></div>
+      </div>
+      <p>${course.planning}</p>
     </section>
 
     <section class="detail-section">
-      <h4>${lang("Course Evaluation DNA", "강의 평가 DNA")}</h4>
-      <div class="dna-grid">
-        <div class="dna-item"><strong>Workload</strong>${course.dna.workload}</div>
-        <div class="dna-item"><strong>${lang("Grading", "채점")}</strong>${course.dna.grading}</div>
-        <div class="dna-item"><strong>${lang("Exam difficulty", "시험 난이도")}</strong>${course.dna.exam}</div>
-        <div class="dna-item"><strong>${lang("Group work", "그룹 과제")}</strong>${course.dna.group}</div>
-        <div class="dna-item"><strong>${lang("Clarity", "명확성")}</strong>${course.dna.clarity}</div>
-        <div class="dna-item"><strong>${lang("Usefulness", "유용성")}</strong>${course.dna.usefulness}</div>
+      <h4>${lang("Prerequisite and placement check", "선수 조건과 레벨 확인")}</h4>
+      <div class="catalog-grid">
+        <div class="catalog-item"><span>${lang("Prerequisite", "선수 조건")}</span><strong>${course.prerequisite}</strong></div>
+        <div class="catalog-item"><span>${lang("Kevin's English level", "Kevin의 영어 레벨")}</span><strong>${student.englishLevel}</strong></div>
+        <div class="catalog-item"><span>${lang("Kevin's math level", "Kevin의 수학 레벨")}</span><strong>${mathLevelNames[student.mathAccess]}</strong></div>
+        <div class="catalog-item"><span>${lang("Detected result", "감지된 결과")}</span><strong>${state.reasons.join(" · ")}</strong></div>
       </div>
-      <p><strong>${lang("Student comment pattern", "학생 의견 패턴")}:</strong> ${course.dna.comments}</p>
-      ${Object.entries(course.evaluation.grades).map(([grade, count]) => `
-        <div class="grade-row">
-          <span>${grade === "DF" ? "D or F" : grade}</span>
-          <div class="grade-bar"><span style="width:${Math.round((count / gradeTotal) * 100)}%"></span></div>
-          <strong>${count}</strong>
-        </div>
-      `).join("")}
     </section>
 
     <section class="detail-section consequence-box">
-      <h4>${lang("AI Guided Planner and Possible Consequences", "AI 수강 계획 도우미와 가능한 결과")}</h4>
-      <p>${course.ai}</p>
-      <p><strong>${lang("Future academic impact", "미래 학업 영향")}:</strong> ${course.impact}</p>
-      ${course.consequences.map(item => `<div class="consequence-item">${item}</div>`).join("")}
-    </section>
-
-    <section class="detail-section">
-      <h4>${lang("Backup Option Generator", "대체 선택지 생성")}</h4>
-      <div class="chip-wrap">${course.backups.map(item => `<span>${item}</span>`).join("")}</div>
-    </section>
-
-    <div class="detail-actions">
-      <button id="planToggleButton" class="primary-button" type="button">${inPlan ? lang("Drop from Timetable", "시간표에서 제거") : lang("Add to Timetable", "시간표에 추가")}</button>
-      <button class="secondary-button" data-go="pathway" type="button">${lang("Open Pathway Planner", "수강 경로 열기")}</button>
-      <button class="secondary-button" data-go="advisor" type="button">${lang("Prepare Advisor Evidence", "어드바이저 보고서 준비")}</button>
-      <button id="auditButton" class="secondary-button" type="button">${lang("Degree Audit Preview", "Degree Audit 미리보기")}</button>
-    </div>
-
-    <section class="detail-section">
-      <h4>${lang("Visual Timetable Builder", "시각 시간표 빌더")}</h4>
-      <p>${lang("Students can add or drop courses directly and check conflicts, gaps, and workload pressure.", "학생은 과목을 직접 추가하거나 제거하면서 충돌, 공강, workload 부담을 확인할 수 있습니다.")}</p>
-      <div class="timetable-wrap">
-        <div id="timetable" class="timetable"></div>
-      </div>
-      <h4>${lang("Schedule Stress Heatmap", "시간표 부담 히트맵")}</h4>
-      <div id="heatmap" class="heatmap"></div>
+      <h4>${lang("Possible Consequences", "가능한 결과")}</h4>
+      ${safeList(course.consequences).map(item => `<div class="consequence-item">${item}</div>`).join("")}
     </section>
   `;
-
-  qs("#planToggleButton").addEventListener("click", () => {
-    if (plannedCourses.includes(course.id)) {
-      plannedCourses = plannedCourses.filter(id => id !== course.id);
-    } else {
-      plannedCourses.push(course.id);
-    }
-    renderCourseDetail();
-  });
-
-  qs("#auditButton").addEventListener("click", openDegreeAudit);
-  renderTimetable();
 }
 
-function timeSlot(start) {
-  if (start.startsWith("9")) return "9 AM";
-  if (start.startsWith("10")) return "10 AM";
-  if (start.startsWith("11")) return "11 AM";
-  if (start.startsWith("12")) return "12 PM";
-  if (start.startsWith("1")) return "1 PM";
-  if (start.startsWith("2")) return "2 PM";
-  if (start.startsWith("3")) return "3 PM";
-  if (start.startsWith("4")) return "4 PM";
-  if (start.startsWith("5")) return "5 PM";
-  if (start.startsWith("6")) return "6 PM";
-  if (start.startsWith("7")) return "7 PM";
-  if (start.startsWith("8")) return "8 PM";
-  return "9 AM";
+function renderEvaluationTab(course) {
+  const grades = course.grades;
+  const max = Math.max(grades.A, grades.B, grades.C, grades.DF, 1);
+
+  return `
+    <section class="detail-section">
+      <h4>${lang("Course Evaluation DNA", "강의 평가 DNA")}</h4>
+      <p class="muted">${lang("This information stays inside Course Search so students do not have to move to a separate evaluation site.", "이 정보는 Course Search 안에 있어서 학생이 별도 평가 사이트로 이동하지 않아도 됩니다.")}</p>
+      <div class="dna-grid">
+        <div class="dna-item"><strong>Workload</strong><p>${course.workload}</p></div>
+        <div class="dna-item"><strong>${lang("Grading fairness", "채점 공정성")}</strong><p>${course.grading}</p></div>
+        <div class="dna-item"><strong>${lang("Clarity", "명확성")}</strong><p>${course.clarity}</p></div>
+        <div class="dna-item"><strong>${lang("Exam difficulty", "시험 난이도")}</strong><p>${course.exam}</p></div>
+        <div class="dna-item"><strong>${lang("Group work", "그룹 과제")}</strong><p>${course.group}</p></div>
+        <div class="dna-item"><strong>${lang("Usefulness", "유용성")}</strong><p>${course.usefulness}</p></div>
+      </div>
+    </section>
+
+    <section class="detail-section">
+      <h4>${lang("Student comments summary", "학생 의견 요약")}</h4>
+      <p>${course.comments}</p>
+    </section>
+
+    <section class="detail-section">
+      <h4>${lang("Grade Distribution", "성적 분포")}</h4>
+      <p class="muted">${course.term} · ${course.enrolled} enrolled · ${course.responses} responses · rating ${course.rating}</p>
+      ${Object.entries(grades).map(([grade, value]) => `
+        <div class="grade-row">
+          <strong>${grade === "DF" ? "D or F" : grade}</strong>
+          <div class="grade-bar"><span style="width:${Math.round(value / max * 100)}%"></span></div>
+          <span>${value} ${lang("students", "명")}</span>
+        </div>
+      `).join("")}
+    </section>
+  `;
+}
+
+function renderCatalogTab(course) {
+  return `
+    <section class="detail-section">
+      <h4>${lang("Course Catalog Preview", "Course Catalog 미리보기")}</h4>
+      <p>${course.catalog}</p>
+      <div class="catalog-grid">
+        <div class="catalog-item"><span>Course code</span><strong>${course.code}</strong></div>
+        <div class="catalog-item"><span>Department</span><strong>${course.department}</strong></div>
+        <div class="catalog-item"><span>Level</span><strong>${course.level}</strong></div>
+        <div class="catalog-item"><span>Credits</span><strong>${course.credits}</strong></div>
+        <div class="catalog-item"><span>SBC</span><strong>${course.sbc || lang("No SBC listed in sample", "예시 SBC 없음")}</strong></div>
+        <div class="catalog-item"><span>Requirement</span><strong>${course.requirementType}</strong></div>
+        <div class="catalog-item"><span>Reserved seats</span><strong>${course.reservedSeats}</strong></div>
+        <div class="catalog-item"><span>Meeting</span><strong>${course.days} · ${course.start} to ${course.end} · ${course.location}</strong></div>
+      </div>
+    </section>
+  `;
+}
+
+function renderPathwayTab(course) {
+  return `
+    <section class="detail-section">
+      <h4>${lang("AI Guided Planner", "AI 수강 계획 도우미")}</h4>
+      <p>${course.planning}</p>
+    </section>
+    <section class="detail-section">
+      <h4>${lang("Future Academic Impact", "미래 학업 영향")}</h4>
+      <p>${course.impact}</p>
+    </section>
+    <section class="detail-section">
+      <h4>${lang("Backup Options", "대안 과목")}</h4>
+      <div class="chip-wrap">${safeList(course.backups).map(item => `<span>${item}</span>`).join("")}</div>
+    </section>
+  `;
+}
+
+function renderAdvisorTab(course) {
+  const state = checkReadiness(course);
+  return `
+    <section class="detail-section">
+      <h4>${lang("Advisor Ready Evidence", "어드바이저 제출용 근거")}</h4>
+      <div class="report-box">
+        <p><strong>${lang("Selected course", "선택 과목")}:</strong> ${course.code} ${course.title}</p>
+        <p><strong>${lang("Detected rule", "감지된 규칙")}:</strong> ${state.reasons.join(" · ")}</p>
+        <p><strong>${lang("Degree path risk", "졸업 경로 위험")}:</strong> ${course.impact}</p>
+        <p><strong>${lang("Possible alternatives", "가능한 대안")}:</strong> ${safeList(course.backups).join(", ")}</p>
+      </div>
+      <div class="action-row">
+        <button class="primary-button" data-go="advisor" type="button">${lang("Open Advisor Evidence Pack", "Advisor Evidence Pack 열기")}</button>
+      </div>
+    </section>
+  `;
+}
+
+function addCourse(id) {
+  const course = getCourse(id);
+  if (!course) return;
+  if (checkReadiness(course).level === "Blocked") return;
+  if (!plannedCourses.includes(id)) plannedCourses.push(id);
+  updateVisibleParts();
+}
+
+function dropCourse(id) {
+  plannedCourses = plannedCourses.filter(courseId => courseId !== id);
+  updateVisibleParts();
+}
+
+function updateVisibleParts() {
+  if (currentPage === "search") {
+    updateCourseList();
+    renderCourseDetail();
+    renderTimetable();
+  }
+  if (currentPage === "pathway") renderPathway();
+  if (currentPage === "advisor") renderAdvisor();
+}
+
+function parseHour(time) {
+  const match = String(time).match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (!match) return 9;
+  let hour = Number(match[1]);
+  if (match[3].toUpperCase() === "PM" && hour !== 12) hour += 12;
+  if (match[3].toUpperCase() === "AM" && hour === 12) hour = 0;
+  return hour;
 }
 
 function renderTimetable() {
-  const selected = getCourse();
+  const target = qs("#visualTimetable");
+  if (!target) return;
+
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-  const times = ["9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM"];
+  const hours = Array.from({ length: 12 }, (_, index) => index + 9);
+  const planned = plannedCourses.map(getCourse).filter(Boolean);
 
-  let html = `<div class="time"></div>`;
-  days.forEach(day => html += `<div class="day">${day}</div>`);
+  let html = `<div class="timetable-wrap"><div class="timetable"><div class="day">Time</div>${days.map(day => `<div class="day">${day}</div>`).join("")}`;
 
-  times.forEach(time => {
-    html += `<div class="time">${time}</div>`;
+  hours.forEach(hour => {
+    html += `<div class="time">${hour <= 12 ? hour : hour - 12}:00 ${hour < 12 ? "AM" : "PM"}</div>`;
     days.forEach(day => {
-      const blocks = plannedCourses
-        .map(id => courses.find(course => course.id === id))
-        .filter(Boolean)
-        .filter(course => course.time.days.includes(day) && timeSlot(course.time.start) === time);
-
-      html += `<div class="cell">`;
-
-      if (blocks.length) {
-        blocks.forEach(course => {
-          const conflict = blocks.length > 1;
-          const heavy = course.workload === "High";
-          html += `
-            <div class="class-block ${conflict ? "conflict" : ""} ${heavy ? "heavy" : ""}">
-              <strong>${course.code}</strong><br>
-              ${course.time.start} to ${course.time.end}<br>
-              ${course.time.location}
-              <button class="small-button" data-drop="${course.id}" type="button">${lang("Drop", "제거")}</button>
-            </div>
-          `;
-        });
-      } else {
-        html += selected ? `<button class="small-button" data-add="${selected.id}" type="button">${lang("Add", "추가")}</button>` : "";
-      }
-
-      html += `</div>`;
+      const blocks = planned.filter(course => course.days.includes(day) && parseHour(course.start) === hour);
+      html += `<div class="cell">${blocks.map(course => {
+        const conflict = planned.some(other => other.id !== course.id && other.days.includes(day) && parseHour(other.start) === hour);
+        return `<div class="class-block ${conflict ? "conflict" : course.workload === "High" ? "heavy" : ""}">
+          <strong>${course.code}</strong><br>
+          ${course.start} to ${course.end}<br>
+          ${course.location}
+          <button class="small-button" data-drop-course="${course.id}" type="button">${lang("Drop", "삭제")}</button>
+        </div>`;
+      }).join("")}</div>`;
     });
   });
 
-  qs("#timetable").innerHTML = html;
+  html += `</div></div>`;
+  html += `<p class="muted">${planned.length ? `${planned.length} ${lang("courses are currently planned.", "개 과목이 현재 시간표에 추가되어 있습니다.")}` : lang("No courses added yet. Select a course and click Add to Timetable.", "아직 추가된 과목이 없습니다. 과목을 선택한 뒤 Add to Timetable을 누르세요.")}</p>`;
 
-  const highCount = plannedCourses.map(id => courses.find(course => course.id === id)).filter(course => course && course.workload === "High").length;
-  const hasRisk = plannedCourses.map(id => courses.find(course => course.id === id)).some(course => course && course.status !== "Available");
-  const levels = highCount >= 2 ? ["high", "mid", "high", "mid", "low"] : hasRisk ? ["mid", "high", "mid", "low", "low"] : ["low", "mid", "mid", "low", "low"];
-  qs("#heatmap").innerHTML = levels.map(level => `<span class="${level}"></span>`).join("");
+  target.innerHTML = html;
 
-  qsa("[data-drop]").forEach(button => {
-    button.addEventListener("click", event => {
-      event.stopPropagation();
-      plannedCourses = plannedCourses.filter(id => id !== button.dataset.drop);
-      renderCourseDetail();
-    });
-  });
-
-  qsa("[data-add]").forEach(button => {
-    button.addEventListener("click", () => {
-      if (!plannedCourses.includes(button.dataset.add)) plannedCourses.push(button.dataset.add);
-      renderCourseDetail();
-    });
+  qsa("#visualTimetable [data-drop-course]").forEach(button => {
+    button.addEventListener("click", () => dropCourse(button.dataset.dropCourse));
   });
 }
 
 function renderPathway() {
-  const roadmap = roadmaps[selectedMajor];
-  const course = getCourse();
+  const selected = getCourse();
 
   qs("#mainContent").innerHTML = `
     <section class="page-title">
-      <h2>${lang("Pathway Planner", "수강 경로 계획")}</h2>
-      <p>${lang("The planner shows how current course choices may affect future semesters and graduation requirements.", "이 계획 도구는 현재 과목 선택이 미래 학기와 졸업 요건에 어떤 영향을 줄 수 있는지 보여줍니다.")}</p>
+      <h2>${lang("Biochemistry Pathway Planner", "Biochemistry 수강 경로 계획")}</h2>
+      <p>${lang("This page is intentionally fixed to Kevin Ruiz's Biochemistry plan, because the prototype should feel like a personal SOLAR style page rather than a general catalog.", "이 페이지는 Kevin Ruiz의 Biochemistry 계획으로 고정되어 있습니다. 일반 카탈로그가 아니라 개인 SOLAR형 페이지처럼 보이기 위해서입니다.")}</p>
     </section>
 
-    <section class="card roadmap-control">
-      <div>
-        <h3>${roadmap.name}</h3>
-        <p>${roadmap.summary}</p>
+    <section class="card notice-card"><strong>${lang("Prototype planning guide only. Students should confirm official requirements with advising and the department.", "프로토타입 계획 가이드입니다. 공식 요건은 advising과 학과를 통해 확인해야 합니다.")}</strong></section>
+
+    <section class="card" style="margin-top:20px">
+      <h3>${lang("English and Math Timing Guide", "영어와 수학 완료 시점 가이드")}</h3>
+      <div class="timeline">
+        <div class="timeline-item"><strong>WRT 102</strong><div>${lang("Complete by the end of Year 1. This protects later lab reports, upper division writing, and advisor review.", "1학년 말 전까지 완료하는 것이 좋습니다. 이후 실험 보고서, 상위 writing, advisor review에 영향을 줍니다.")}</div></div>
+        <div class="timeline-item"><strong>MAT 123</strong><div>${lang("Complete in Year 1 Fall or Year 1 Spring. This unlocks AMS 151 planning.", "1학년 가을 또는 봄에 완료하는 것이 좋습니다. AMS 151 계획의 출발점입니다.")}</div></div>
+        <div class="timeline-item"><strong>AMS 151</strong><div>${lang("Complete by Year 1 Spring or early Year 2. A late start compresses calculus, physics, and science workload.", "1학년 봄 또는 늦어도 2학년 초에 완료하는 것이 좋습니다. 늦어지면 calculus, physics, science workload가 한꺼번에 몰립니다.")}</div></div>
+        <div class="timeline-item"><strong>AMS 161</strong><div>${lang("Complete by the end of Year 2 if possible. This prevents math from colliding with organic chemistry and advanced biology.", "가능하면 2학년 말 전까지 완료하는 것이 좋습니다. organic chemistry와 advanced biology 시기에 수학이 겹치는 것을 줄입니다.")}</div></div>
       </div>
-      <select id="pathwayMajorSelect">
-        <option value="TSM" ${selectedMajor === "TSM" ? "selected" : ""}>TSM</option>
-        <option value="Biochemistry" ${selectedMajor === "Biochemistry" ? "selected" : ""}>Biochemistry</option>
-      </select>
     </section>
 
-    <section class="roadmap-grid">
-      ${roadmap.years.map(year => `
+    <section class="roadmap-grid" style="margin-top:20px">
+      ${biochemPathway.map(year => `
         <article class="year-card">
           <h3>${year.year}</h3>
           <p><strong>${year.focus}</strong></p>
-          ${year.courses.map(id => {
-            const c = courses.find(course => course.id === id);
-            return c ? `<button class="small-button ${id === selectedCourseId ? "selected-course-button" : ""}" data-roadmap-course="${id}" type="button">${c.code} ${c.title}</button>` : "";
-          }).join("")}
-          <p>${year.note}</p>
+          ${year.semesters.map(semester => `
+            <div class="detail-section">
+              <h4>${semester.name}</h4>
+              ${semester.courses.map(id => {
+                const course = getCourse(id);
+                return course ? `<button class="small-button ${selectedCourseId === id ? "selected-course-button" : ""}" data-select-course="${id}" type="button">${course.code} ${isAdded(id) ? "✓" : ""}</button>` : "";
+              }).join("")}
+              <p class="muted">${semester.note}</p>
+            </div>
+          `).join("")}
         </article>
       `).join("")}
     </section>
 
-    <section class="grid two" style="margin-top:20px">
-      <article class="card">
-        <h3>${lang("Selected Course Impact", "선택 과목 영향")}</h3>
-        ${course ? `
-          <p><strong>${course.code} ${course.title}</strong></p>
-          <p>${course.impact}</p>
-          <p><strong>${lang("Major fit", "전공 적합성")}:</strong> ${getMajorFit(course)}</p>
-        ` : `<p>${lang("Select a course first in Integrated Course Search or from the roadmap.", "통합 과목 검색이나 로드맵에서 먼저 과목을 선택하세요.")}</p>`}
-      </article>
-
-      <article class="card consequence-box">
-        <h3>${lang("Possible Consequences", "가능한 결과")}</h3>
-        ${course ? course.consequences.map(item => `<div class="consequence-item">${item}</div>`).join("") : `<p>${lang("No course selected yet.", "아직 선택된 과목이 없습니다.")}</p>`}
-      </article>
+    <section class="card" style="margin-top:20px">
+      <h3>${lang("Selected Course Impact", "선택 과목 영향")}</h3>
+      ${selected ? `<p><strong>${selected.code}:</strong> ${selected.impact}</p><div class="chip-wrap">${safeList(selected.consequences).map(item => `<span>${item}</span>`).join("")}</div>` : `<p class="muted">${lang("Select a course from the pathway or Course Search to see its impact.", "Pathway 또는 Course Search에서 과목을 선택하면 영향이 표시됩니다.")}</p>`}
+      <div class="action-row"><button class="primary-button" data-go="search" type="button">${lang("Return to Course Search", "Course Search로 돌아가기")}</button></div>
     </section>
   `;
 
-  qs("#pathwayMajorSelect").addEventListener("change", event => {
-    selectedMajor = event.target.value;
-    renderPathway();
-  });
-
-  qsa("[data-roadmap-course]").forEach(button => {
+  qsa("[data-select-course]").forEach(button => {
     button.addEventListener("click", () => {
-      selectedCourseId = button.dataset.roadmapCourse;
+      selectedCourseId = button.dataset.selectCourse;
+      selectedDetailTab = "pathway";
       renderPathway();
     });
   });
@@ -1040,161 +1431,197 @@ function renderPathway() {
 
 function renderAdvisor() {
   const course = getCourse();
-  const office = course && (course.requirementType === "Major" || course.requirementType === "Prerequisite")
-    ? "Academic and Transfer Advising Services and the department coordinator"
-    : "Academic Advising Office";
 
   qs("#mainContent").innerHTML = `
     <section class="page-title">
-      <h2>${lang("Advisor Ready Evidence Pack", "어드바이저 제출용 근거 패키지")}</h2>
-      <p>${lang("This report helps students contact the correct human support office with specific evidence rather than vague confusion.", "이 보고서는 학생이 막연한 혼란이 아니라 구체적인 근거를 가지고 적절한 지원 부서에 연락하도록 돕습니다.")}</p>
+      <h2>${lang("Advisor Evidence Pack", "어드바이저 보고서")}</h2>
+      <p>${lang("This page turns course confusion into advisor ready evidence. It supports human agency instead of replacing human advising.", "이 페이지는 수강 혼란을 어드바이저에게 전달 가능한 근거로 바꿉니다. 사람의 상담을 대체하지 않고 연결합니다.")}</p>
     </section>
 
-    ${course ? `
-      <section class="card">
-        <h3>${lang("Selected course", "선택 과목")}</h3>
-        <p><strong>${course.code} ${course.title}</strong> · ${course.instructor} · ${course.time.days} · ${course.time.start} to ${course.time.end}</p>
-
-        <h3>${lang("Detected issue", "감지된 문제")}</h3>
-        <p>${course.ai}</p>
-
-        <h3>${lang("Requirement evidence", "요건 근거")}</h3>
-        <p><strong>${lang("Prerequisite", "선수 조건")}:</strong> ${course.prerequisite}</p>
-        <p><strong>SBC:</strong> ${course.sbc}</p>
-        <p><strong>${lang("Major fit", "전공 적합성")}:</strong> ${getMajorFit(course)}</p>
-        <p><strong>${lang("Reserved seats", "Reserved seats")}:</strong> ${course.reservedSeats}</p>
-
-        <h3>${lang("Possible consequences", "가능한 결과")}</h3>
-        ${course.consequences.map(item => `<div class="consequence-item">${item}</div>`).join("")}
-
-        <h3>${lang("Backup options", "대체 선택지")}</h3>
-        <div class="chip-wrap">${course.backups.map(item => `<span>${item}</span>`).join("")}</div>
-
-        <h3>${lang("Prepared email draft", "이메일 초안")}</h3>
-        <div class="email-box">Dear ${office},
-
-I am reviewing ${course.code} ${course.title} for ${selectedTerm}. ZOLAR shows that this course may affect my ${roadmaps[selectedMajor].name} pathway.
-
-Detected issue:
-${course.ai}
-
-Could you confirm whether this course fits my prerequisite status, SBC requirement, major requirement, reserved seat status, and graduation sequence?
-
-Thank you.</div>
-
-        <button id="sendAdvisorDraft" class="primary-button" type="button">${lang("Send Draft", "초안 보내기")}</button>
-        <div id="sendStatus"></div>
-      </section>
-    ` : `
+    ${course ? renderAdvisorReport(course) : `
       <section class="card empty-state">
         <h3>${lang("No course selected", "선택된 과목 없음")}</h3>
-        <p>${lang("Select a course in Integrated Course Search first. Then this page will generate an advisor ready report.", "먼저 통합 과목 검색에서 과목을 선택하세요. 그러면 이 페이지가 어드바이저 제출용 보고서를 생성합니다.")}</p>
-        <button class="primary-button" data-go="search" type="button">${lang("Go to Course Search", "과목 검색으로 이동")}</button>
+        <p>${lang("Go to Integrated Course Search and select a course first. Then this page will show blocked course evidence, detected rule, degree path risk, alternatives, and a prepared email draft.", "먼저 Integrated Course Search에서 과목을 선택하세요. 그러면 blocked course evidence, detected rule, degree path risk, alternatives, email draft가 여기에 표시됩니다.")}</p>
+        <button class="primary-button" data-go="search" type="button">${lang("Go to Course Search", "Course Search로 이동")}</button>
       </section>
     `}
   `;
 
-  const sendButton = qs("#sendAdvisorDraft");
+  const sendButton = qs("#sendDraftButton");
   if (sendButton) {
     sendButton.addEventListener("click", () => {
-      qs("#sendStatus").innerHTML = `<div class="sent-box">${tr("sentMessage")}</div>`;
+      sentDraft = true;
+      renderAdvisor();
     });
   }
 }
 
-function openDegreeAudit() {
-  const course = getCourse();
-  const modal = qs("#degreeModal");
-  const content = qs("#degreeAuditContent");
+function renderAdvisorReport(course) {
+  const state = checkReadiness(course);
+  const email = `Subject: Registration question about ${course.code}
 
-  content.innerHTML = `
-    <div class="audit-grid">
-      <div class="audit-box">
-        <h3>${lang("Student Record", "학생 기록")}</h3>
-        <p><strong>${lang("Student", "학생")}:</strong> Kevin Ruiz</p>
-        <p><strong>${lang("Major", "전공")}:</strong> ${roadmaps[selectedMajor].name}</p>
-        <p><strong>GPA:</strong> 3.18</p>
-        <p><strong>${lang("Credits completed", "이수 학점")}:</strong> 45</p>
-      </div>
+Dear Academic and Transfer Advising Services and Department Coordinator,
 
-      <div class="audit-box">
-        <h3>${lang("Requirement Progress", "요건 진행 상황")}</h3>
-        <p>Writing: 70 percent complete</p>
-        <p>Math or quantitative sequence: 45 percent complete</p>
-        <p>Major foundation: 50 percent complete</p>
-        <p>SBC categories: 60 percent complete</p>
-      </div>
+I am Kevin Ruiz, a first year Biochemistry student. I am reviewing ${course.code} ${course.title} in the ZOLAR class project prototype.
 
-      <div class="audit-box">
-        <h3>${lang("Selected Course Fit", "선택 과목 적용 여부")}</h3>
-        ${course ? `<p><strong>${course.code}</strong> ${course.title}</p><p>${getMajorFit(course)}</p><p>${course.impact}</p>` : `<p>${lang("Select a course to check how it may apply to the degree audit.", "과목을 선택하면 degree audit 적용 가능성을 확인할 수 있습니다.")}</p>`}
-      </div>
+The prototype detected the following issue: ${state.reasons.join("; ")}.
 
-      <div class="audit-box">
-        <h3>${lang("Advisor Note", "어드바이저 참고")}</h3>
-        <p>${course ? course.ai : lang("Degree audit information can guide planning, but students should confirm unusual sequence or transfer questions with an advisor.", "Degree audit 정보는 계획을 도울 수 있지만, 특이한 수강 순서나 편입 관련 질문은 어드바이저에게 확인해야 합니다.")}</p>
+Possible degree path risk: ${course.impact}
+
+Possible alternatives I am considering: ${safeList(course.backups).join(", ")}.
+
+Could you please confirm whether I should add this course, choose one of the alternatives, or adjust my Biochemistry pathway plan?
+
+Thank you,
+Kevin Ruiz`;
+
+  return `
+    <section class="card">
+      <h3>${course.code} ${course.title}</h3>
+      <div class="report-box">
+        <p><strong>${lang("Blocked course or concern", "제한 또는 우려 과목")}:</strong> ${course.code}</p>
+        <p><strong>${lang("Detected rule", "감지된 규칙")}:</strong> ${state.reasons.join(" · ")}</p>
+        <p><strong>${lang("Degree path risk", "졸업 경로 위험")}:</strong> ${course.impact}</p>
+        <p><strong>${lang("Possible alternatives", "가능한 대안")}:</strong> ${safeList(course.backups).join(", ")}</p>
+        <p><strong>${lang("Human support pathway", "사람의 도움 경로")}:</strong> Academic and Transfer Advising Services and department coordinator.</p>
       </div>
-    </div>
+    </section>
+
+    <section class="card">
+      <h3>${lang("Prepared Email Draft", "준비된 이메일 초안")}</h3>
+      <div class="email-box"><pre>${email}</pre></div>
+      <button id="sendDraftButton" class="primary-button" type="button" style="margin-top:16px">${lang("Send Draft", "초안 보내기")}</button>
+      ${sentDraft ? `<div class="success-box">${tr("sentMessage")}</div>` : ""}
+    </section>
   `;
-
-  modal.classList.remove("hidden");
 }
 
-function sendChatMessage(text) {
-  const messages = qs("#chatMessages");
-  if (!text.trim()) return;
+function renderDegreeAudit() {
+  const credits = plannedCourses.map(getCourse).filter(Boolean).reduce((sum, course) => sum + course.credits, 0);
+  const major = plannedCourses.map(getCourse).filter(course => course && course.requirementType !== "SBC").length;
 
+  qs("#degreeAuditContent").innerHTML = `
+    <div class="profile-card">
+      <div class="profile-item"><span>Student</span><strong>${student.name}</strong></div>
+      <div class="profile-item"><span>Major</span><strong>${student.major}</strong></div>
+      <div class="profile-item"><span>Standing</span><strong>${student.standing}</strong></div>
+      <div class="profile-item"><span>Planned credits</span><strong>${credits}</strong></div>
+    </div>
+
+    <section class="detail-section">
+      <h4>${lang("Prototype Degree Audit Status", "프로토타입 Degree Audit 상태")}</h4>
+      <div class="catalog-grid">
+        <div class="catalog-item"><span>Writing</span><strong>${plannedCourses.includes("WRT102") ? "Planned" : "Not planned yet"}</strong></div>
+        <div class="catalog-item"><span>Math bridge</span><strong>${plannedCourses.includes("MAT123") ? "MAT 123 planned" : "MAT 123 needed"}</strong></div>
+        <div class="catalog-item"><span>Chemistry foundation</span><strong>${plannedCourses.includes("CHE131") ? "CHE 131 planned" : "CHE 131 needed"}</strong></div>
+        <div class="catalog-item"><span>Biology foundation</span><strong>${plannedCourses.includes("BIO201") ? "BIO 201 planned" : "BIO 201 needed"}</strong></div>
+        <div class="catalog-item"><span>Major related planned courses</span><strong>${major}</strong></div>
+        <div class="catalog-item"><span>Audit type</span><strong>Unofficial sample preview</strong></div>
+      </div>
+    </section>
+  `;
+}
+
+function openDegreeModal() {
+  renderDegreeAudit();
+  qs("#degreeModal").classList.remove("hidden");
+}
+
+function closeDegreeModal() {
+  qs("#degreeModal").classList.add("hidden");
+}
+
+function addChatMessage(text, type = "bot") {
+  const target = qs("#chatMessages");
+  if (!target) return;
+
+  const bubble = document.createElement("div");
+  bubble.className = `chat-bubble ${type === "user" ? "user" : "bot"}`;
+  bubble.textContent = text;
+  target.appendChild(bubble);
+  target.scrollTop = target.scrollHeight;
+}
+
+function getChatReply(message) {
+  const text = message.toLowerCase();
   const course = getCourse();
-  const lower = text.toLowerCase();
-  let answer = tr("chatbotWelcome");
+  const courseName = course ? `${course.code} ${course.title}` : lang("the selected course", "선택한 과목");
 
-  if (course) {
-    if (lower.includes("prereq") || lower.includes("선수")) answer = `${course.code} prerequisite: ${course.prerequisite}`;
-    else if (lower.includes("sbc")) answer = `${course.code} SBC: ${course.sbc}`;
-    else if (lower.includes("workload") || lower.includes("과제")) answer = `${course.code} workload is ${course.workload}. ${course.dna.comments}`;
-    else if (lower.includes("path") || lower.includes("roadmap") || lower.includes("경로")) answer = `${course.code} pathway impact: ${course.impact}`;
-    else if (lower.includes("advisor") || lower.includes("어드바이저")) answer = `Use the Advisor Evidence Pack for ${course.code}. It includes prerequisite, SBC, major fit, risks, consequences, backup options, and an email draft.`;
-    else answer = `${course.code}: ${course.ai}`;
+  if (text.includes("prereq") || text.includes("선수") || text.includes("require")) {
+    return course ? `${courseName}: ${course.prerequisite}. ${checkReadiness(course).reasons.join(" ")}` : lang("Select a course first. Then I can explain its prerequisite and blocked rule.", "먼저 과목을 선택하면 선수 조건과 제한 이유를 설명할 수 있습니다.");
   }
 
-  messages.innerHTML += `<div class="chatbot-message user">${text}</div>`;
-  messages.innerHTML += `<div class="chatbot-message bot">${answer}</div>`;
-  messages.scrollTop = messages.scrollHeight;
+  if (text.includes("math") || text.includes("수학") || text.includes("placement")) {
+    return lang("Kevin is currently treated as MAT 123 eligible, not AMS 151 eligible. MAT 123 should be completed by Year 1 so AMS 151 can begin by Year 1 Spring or early Year 2.", "Kevin은 현재 MAT 123 수강 가능, AMS 151은 아직 제한된 상태로 설정되어 있습니다. MAT 123은 1학년 안에 끝내야 AMS 151을 1학년 봄 또는 2학년 초에 시작할 수 있습니다.");
+  }
+
+  if (text.includes("english") || text.includes("writing") || text.includes("영어") || text.includes("wrt")) {
+    return lang("Kevin is WRT 102 eligible. WRT 102 should be completed by the end of Year 1 because later lab reports and upper division writing depend on stronger academic writing readiness.", "Kevin은 WRT 102 수강 가능 상태입니다. 이후 실험 보고서와 상위 writing을 위해 WRT 102는 1학년 말 전까지 완료하는 것이 좋습니다.");
+  }
+
+  if (text.includes("workload") || text.includes("부담") || text.includes("difficulty")) {
+    return course ? `${courseName}: workload is ${course.workload}. Student comments summary: ${course.comments}` : lang("Select a course to see workload, exam difficulty, grading style, and student comments.", "과목을 선택하면 workload, 시험 난이도, 채점 방식, 학생 의견을 볼 수 있습니다.");
+  }
+
+  if (text.includes("sbc") || text.includes("교양")) {
+    return course ? `${courseName}: SBC sample category is ${course.sbc || "not listed"}. Remember this is sample prototype data.` : lang("SBC examples are shown inside Course Search so Kevin can compare major courses and general education options together.", "SBC 예시는 Course Search 안에 있어 전공 과목과 교양 과목을 함께 비교할 수 있습니다.");
+  }
+
+  if (text.includes("advisor") || text.includes("email") || text.includes("상담") || text.includes("메일")) {
+    return lang("Use Advisor Evidence Pack after selecting a course. It prepares the blocked rule, degree path risk, alternatives, and an email draft for Academic and Transfer Advising Services and the department coordinator.", "과목을 선택한 뒤 Advisor Evidence Pack을 사용하세요. 제한 규칙, 졸업 경로 위험, 대안, Academic and Transfer Advising Services와 학과 코디네이터에게 보낼 이메일 초안을 준비합니다.");
+  }
+
+  if (text.includes("path") || text.includes("sequence") || text.includes("경로") || text.includes("로드맵")) {
+    return lang("For Biochemistry, Year 1 should protect WRT 102, MAT 123, CHE 131, CHE 133, and BIO 201. Math should not be left too late because AMS 151 and AMS 161 can collide with organic chemistry later.", "Biochemistry는 1학년에 WRT 102, MAT 123, CHE 131, CHE 133, BIO 201을 확보하는 것이 중요합니다. 수학이 늦어지면 AMS 151과 AMS 161이 나중에 organic chemistry와 겹칠 수 있습니다.");
+  }
+
+  return lang("I can help with prerequisites, math level, English level, workload, SBC, pathway risk, advisor evidence, and timetable planning. Select a course first for a more specific answer.", "선수 조건, 수학 레벨, 영어 레벨, workload, SBC, 경로 위험, 상담 근거, 시간표 계획을 도와줄 수 있습니다. 더 구체적인 답변을 원하면 먼저 과목을 선택하세요.");
+}
+
+function sendChat() {
+  const input = qs("#chatInput");
+  const message = input.value.trim();
+  if (!message) return;
+
+  addChatMessage(message, "user");
+  input.value = "";
+  addChatMessage(getChatReply(message), "bot");
 }
 
 function bindGlobalEvents() {
-  qsa(".nav").forEach(button => {
-    button.addEventListener("click", () => showPage(button.dataset.page));
-  });
-
-  document.addEventListener("click", event => {
-    const go = event.target.closest("[data-go]");
-    if (go) showPage(go.dataset.go);
-  });
-
   qs("#signInButton").addEventListener("click", () => {
     qs("#loginScreen").classList.add("hidden");
     qs("#app").classList.remove("hidden");
     showPage("dashboard");
+    if (!qs("#chatMessages").children.length) addChatMessage(tr("chatbotWelcome"), "bot");
   });
 
   qs("#signOutButton").addEventListener("click", () => {
     qs("#app").classList.add("hidden");
     qs("#loginScreen").classList.remove("hidden");
+    qs("#userDropdown").classList.add("hidden");
   });
 
-  qs("#userMenuButton").addEventListener("click", () => {
-    qs("#userDropdown").classList.toggle("hidden");
+  qsa(".nav").forEach(button => {
+    button.addEventListener("click", () => showPage(button.dataset.page));
   });
 
   qs("#noticeButton").addEventListener("click", () => {
     qs("#noticePanel").classList.toggle("hidden");
     qs("#messagePanel").classList.add("hidden");
+    qs("#userDropdown").classList.add("hidden");
   });
 
   qs("#messageButton").addEventListener("click", () => {
     qs("#messagePanel").classList.toggle("hidden");
     qs("#noticePanel").classList.add("hidden");
+    qs("#userDropdown").classList.add("hidden");
+  });
+
+  qs("#userMenuButton").addEventListener("click", () => {
+    qs("#userDropdown").classList.toggle("hidden");
+    qs("#noticePanel").classList.add("hidden");
+    qs("#messagePanel").classList.add("hidden");
   });
 
   qs("#englishButton").addEventListener("click", () => {
@@ -1207,43 +1634,34 @@ function bindGlobalEvents() {
     showPage(currentPage);
   });
 
-  qs("#closeDegreeModal").addEventListener("click", () => {
-    qs("#degreeModal").classList.add("hidden");
-  });
-
-  qs("#degreeModal").addEventListener("click", event => {
-    if (event.target.id === "degreeModal") qs("#degreeModal").classList.add("hidden");
-  });
-
   qs("#openChatButton").addEventListener("click", () => {
     qs("#chatPanel").classList.toggle("hidden");
-    if (!qs("#chatPanel").classList.contains("hidden") && qs("#chatMessages").innerHTML.trim() === "") {
-      qs("#chatMessages").innerHTML = `<div class="chatbot-message bot">${tr("chatbotWelcome")}</div>`;
-    }
   });
 
   qs("#closeChatButton").addEventListener("click", () => {
     qs("#chatPanel").classList.add("hidden");
   });
 
-  qs("#sendChatButton").addEventListener("click", () => {
-    const input = qs("#chatInput");
-    sendChatMessage(input.value);
-    input.value = "";
-  });
+  qs("#sendChatButton").addEventListener("click", sendChat);
 
   qs("#chatInput").addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-      sendChatMessage(event.target.value);
-      event.target.value = "";
-    }
+    if (event.key === "Enter") sendChat();
+  });
+
+  qs("#closeDegreeModal").addEventListener("click", closeDegreeModal);
+
+  qs("#degreeModal").addEventListener("click", event => {
+    if (event.target.id === "degreeModal") closeDegreeModal();
+  });
+
+  document.addEventListener("click", event => {
+    const goButton = event.target.closest("[data-go]");
+    if (goButton) showPage(goButton.dataset.go);
+
+    const degreeButton = event.target.closest("[data-open-degree]");
+    if (degreeButton) openDegreeModal();
   });
 }
 
-function init() {
-  bindGlobalEvents();
-  applyTranslations();
-  renderDashboard();
-}
-
-document.addEventListener("DOMContentLoaded", init);
+bindGlobalEvents();
+applyTranslations();
