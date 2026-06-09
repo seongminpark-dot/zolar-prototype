@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZOLAR Course Registration Prototype</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="loginScreen" class="login-shell">
@@ -16,15 +16,21 @@
     <main class="login-main">
       <section class="login-card">
         <h1>ZOLAR Prototype Login</h1>
+
         <label for="studentId">Stony Brook ID</label>
-        <input id="studentId" type="text" value="0000000" autocomplete="off" />
+        <input id="studentId" type="text" value="0000000" autocomplete="off">
+
         <label for="studentPassword">Password</label>
-        <input id="studentPassword" type="password" value="zolar2026" autocomplete="off" />
+        <input id="studentPassword" type="password" value="zolar2026" autocomplete="off">
+
         <div class="login-actions">
           <button id="signInButton" class="primary-button" type="button">Sign In</button>
           <button class="text-button" type="button">Forgot Password?</button>
         </div>
-        <p class="prototype-note">This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.</p>
+
+        <p class="prototype-note">
+          This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.
+        </p>
       </section>
     </main>
   </div>
@@ -39,7 +45,7 @@
         </div>
       </div>
 
-      <nav class="sidebar-nav" aria-label="Prototype navigation">
+      <nav class="sidebar-nav">
         <button class="nav active" data-page="dashboard" data-i18n="navDashboard" type="button">Dashboard</button>
         <button class="nav" data-page="personas" data-i18n="navPersonas" type="button">Persona Needs</button>
         <button class="nav" data-page="search" data-i18n="navSearch" type="button">Integrated Course Search</button>
@@ -59,14 +65,16 @@
         </div>
 
         <div class="topbar-actions">
-          <button id="noticeButton" class="icon-button" aria-label="Notifications" type="button">🔔</button>
-          <button id="messageButton" class="icon-button" aria-label="Messages" type="button">✉️</button>
+          <button id="noticeButton" class="icon-button" type="button">🔔</button>
+          <button id="messageButton" class="icon-button" type="button">✉️</button>
+
           <div class="user-area">
             <button id="userMenuButton" class="user-button" type="button">
               <span class="avatar">K</span>
-              <span>Kevin<br />Ruiz</span>
-              <span aria-hidden="true">▾</span>
+              <span>Kevin<br>Ruiz</span>
+              <span>▾</span>
             </button>
+
             <div id="userDropdown" class="dropdown hidden">
               <button id="signOutButton" type="button">Sign Out</button>
             </div>
@@ -87,19 +95,21 @@
       <main id="mainContent" class="content"></main>
     </section>
 
-    <section id="chatPanel" class="chat-panel hidden" aria-label="AI chat assistant">
+    <section id="chatPanel" class="chat-panel hidden">
       <div class="chat-head">
         <strong data-i18n="chatTitle">ZOLAR AI Assistant</strong>
         <button id="closeChatButton" class="icon-button" type="button">×</button>
       </div>
+
       <div id="chatMessages" class="chat-messages"></div>
+
       <div class="chat-input-row">
-        <input id="chatInput" type="text" placeholder="Ask about prerequisites, workload, or pathway risk" />
+        <input id="chatInput" type="text" placeholder="Ask about prerequisites, workload, SBC, or pathway risk">
         <button id="sendChatButton" class="primary-button" type="button">Send</button>
       </div>
     </section>
 
-    <button id="openChatButton" class="chat-launch" aria-label="Open AI assistant" type="button">💬</button>
+    <button id="openChatButton" class="chat-launch" type="button">💬</button>
 
     <div class="language-switch">
       <button id="englishButton" class="lang active-lang" type="button">EN</button>
@@ -110,7 +120,9 @@
       <section class="modal-card">
         <button id="closeDegreeModal" class="modal-close" type="button">×</button>
         <h2 data-i18n="degreeTitle">Degree Audit Preview</h2>
-        <p data-i18n="degreeIntro">This preview imitates how a degree audit can show completed, missing, and in progress requirements. It is part of the prototype, not an official audit.</p>
+        <p data-i18n="degreeIntro">
+          This prototype shows how Degree Works style information could support registration decisions. It is not an official degree audit.
+        </p>
         <div id="degreeAuditContent"></div>
       </section>
     </div>
