@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZOLAR Course Registration Prototype</title>
+  <title>ZOLAR Biochemistry Course Registration Prototype</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="loginScreen" class="login-shell">
     <header class="login-header">
       <div class="brand-mark small">Z</div>
-      <div class="login-title">Course Registration <span>Prototype</span></div>
+      <div class="login-title">ZOLAR <span>Prototype</span></div>
     </header>
 
     <main class="login-main">
       <section class="login-card">
-        <h1>ZOLAR Prototype Login</h1>
+        <p class="eyebrow">Student Course Registration Support</p>
+        <h1>Personal Registration Prototype</h1>
+        <p class="login-copy">A sample student view for Kevin Ruiz, a first year Biochemistry major.</p>
 
         <label for="studentId">Stony Brook ID</label>
         <input id="studentId" type="text" value="0000000" autocomplete="off">
@@ -41,7 +43,7 @@
         <div class="brand-mark">Z</div>
         <div>
           <h2>ZOLAR</h2>
-          <p data-i18n="systemSubtitle">Course Registration Support</p>
+          <p data-i18n="systemSubtitle">Biochemistry Registration Support</p>
         </div>
       </div>
 
@@ -52,6 +54,12 @@
         <button class="nav" data-page="pathway" data-i18n="navPathway" type="button">Pathway Planner</button>
         <button class="nav" data-page="advisor" data-i18n="navAdvisor" type="button">Advisor Evidence Pack</button>
       </nav>
+
+      <div class="sidebar-note">
+        <strong>Kevin Ruiz</strong>
+        <span>Biochemistry BS</span>
+        <span>First Year, Fall Semester</span>
+      </div>
     </aside>
 
     <section class="workspace">
@@ -59,8 +67,8 @@
         <div class="topbar-title">
           <div class="brand-mark top">Z</div>
           <div>
-            <h1 data-i18n="topTitle">Course Registration Prototype</h1>
-            <p data-i18n="topDescription">Integrated search, evaluation, pathway, and advising support.</p>
+            <h1 data-i18n="topTitle">Biochemistry Registration Prototype</h1>
+            <p data-i18n="topDescription">Personal course search, pathway, evaluation, and advising support.</p>
           </div>
         </div>
 
@@ -104,7 +112,7 @@
       <div id="chatMessages" class="chat-messages"></div>
 
       <div class="chat-input-row">
-        <input id="chatInput" type="text" placeholder="Ask about prerequisites, workload, SBC, or pathway risk">
+        <input id="chatInput" type="text" placeholder="Ask about prerequisites, workload, SBC, pathway risk, or advisor evidence">
         <button id="sendChatButton" class="primary-button" type="button">Send</button>
       </div>
     </section>
