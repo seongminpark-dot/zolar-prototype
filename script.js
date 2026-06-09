@@ -2,7 +2,6 @@ const translations = {
   en: {
     systemSubtitle: "Biochemistry Registration Support",
     navDashboard: "Dashboard",
-    navPersonas: "Persona Needs",
     navSearch: "Integrated Course Search",
     navPathway: "Pathway Planner",
     navAdvisor: "Advisor Evidence Pack",
@@ -23,7 +22,6 @@ const translations = {
   ko: {
     systemSubtitle: "Biochemistry 수강신청 지원",
     navDashboard: "대시보드",
-    navPersonas: "페르소나 필요 분석",
     navSearch: "통합 과목 검색",
     navPathway: "수강 경로 계획",
     navAdvisor: "어드바이저 보고서",
@@ -65,10 +63,11 @@ const student = {
 };
 
 const departments = ["All", "AMS", "BCH", "BIO", "CHE", "MAT", "MUS", "PHI", "PHY", "POL", "PSY", "WRT"];
-const requirements = ["All", "Major Foundation", "Math", "Writing", "SBC", "Advanced Major", "Lab", "Elective"];
+const requirements = ["All", "Major Foundation", "Math", "Writing", "SBC", "Advanced Major", "Lab"];
 const statusFilters = ["All", "Available", "Caution", "Closed", "Waitlist", "Reserved"];
 const readinessFilters = ["All", "Ready", "Caution", "Blocked"];
 const workloadFilters = ["All", "Low", "Medium", "High"];
+
 const mathLevelNames = {
   0: "No college math access",
   1: "MAT 123 eligible",
@@ -625,7 +624,7 @@ const biochemPathway = [
     year: "Year 1",
     focus: "Chemistry, biology, writing, and math placement foundation",
     semesters: [
-      { name: "Fall", courses: ["WRT102", "MAT123", "CHE131", "CHE133", "BIO201"], note: "Finish WRT 102 and start MAT 123, CHE 131, and BIO 201 early." },
+      { name: "Fall", courses: ["WRT102", "MAT123", "CHE131", "CHE133", "BIO201"], note: "Finish WRT 102 and start MAT 123, CHE 131, CHE 133, and BIO 201 early." },
       { name: "Spring", courses: ["CHE132", "CHE134", "BIO202", "AMS151", "PSY103"], note: "Move into CHE 132 and AMS 151 only after the first semester foundation is clear." }
     ]
   },
@@ -652,39 +651,6 @@ const biochemPathway = [
       { name: "Fall", courses: ["BCH361", "PHI104"], note: "Confirm remaining advanced BIO, CHE, BCH, SBC, and writing requirements." },
       { name: "Spring", courses: ["MUS105", "POL102"], note: "Do not leave writing, lab, or advanced requirement checks until the last month." }
     ]
-  }
-];
-
-const personas = [
-  {
-    name: "Jihoon",
-    pd: "High power distance",
-    need: "Needs safe language support before asking repeated registration questions.",
-    response: "Guided Language Support explains prerequisites, reserved seats, and advisor questions in simple English and Korean."
-  },
-  {
-    name: "Kevin Ruiz",
-    pd: "Middle power distance",
-    need: "Needs a personal Biochemistry pathway because math and English placement change which courses are realistic.",
-    response: "The Course Decision Hub shows eligibility, blocked courses, possible consequences, and a four year Biochemistry roadmap."
-  },
-  {
-    name: "Thomas",
-    pd: "Low power distance",
-    need: "Does not fear asking questions, but still needs faster comparison because data is spread across registration, catalog, evaluation, and advising pages.",
-    response: "Integrated Course Search reduces information overload and shows evaluation, catalog, seats, and timetable in one decision panel."
-  },
-  {
-    name: "Looche",
-    pd: "Low power distance",
-    need: "Needs workload and grading transparency before choosing between science courses.",
-    response: "Course Evaluation DNA compares workload, clarity, exam difficulty, grading fairness, and student comment summaries."
-  },
-  {
-    name: "Inso",
-    pd: "High power distance",
-    need: "Needs evidence before contacting an advisor because challenging a registration block feels uncomfortable.",
-    response: "Advisor Evidence Pack creates blocked course evidence, detected rule, degree path risk, alternatives, and an email draft."
   }
 ];
 
@@ -715,13 +681,13 @@ function lang(en, ko) {
   return currentLang === "ko" ? ko : en;
 }
 
+function safeList(items) {
+  return Array.isArray(items) ? items : [];
+}
+
 function getCourse(id = selectedCourseId) {
   if (!id) return null;
   return courses.find(course => course.id === id) || null;
-}
-
-function safeList(items) {
-  return Array.isArray(items) ? items : [];
 }
 
 function isAdded(id) {
@@ -737,7 +703,7 @@ function checkReadiness(course) {
   const reasons = [];
 
   if ((readiness.year || 1) > student.year) {
-    reasons.push(`Designed for ${readiness.year === 2 ? "Year 2" : readiness.year === 3 ? "Year 3" : "a later year"}`);
+    reasons.push(`Designed for Year ${readiness.year}`);
   }
 
   if ((readiness.math || 0) > student.mathAccess) {
@@ -749,7 +715,7 @@ function checkReadiness(course) {
   }
 
   safeList(readiness.requires).forEach(id => {
-    if (!student.completed.includes(id) && !student.inProgress.includes(id)) {
+    if (!student.completed.includes(id) && !student.inProgress.includes(id) && !plannedCourses.includes(id)) {
       const needed = getCourse(id);
       reasons.push(`Requires ${needed ? needed.code : id}`);
     }
@@ -853,7 +819,6 @@ function showPage(page) {
   });
 
   if (page === "dashboard") renderDashboard();
-  if (page === "personas") renderPersonas();
   if (page === "search") renderSearch();
   if (page === "pathway") renderPathway();
   if (page === "advisor") renderAdvisor();
@@ -865,7 +830,7 @@ function renderDashboard() {
   qs("#mainContent").innerHTML = `
     <section class="page-title">
       <h2>${lang("Personal Biochemistry Dashboard", "개인 Biochemistry 대시보드")}</h2>
-      <p>${lang("This version works like a personal SOLAR style registration page for Kevin Ruiz, a first year Biochemistry student.", "이 버전은 Biochemistry 신입생 Kevin Ruiz의 개인 SOLAR형 수강신청 화면처럼 작동합니다.")}</p>
+      <p>${lang("This page is designed as Kevin Ruiz's personal course registration support screen, not as a general student survey or persona page.", "이 페이지는 일반 페르소나 분석 페이지가 아니라 Kevin Ruiz의 개인 수강신청 지원 화면으로 설계되었습니다.")}</p>
     </section>
 
     <section class="card notice-card"><strong>${tr("projectNotice")}</strong></section>
@@ -887,82 +852,25 @@ function renderDashboard() {
     <section class="grid three" style="margin-top:20px">
       <article class="card">
         <h3>${lang("Integrated Course Decision Hub", "통합 과목 결정 허브")}</h3>
-        <p>${lang("Course Search is the center. It connects catalog data, prerequisites, evaluation DNA, grade distribution, timetable, consequences, and advising evidence.", "Course Search가 중심입니다. 카탈로그, 선수 조건, 강의 평가 DNA, 성적 분포, 시간표, possible consequence, 상담 근거를 연결합니다.")}</p>
+        <p>${lang("Course Search is the center. It connects catalog data, prerequisites, reviews, grade distribution, timetable, pathway consequences, and advising evidence.", "Course Search가 중심입니다. 카탈로그, 선수 조건, 리뷰, 성적 분포, 시간표, 수강 경로 영향, 상담 근거를 연결합니다.")}</p>
       </article>
       <article class="card">
         <h3>${lang("Placement Aware Planning", "레벨 반영 수강 계획")}</h3>
         <p>${lang("Kevin can take WRT 102 and MAT 123, but higher calculus and advanced Biochemistry courses remain blocked until the sequence is completed.", "Kevin은 WRT 102와 MAT 123은 들을 수 있지만, 상위 미적분과 advanced Biochemistry 과목은 sequence가 끝날 때까지 제한됩니다.")}</p>
       </article>
       <article class="card">
-        <h3>${lang("Human Support Pathway", "사람의 도움으로 이어지는 경로")}</h3>
-        <p>${lang("The Advisor Evidence Pack prepares a clear message for Academic and Transfer Advising Services and the department coordinator.", "Advisor Evidence Pack은 Academic and Transfer Advising Services와 학과 코디네이터에게 보낼 근거 있는 메시지를 준비합니다.")}</p>
+        <h3>${lang("Advisor Evidence", "상담 근거")}</h3>
+        <p>${lang("When a course is blocked, the system prepares a clear reason, possible consequences, alternatives, and a draft message for advising.", "수강이 막힌 과목은 이유, 가능한 결과, 대안, 상담용 이메일 초안을 준비합니다.")}</p>
       </article>
     </section>
 
     <section class="card" style="margin-top:20px">
-      <h3>${lang("Applied Prototype Features", "반영된 프로토타입 기능")}</h3>
-      <div class="chip-wrap">
-        <span>Biochemistry only pathway</span>
-        <span>Placement level check</span>
-        <span>Course Evaluation DNA inside Search</span>
-        <span>Catalog inside Search</span>
-        <span>Added icon</span>
-        <span>Visual Timetable</span>
-        <span>Advisor Evidence Pack</span>
-        <span>Guided Language Support</span>
-      </div>
+      <h3>${lang("Start from Course Search", "Course Search에서 시작")}</h3>
+      <p>${lang("Click a course card to immediately open actions: Add to Timetable, Course Info, Reviews, Pathway Impact, and Advisor Evidence.", "과목 카드를 클릭하면 Add to Timetable, Course Info, Reviews, Pathway Impact, Advisor Evidence 선택지가 바로 열립니다.")}</p>
       <div class="action-row">
-        <button class="primary-button" data-go="search" type="button">${lang("Start Course Search", "과목 검색 시작")}</button>
+        <button class="primary-button" data-go="search" type="button">${lang("Open Course Search", "Course Search 열기")}</button>
         <button class="secondary-button" data-open-degree type="button">${lang("Open Degree Audit Preview", "Degree Audit 미리보기 열기")}</button>
       </div>
-    </section>
-  `;
-}
-
-function renderPersonas() {
-  qs("#mainContent").innerHTML = `
-    <section class="page-title">
-      <h2>${lang("Persona Needs Applied to the Prototype", "프로토타입에 반영된 페르소나 필요")}</h2>
-      <p>${lang("The comparative analysis is not separated from the product. Each user need becomes a visible feature in the personal Biochemistry registration flow.", "비교 분석은 제품과 분리되지 않습니다. 각 사용자 필요가 개인 Biochemistry 수강신청 흐름 안의 실제 기능으로 연결됩니다.")}</p>
-    </section>
-
-    <section class="card">
-      <table class="persona-table">
-        <thead>
-          <tr>
-            <th>${lang("Persona", "페르소나")}</th>
-            <th>${lang("Power distance context", "Power distance 맥락")}</th>
-            <th>${lang("Specific need", "구체적 필요")}</th>
-            <th>${lang("Prototype response", "프로토타입 대응")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${personas.map(persona => `
-            <tr>
-              <td><strong>${persona.name}</strong></td>
-              <td>${persona.pd}</td>
-              <td>${persona.need}</td>
-              <td>${persona.response}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    </section>
-
-    <section class="grid two" style="margin-top:20px">
-      <article class="card consequence-box">
-        <h3>${lang("High power distance logic", "High power distance 논리")}</h3>
-        <p>${lang("High power distance students may hesitate to challenge a blocked course, ask repeated questions, or admit confusion. ZOLAR reduces that barrier by creating evidence, a polite email draft, and bilingual explanations before the student contacts a human advisor.", "High power distance 학생은 수강 제한에 문제를 제기하거나 반복 질문을 하거나 헷갈린다고 말하는 것을 어려워할 수 있습니다. ZOLAR는 상담 전 근거, 정중한 이메일 초안, 이중언어 설명을 제공해 그 장벽을 낮춥니다.")}</p>
-      </article>
-      <article class="card info-box">
-        <h3>${lang("Low power distance logic", "Low power distance 논리")}</h3>
-        <p>${lang("Low power distance students are not helpless. Their problem is different. They may ask questions confidently, but still lose time because course catalog, evaluation data, seats, prerequisites, and pathway consequences are scattered across different systems. ZOLAR helps them compare faster and avoid information overload.", "Low power distance 학생은 도움이 전혀 필요 없는 학생이 아닙니다. 문제의 종류가 다릅니다. 질문은 적극적으로 할 수 있어도 catalog, evaluation, seats, prerequisite, pathway consequence가 여러 시스템에 흩어져 있어 시간과 판단 비용이 커집니다. ZOLAR는 비교를 빠르게 하고 정보 과부하를 줄입니다.")}</p>
-      </article>
-    </section>
-
-    <section class="card" style="margin-top:20px">
-      <h3>${lang("Final comparative analysis sentence", "비교 분석 마지막 문장 방향")}</h3>
-      <p>${lang("Jihoon and Inso need safer language and evidence before contacting authority figures. Kevin needs placement aware Biochemistry sequencing. Thomas needs faster cross system comparison. Looche needs workload and grading transparency. Therefore, the prototype uses Course Search as one decision hub rather than separating catalog, evaluation, pathway, and advising into disconnected tools.", "Jihoon과 Inso는 권위 있는 담당자에게 연락하기 전 안전한 언어 지원과 근거가 필요합니다. Kevin은 영어와 수학 레벨을 반영한 Biochemistry sequence가 필요합니다. Thomas는 여러 시스템에 흩어진 정보를 빠르게 비교해야 합니다. Looche는 workload와 grading transparency가 필요합니다. 따라서 이 프로토타입은 catalog, evaluation, pathway, advising을 분리된 도구가 아니라 Course Search 중심의 하나의 decision hub로 통합합니다.")}</p>
     </section>
   `;
 }
@@ -971,7 +879,7 @@ function renderSearch() {
   qs("#mainContent").innerHTML = `
     <section class="page-title">
       <h2>${lang("Integrated Course Search", "통합 과목 검색")}</h2>
-      <p>${lang("All sample courses for Kevin's Biochemistry plan are shown first. Selecting a card opens details. A course is added only when Kevin clicks Add to Timetable.", "Kevin의 Biochemistry 계획에 필요한 예시 과목이 먼저 모두 표시됩니다. 카드를 선택하면 세부 정보가 열리고, Add to Timetable을 눌렀을 때만 시간표에 추가됩니다.")}</p>
+      <p>${lang("Click a course card. The action buttons will open immediately inside the card, and the full detail panel will update on the right.", "과목 카드를 클릭하세요. 카드 안에 선택 버튼이 바로 열리고, 오른쪽 세부 패널도 함께 업데이트됩니다.")}</p>
     </section>
 
     <section class="card notice-card"><strong>${lang("Sample prototype data only. This is not official course availability, degree audit, or SOLAR information.", "예시 프로토타입 데이터입니다. 공식 수강 가능 여부, degree audit, SOLAR 정보가 아닙니다.")}</strong></section>
@@ -1010,25 +918,26 @@ function renderSearch() {
         <div class="result-header">
           <div>
             <h3>${lang("Biochemistry Course Results", "Biochemistry 과목 결과")}</h3>
-            <p>${lang("Only Biochemistry related major, writing, math, lab, and SBC courses are included.", "Biochemistry 관련 전공, 영어, 수학, 실험, SBC 과목만 포함됩니다.")}</p>
+            <p>${lang("Click a card to open actions directly below that course.", "과목 카드를 클릭하면 해당 과목 아래에 선택지가 바로 열립니다.")}</p>
           </div>
           <button id="clearFiltersButton" class="small-button" type="button">${lang("Clear", "초기화")}</button>
         </div>
         <p id="courseCount" class="course-count"></p>
         <div id="courseList" class="result-list"></div>
       </div>
+
       <div id="courseDetail" class="result-detail"></div>
     </section>
 
     <section class="grid two" style="margin-top:20px">
       <article class="card">
         <h3>${lang("Visual Timetable", "시각적 시간표")}</h3>
-        <p class="muted">${lang("Add and drop courses from the detail panel or directly from the timetable blocks.", "세부 정보 패널이나 시간표 블록에서 과목을 추가하거나 삭제할 수 있습니다.")}</p>
+        <p class="muted">${lang("Added courses appear here. Drop buttons remove them from the planned course list.", "추가된 과목이 여기에 표시됩니다. Drop 버튼을 누르면 planned course list에서 삭제됩니다.")}</p>
         <div id="visualTimetable"></div>
       </article>
       <article class="card">
         <h3>${lang("SBC Explorer inside Course Search", "Course Search 안의 SBC 탐색")}</h3>
-        <p class="muted">${lang("This keeps Course Catalog and SBC information inside the search flow instead of separating them into another tool.", "Course Catalog와 SBC 정보를 별도 도구로 분리하지 않고 검색 흐름 안에 유지합니다.")}</p>
+        <p class="muted">${lang("SBC and catalog information stays inside the search flow instead of becoming a separate page.", "SBC와 catalog 정보는 별도 페이지가 아니라 Course Search 흐름 안에 유지됩니다.")}</p>
         <div class="sbc-grid">
           ${sbcCategories.map(item => `<div class="sbc-card"><strong>${item.code}</strong><p>${item.title}</p><small>${item.examples}</small></div>`).join("")}
         </div>
@@ -1073,37 +982,48 @@ function updateCourseList() {
   target.innerHTML = list.map(course => {
     const state = checkReadiness(course);
     const added = isAdded(course.id);
+    const selected = selectedCourseId === course.id;
+    const blocked = state.level === "Blocked";
+
     return `
-      <button class="result-card ${selectedCourseId === course.id ? "active" : ""} ${added ? "added-card" : ""}" data-course-id="${course.id}" type="button">
-        <div class="result-title-row">
-          <div>
-            <h4>${course.code}</h4>
-            <div class="course-title">${course.title}</div>
+      <div class="result-card ${selected ? "active" : ""} ${added ? "added-card" : ""}" data-course-id="${course.id}">
+        <div class="course-click-area" data-select-course="${course.id}">
+          <div class="result-title-row">
+            <div>
+              <h4>${course.code}</h4>
+              <div class="course-title">${course.title}</div>
+            </div>
+            <div class="chip-wrap" style="margin-top:0;justify-content:flex-end">
+              ${added ? `<span class="badge added">✓ ${lang("Added", "추가됨")}</span>` : ""}
+              <span class="badge ${normalizeClass(state.level)}">${state.label}</span>
+            </div>
           </div>
-          <div class="chip-wrap" style="margin-top:0;justify-content:flex-end">
-            ${added ? `<span class="badge added">✓ ${lang("Added", "추가됨")}</span>` : ""}
-            <span class="badge ${normalizeClass(state.level)}">${state.label}</span>
+          <p>${course.requirementType} · ${course.credits} credits · ${course.sbc || lang("Major only", "전공 전용")} · ${course.workload} workload</p>
+          <div class="chip-wrap">
+            <span>${course.department}</span>
+            <span>${course.status}</span>
+            <span>${course.days} ${course.start}</span>
           </div>
         </div>
-        <p>${course.requirementType} · ${course.credits} credits · ${course.sbc || lang("Major only", "전공 전용")} · ${course.workload} workload</p>
-        <div class="chip-wrap">
-          <span>${course.department}</span>
-          <span>${course.status}</span>
-          <span>${course.days} ${course.start}</span>
-        </div>
-      </button>
+
+        ${selected ? `
+          <div class="quick-panel">
+            <h5>${lang("Choose an action for", "선택 과목 기능")} ${course.code}</h5>
+            <div class="quick-actions">
+              ${added
+                ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">✓ ${lang("Added, Drop", "추가됨, 삭제")}</button>`
+                : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked", "제한됨") : lang("Add to Timetable", "시간표 추가")}</button>`
+              }
+              <button class="small-button" data-set-tab="catalog" type="button">${lang("Course Info", "수업 정보")}</button>
+              <button class="small-button" data-set-tab="evaluation" type="button">${lang("Reviews", "리뷰")}</button>
+              <button class="small-button" data-set-tab="pathway" type="button">${lang("Pathway Impact", "경로 영향")}</button>
+              <button class="small-button" data-set-tab="advisor" type="button">${lang("Advisor Evidence", "상담 근거")}</button>
+            </div>
+          </div>
+        ` : ""}
+      </div>
     `;
   }).join("");
-
-  qsa(".result-card").forEach(card => {
-    card.addEventListener("click", () => {
-      selectedCourseId = card.dataset.courseId;
-      selectedDetailTab = "overview";
-      sentDraft = false;
-      updateCourseList();
-      renderCourseDetail();
-    });
-  });
 }
 
 function renderCourseDetail() {
@@ -1115,7 +1035,7 @@ function renderCourseDetail() {
     target.innerHTML = `
       <div class="empty-state">
         <h3>${lang("Select a course", "과목을 선택하세요")}</h3>
-        <p>${lang("Click any Biochemistry related course card to open catalog information, prerequisite check, evaluation DNA, grade distribution, AI planning advice, possible consequences, and Add to Timetable controls.", "Biochemistry 관련 과목 카드를 클릭하면 카탈로그 정보, 선수 조건 확인, 강의 평가 DNA, 성적 분포, AI 계획 조언, possible consequence, Add to Timetable 기능이 열립니다.")}</p>
+        <p>${lang("Click any Biochemistry related course card to open Add to Timetable, Course Info, Reviews, Pathway Impact, and Advisor Evidence.", "Biochemistry 관련 과목 카드를 클릭하면 Add to Timetable, Course Info, Reviews, Pathway Impact, Advisor Evidence가 열립니다.")}</p>
       </div>
     `;
     return;
@@ -1138,46 +1058,34 @@ function renderCourseDetail() {
         </div>
       </div>
       <div class="detail-actions">
-        ${added ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">${lang("Drop", "삭제")}</button>` : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked by Requirement", "요건 때문에 제한") : lang("Add to Timetable", "시간표에 추가")}</button>`}
+        ${added
+          ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">${lang("Drop", "삭제")}</button>`
+          : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked by Requirement", "요건 때문에 제한") : lang("Add to Timetable", "시간표 추가")}</button>`
+        }
       </div>
     </div>
 
     <div class="detail-tabs">
-      ${["overview", "evaluation", "catalog", "pathway", "advisor"].map(tab => `<button class="tab-button ${selectedDetailTab === tab ? "active-tab" : ""}" data-tab="${tab}" type="button">${tabLabel(tab)}</button>`).join("")}
+      ${["overview", "catalog", "evaluation", "pathway", "advisor"].map(tab => `<button class="tab-button ${selectedDetailTab === tab ? "active-tab" : ""}" data-set-tab="${tab}" type="button">${tabLabel(tab)}</button>`).join("")}
     </div>
 
     <div id="detailTabContent">${renderDetailTab(course)}</div>
   `;
-
-  qsa("[data-tab]").forEach(button => {
-    button.addEventListener("click", () => {
-      selectedDetailTab = button.dataset.tab;
-      renderCourseDetail();
-    });
-  });
-
-  qsa("[data-add-course]").forEach(button => {
-    button.addEventListener("click", () => addCourse(button.dataset.addCourse));
-  });
-
-  qsa("[data-drop-course]").forEach(button => {
-    button.addEventListener("click", () => dropCourse(button.dataset.dropCourse));
-  });
 }
 
 function tabLabel(tab) {
   return {
     overview: lang("Overview", "개요"),
-    evaluation: lang("Evaluation DNA", "강의 평가 DNA"),
-    catalog: lang("Catalog Check", "카탈로그 확인"),
+    catalog: lang("Course Info", "수업 정보"),
+    evaluation: lang("Reviews", "리뷰"),
     pathway: lang("Pathway Impact", "경로 영향"),
     advisor: lang("Advisor Evidence", "상담 근거")
   }[tab] || tab;
 }
 
 function renderDetailTab(course) {
-  if (selectedDetailTab === "evaluation") return renderEvaluationTab(course);
   if (selectedDetailTab === "catalog") return renderCatalogTab(course);
+  if (selectedDetailTab === "evaluation") return renderEvaluationTab(course);
   if (selectedDetailTab === "pathway") return renderPathwayTab(course);
   if (selectedDetailTab === "advisor") return renderAdvisorTab(course);
   return renderOverviewTab(course);
@@ -1185,6 +1093,7 @@ function renderDetailTab(course) {
 
 function renderOverviewTab(course) {
   const state = checkReadiness(course);
+
   return `
     <section class="detail-section">
       <h4>${lang("Integrated Decision Summary", "통합 결정 요약")}</h4>
@@ -1214,6 +1123,25 @@ function renderOverviewTab(course) {
   `;
 }
 
+function renderCatalogTab(course) {
+  return `
+    <section class="detail-section">
+      <h4>${lang("Course Information", "수업 정보")}</h4>
+      <p>${course.catalog}</p>
+      <div class="catalog-grid">
+        <div class="catalog-item"><span>Course code</span><strong>${course.code}</strong></div>
+        <div class="catalog-item"><span>Department</span><strong>${course.department}</strong></div>
+        <div class="catalog-item"><span>Level</span><strong>${course.level}</strong></div>
+        <div class="catalog-item"><span>Credits</span><strong>${course.credits}</strong></div>
+        <div class="catalog-item"><span>SBC</span><strong>${course.sbc || lang("No SBC listed in sample", "예시 SBC 없음")}</strong></div>
+        <div class="catalog-item"><span>Requirement</span><strong>${course.requirementType}</strong></div>
+        <div class="catalog-item"><span>Reserved seats</span><strong>${course.reservedSeats}</strong></div>
+        <div class="catalog-item"><span>Meeting</span><strong>${course.days} · ${course.start} to ${course.end} · ${course.location}</strong></div>
+      </div>
+    </section>
+  `;
+}
+
 function renderEvaluationTab(course) {
   const grades = course.grades;
   const max = Math.max(grades.A, grades.B, grades.C, grades.DF, 1);
@@ -1221,10 +1149,10 @@ function renderEvaluationTab(course) {
   return `
     <section class="detail-section">
       <h4>${lang("Course Evaluation DNA", "강의 평가 DNA")}</h4>
-      <p class="muted">${lang("This information stays inside Course Search so students do not have to move to a separate evaluation site.", "이 정보는 Course Search 안에 있어서 학생이 별도 평가 사이트로 이동하지 않아도 됩니다.")}</p>
+      <p class="muted">${lang("Reviews are integrated inside Course Search instead of being separated into another page.", "리뷰는 별도 페이지가 아니라 Course Search 안에 통합되어 있습니다.")}</p>
       <div class="dna-grid">
         <div class="dna-item"><strong>Workload</strong><p>${course.workload}</p></div>
-        <div class="dna-item"><strong>${lang("Grading fairness", "채점 공정성")}</strong><p>${course.grading}</p></div>
+        <div class="dna-item"><strong>${lang("Grading style", "채점 방식")}</strong><p>${course.grading}</p></div>
         <div class="dna-item"><strong>${lang("Clarity", "명확성")}</strong><p>${course.clarity}</p></div>
         <div class="dna-item"><strong>${lang("Exam difficulty", "시험 난이도")}</strong><p>${course.exam}</p></div>
         <div class="dna-item"><strong>${lang("Group work", "그룹 과제")}</strong><p>${course.group}</p></div>
@@ -1251,25 +1179,6 @@ function renderEvaluationTab(course) {
   `;
 }
 
-function renderCatalogTab(course) {
-  return `
-    <section class="detail-section">
-      <h4>${lang("Course Catalog Preview", "Course Catalog 미리보기")}</h4>
-      <p>${course.catalog}</p>
-      <div class="catalog-grid">
-        <div class="catalog-item"><span>Course code</span><strong>${course.code}</strong></div>
-        <div class="catalog-item"><span>Department</span><strong>${course.department}</strong></div>
-        <div class="catalog-item"><span>Level</span><strong>${course.level}</strong></div>
-        <div class="catalog-item"><span>Credits</span><strong>${course.credits}</strong></div>
-        <div class="catalog-item"><span>SBC</span><strong>${course.sbc || lang("No SBC listed in sample", "예시 SBC 없음")}</strong></div>
-        <div class="catalog-item"><span>Requirement</span><strong>${course.requirementType}</strong></div>
-        <div class="catalog-item"><span>Reserved seats</span><strong>${course.reservedSeats}</strong></div>
-        <div class="catalog-item"><span>Meeting</span><strong>${course.days} · ${course.start} to ${course.end} · ${course.location}</strong></div>
-      </div>
-    </section>
-  `;
-}
-
 function renderPathwayTab(course) {
   return `
     <section class="detail-section">
@@ -1289,6 +1198,7 @@ function renderPathwayTab(course) {
 
 function renderAdvisorTab(course) {
   const state = checkReadiness(course);
+
   return `
     <section class="detail-section">
       <h4>${lang("Advisor Ready Evidence", "어드바이저 제출용 근거")}</h4>
@@ -1309,7 +1219,11 @@ function addCourse(id) {
   const course = getCourse(id);
   if (!course) return;
   if (checkReadiness(course).level === "Blocked") return;
-  if (!plannedCourses.includes(id)) plannedCourses.push(id);
+
+  if (!plannedCourses.includes(id)) {
+    plannedCourses.push(id);
+  }
+
   updateVisibleParts();
 }
 
@@ -1324,16 +1238,30 @@ function updateVisibleParts() {
     renderCourseDetail();
     renderTimetable();
   }
-  if (currentPage === "pathway") renderPathway();
-  if (currentPage === "advisor") renderAdvisor();
+
+  if (currentPage === "pathway") {
+    renderPathway();
+  }
+
+  if (currentPage === "advisor") {
+    renderAdvisor();
+  }
 }
 
 function parseHour(time) {
   const match = String(time).match(/(\d+):(\d+)\s*(AM|PM)/i);
   if (!match) return 9;
+
   let hour = Number(match[1]);
-  if (match[3].toUpperCase() === "PM" && hour !== 12) hour += 12;
-  if (match[3].toUpperCase() === "AM" && hour === 12) hour = 0;
+
+  if (match[3].toUpperCase() === "PM" && hour !== 12) {
+    hour += 12;
+  }
+
+  if (match[3].toUpperCase() === "AM" && hour === 12) {
+    hour = 0;
+  }
+
   return hour;
 }
 
@@ -1349,10 +1277,13 @@ function renderTimetable() {
 
   hours.forEach(hour => {
     html += `<div class="time">${hour <= 12 ? hour : hour - 12}:00 ${hour < 12 ? "AM" : "PM"}</div>`;
+
     days.forEach(day => {
       const blocks = planned.filter(course => course.days.includes(day) && parseHour(course.start) === hour);
+
       html += `<div class="cell">${blocks.map(course => {
         const conflict = planned.some(other => other.id !== course.id && other.days.includes(day) && parseHour(other.start) === hour);
+
         return `<div class="class-block ${conflict ? "conflict" : course.workload === "High" ? "heavy" : ""}">
           <strong>${course.code}</strong><br>
           ${course.start} to ${course.end}<br>
@@ -1367,10 +1298,6 @@ function renderTimetable() {
   html += `<p class="muted">${planned.length ? `${planned.length} ${lang("courses are currently planned.", "개 과목이 현재 시간표에 추가되어 있습니다.")}` : lang("No courses added yet. Select a course and click Add to Timetable.", "아직 추가된 과목이 없습니다. 과목을 선택한 뒤 Add to Timetable을 누르세요.")}</p>`;
 
   target.innerHTML = html;
-
-  qsa("#visualTimetable [data-drop-course]").forEach(button => {
-    button.addEventListener("click", () => dropCourse(button.dataset.dropCourse));
-  });
 }
 
 function renderPathway() {
@@ -1379,7 +1306,7 @@ function renderPathway() {
   qs("#mainContent").innerHTML = `
     <section class="page-title">
       <h2>${lang("Biochemistry Pathway Planner", "Biochemistry 수강 경로 계획")}</h2>
-      <p>${lang("This page is intentionally fixed to Kevin Ruiz's Biochemistry plan, because the prototype should feel like a personal SOLAR style page rather than a general catalog.", "이 페이지는 Kevin Ruiz의 Biochemistry 계획으로 고정되어 있습니다. 일반 카탈로그가 아니라 개인 SOLAR형 페이지처럼 보이기 위해서입니다.")}</p>
+      <p>${lang("This page is fixed to Kevin Ruiz's Biochemistry plan, because the prototype should feel like a personal SOLAR style page rather than a general catalog.", "이 페이지는 Kevin Ruiz의 Biochemistry 계획으로 고정되어 있습니다. 일반 카탈로그가 아니라 개인 SOLAR형 페이지처럼 보이기 위한 구조입니다.")}</p>
     </section>
 
     <section class="card notice-card"><strong>${lang("Prototype planning guide only. Students should confirm official requirements with advising and the department.", "프로토타입 계획 가이드입니다. 공식 요건은 advising과 학과를 통해 확인해야 합니다.")}</strong></section>
@@ -1419,14 +1346,6 @@ function renderPathway() {
       <div class="action-row"><button class="primary-button" data-go="search" type="button">${lang("Return to Course Search", "Course Search로 돌아가기")}</button></div>
     </section>
   `;
-
-  qsa("[data-select-course]").forEach(button => {
-    button.addEventListener("click", () => {
-      selectedCourseId = button.dataset.selectCourse;
-      selectedDetailTab = "pathway";
-      renderPathway();
-    });
-  });
 }
 
 function renderAdvisor() {
@@ -1446,14 +1365,6 @@ function renderAdvisor() {
       </section>
     `}
   `;
-
-  const sendButton = qs("#sendDraftButton");
-  if (sendButton) {
-    sendButton.addEventListener("click", () => {
-      sentDraft = true;
-      renderAdvisor();
-    });
-  }
 }
 
 function renderAdvisorReport(course) {
@@ -1593,7 +1504,10 @@ function bindGlobalEvents() {
     qs("#loginScreen").classList.add("hidden");
     qs("#app").classList.remove("hidden");
     showPage("dashboard");
-    if (!qs("#chatMessages").children.length) addChatMessage(tr("chatbotWelcome"), "bot");
+
+    if (!qs("#chatMessages").children.length) {
+      addChatMessage(tr("chatbotWelcome"), "bot");
+    }
   });
 
   qs("#signOutButton").addEventListener("click", () => {
@@ -1655,11 +1569,61 @@ function bindGlobalEvents() {
   });
 
   document.addEventListener("click", event => {
+    const addButton = event.target.closest("[data-add-course]");
+    if (addButton) {
+      addCourse(addButton.dataset.addCourse);
+      return;
+    }
+
+    const dropButton = event.target.closest("[data-drop-course]");
+    if (dropButton) {
+      dropCourse(dropButton.dataset.dropCourse);
+      return;
+    }
+
+    const tabButton = event.target.closest("[data-set-tab]");
+    if (tabButton) {
+      selectedDetailTab = tabButton.dataset.setTab;
+      renderCourseDetail();
+      updateCourseList();
+      return;
+    }
+
+    const selectButton = event.target.closest("[data-select-course]");
+    if (selectButton) {
+      selectedCourseId = selectButton.dataset.selectCourse;
+      selectedDetailTab = "overview";
+      sentDraft = false;
+
+      if (currentPage === "search") {
+        updateCourseList();
+        renderCourseDetail();
+      }
+
+      if (currentPage === "pathway") {
+        renderPathway();
+      }
+
+      return;
+    }
+
     const goButton = event.target.closest("[data-go]");
-    if (goButton) showPage(goButton.dataset.go);
+    if (goButton) {
+      showPage(goButton.dataset.go);
+      return;
+    }
 
     const degreeButton = event.target.closest("[data-open-degree]");
-    if (degreeButton) openDegreeModal();
+    if (degreeButton) {
+      openDegreeModal();
+    }
+  });
+
+  document.addEventListener("click", event => {
+    if (event.target && event.target.id === "sendDraftButton") {
+      sentDraft = true;
+      renderAdvisor();
+    }
   });
 }
 
