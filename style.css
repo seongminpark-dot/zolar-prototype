@@ -41,7 +41,7 @@ button {
 
 button:disabled {
   cursor: not-allowed;
-  opacity: .6;
+  opacity: .55;
 }
 
 .hidden {
@@ -566,7 +566,7 @@ button:disabled {
 
 .search-layout {
   display: grid;
-  grid-template-columns: minmax(350px,.88fr) minmax(460px,1.12fr);
+  grid-template-columns: minmax(390px,.9fr) minmax(480px,1.1fr);
   gap: 20px;
   align-items: start;
 }
@@ -580,7 +580,6 @@ button:disabled {
 }
 
 .result-card {
-  text-align: left;
   width: 100%;
   background: #ffffff;
   border: 1px solid var(--line);
@@ -601,6 +600,10 @@ button:disabled {
   border-left-color: var(--green);
 }
 
+.course-click-area {
+  cursor: pointer;
+}
+
 .result-title-row {
   display: flex;
   justify-content: space-between;
@@ -616,6 +619,25 @@ button:disabled {
 .course-title,
 .muted {
   color: var(--muted);
+}
+
+.quick-panel {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+}
+
+.quick-panel h5 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .empty-state {
@@ -873,24 +895,6 @@ button:disabled {
   color: var(--red);
 }
 
-.persona-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 12px;
-}
-
-.persona-table th,
-.persona-table td {
-  border: 1px solid #dce2e9;
-  padding: 12px;
-  text-align: left;
-  vertical-align: top;
-}
-
-.persona-table th {
-  background: #f6f8fa;
-}
-
 .report-box,
 .email-box {
   background: #f8fafc;
@@ -1049,20 +1053,7 @@ button:disabled {
   font-size: 20px;
 }
 
-@media (max-width: 1100px) {
-  .app-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    position: static;
-    height: auto;
-  }
-
-  .sidebar-nav {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-  }
-
+@media (max-width: 1050px) {
   .search-layout,
   .grid.three,
   .grid.two,
@@ -1075,9 +1066,22 @@ button:disabled {
     position: static;
     max-height: none;
   }
+
+  .search-row {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 760px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+  }
+
   .topbar {
     align-items: flex-start;
     flex-direction: column;
@@ -1093,10 +1097,6 @@ button:disabled {
   .dna-grid,
   .catalog-grid,
   .sbc-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar-nav {
     grid-template-columns: 1fr;
   }
 
