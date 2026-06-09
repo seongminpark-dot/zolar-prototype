@@ -1282,6 +1282,7 @@ function renderCatalogTab(course) {
 function renderEvaluationTab(course) {
   const grades = course.grades;
   const max = Math.max(grades.A, grades.B, grades.C, grades.DF, 1);
+  const reviews = safeList(course.reviews).slice().sort((a, b) => b.likes - a.likes);
 
   return `
     <section class="detail-section">
@@ -1298,8 +1299,19 @@ function renderEvaluationTab(course) {
     </section>
 
     <section class="detail-section">
-      <h4>${lang("Student comments summary", "학생 의견 요약")}</h4>
-      <p>${course.comments}</p>
+      <h4>${lang("Student Review Highlights", "학생 리뷰 하이라이트")}</h4>
+      <p class="muted">${lang("Sample comments are sorted by likes to imitate a course evaluation preview.", "예시 댓글은 course evaluation preview처럼 좋아요 수가 높은 순서대로 표시됩니다.")}</p>
+      <div class="review-list">
+        ${reviews.map((review, index) => `
+          <article class="review-card">
+            <div class="review-top">
+              <strong>${lang("Review", "리뷰")} ${index + 1}</strong>
+              <span class="like-pill">👍 ${review.likes}</span>
+            </div>
+            <p>${review.text}</p>
+          </article>
+        `).join("")}
+      </div>
     </section>
 
     <section class="detail-section">
