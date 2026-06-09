@@ -75,13 +75,150 @@ const mathLevelNames = {
   3: "AMS 161 eligible"
 };
 
+const courseEvaluationStats = {
+  WRT102: { enrolled: 155, responses: 64, rating: 4.1, grades: { A: 58, B: 54, C: 31, DF: 12 } },
+  MAT123: { enrolled: 180, responses: 62, rating: 3.7, grades: { A: 42, B: 51, C: 56, DF: 31 } },
+  AMS151: { enrolled: 240, responses: 95, rating: 4.0, grades: { A: 84, B: 78, C: 53, DF: 25 } },
+  AMS161: { enrolled: 210, responses: 80, rating: 3.8, grades: { A: 62, B: 71, C: 48, DF: 29 } },
+  CHE131: { enrolled: 260, responses: 110, rating: 3.6, grades: { A: 69, B: 82, C: 71, DF: 38 } },
+  CHE133: { enrolled: 140, responses: 51, rating: 4.2, grades: { A: 55, B: 47, C: 28, DF: 10 } },
+  CHE132: { enrolled: 238, responses: 94, rating: 3.7, grades: { A: 64, B: 81, C: 59, DF: 34 } },
+  CHE134: { enrolled: 132, responses: 48, rating: 4.0, grades: { A: 49, B: 46, C: 27, DF: 10 } },
+  BIO201: { enrolled: 220, responses: 86, rating: 4.2, grades: { A: 82, B: 74, C: 44, DF: 20 } },
+  BIO202: { enrolled: 205, responses: 77, rating: 3.9, grades: { A: 65, B: 70, C: 48, DF: 22 } },
+  BIO203: { enrolled: 190, responses: 70, rating: 3.5, grades: { A: 48, B: 61, C: 52, DF: 29 } },
+  BIO204: { enrolled: 96, responses: 38, rating: 3.9, grades: { A: 34, B: 33, C: 20, DF: 9 } },
+  CHE321: { enrolled: 175, responses: 72, rating: 3.4, grades: { A: 43, B: 55, C: 49, DF: 28 } },
+  CHE322: { enrolled: 168, responses: 66, rating: 3.3, grades: { A: 39, B: 52, C: 48, DF: 29 } },
+  BCH361: { enrolled: 112, responses: 45, rating: 3.8, grades: { A: 36, B: 39, C: 26, DF: 11 } },
+  PHY131: { enrolled: 200, responses: 81, rating: 3.6, grades: { A: 51, B: 66, C: 55, DF: 28 } },
+  PSY103: { enrolled: 280, responses: 110, rating: 4.3, grades: { A: 103, B: 91, C: 62, DF: 24 } },
+  MUS105: { enrolled: 160, responses: 58, rating: 4.5, grades: { A: 71, B: 55, C: 25, DF: 9 } },
+  PHI104: { enrolled: 145, responses: 53, rating: 4.0, grades: { A: 49, B: 50, C: 33, DF: 13 } },
+  POL102: { enrolled: 175, responses: 61, rating: 3.9, grades: { A: 54, B: 62, C: 41, DF: 18 } }
+};
+
+const courseReviewData = {
+  WRT102: [
+    { likes: 42, text: "The feedback on drafts helped me improve my argument and organization." },
+    { likes: 31, text: "The course is not difficult, but the revision deadlines come quickly." },
+    { likes: 18, text: "Useful for lab reports and future writing, especially if you finish it early." }
+  ],
+  MAT123: [
+    { likes: 39, text: "This course is helpful before calculus, but skipping practice makes exams difficult." },
+    { likes: 26, text: "Algebra review is important. The workload feels high if you are rusty." },
+    { likes: 14, text: "Good preparation for AMS 151, but it should not be paired with too many heavy STEM courses." }
+  ],
+  AMS151: [
+    { likes: 45, text: "Weekly problem solving matters more than memorizing formulas before the exam." },
+    { likes: 33, text: "Manageable if MAT 123 concepts are already comfortable." },
+    { likes: 20, text: "The course is useful for science planning, but the pace can feel fast." }
+  ],
+  AMS161: [
+    { likes: 37, text: "More demanding than AMS 151 because the concepts build quickly." },
+    { likes: 28, text: "Do not take this without being confident in the first calculus course." },
+    { likes: 16, text: "The workload is possible, but it becomes risky with organic chemistry." }
+  ],
+  CHE131: [
+    { likes: 51, text: "The first exams are a wake up call. Weekly practice is necessary." },
+    { likes: 36, text: "A good foundation course for Biochemistry, but the workload is real." },
+    { likes: 22, text: "Taking the lab and lecture together makes the sequence easier to understand." }
+  ],
+  CHE133: [
+    { likes: 34, text: "The lab is manageable if you prepare before arriving." },
+    { likes: 25, text: "Lab reports take more time than expected for a one credit course." },
+    { likes: 13, text: "Helpful for understanding the chemistry lecture, especially measurement topics." }
+  ],
+  CHE132: [
+    { likes: 43, text: "This course feels more difficult if CHE 131 was weak." },
+    { likes: 29, text: "Problem sets and exam review should start early each week." },
+    { likes: 19, text: "Important for organic chemistry, so delaying it can affect the whole pathway." }
+  ],
+  CHE134: [
+    { likes: 30, text: "The second lab is smoother if CHE 133 procedures are familiar." },
+    { likes: 21, text: "Lab write ups need careful time management." },
+    { likes: 12, text: "Not too difficult, but missing a lab section creates problems." }
+  ],
+  BIO201: [
+    { likes: 48, text: "Clear introduction to biology and a good first year science course." },
+    { likes: 35, text: "Weekly quizzes keep you studying, which helps before exams." },
+    { likes: 20, text: "Good choice with CHE 131 if you manage the schedule carefully." }
+  ],
+  BIO202: [
+    { likes: 41, text: "The concepts connect well to later biochemistry, but the pace is faster than BIO 201." },
+    { likes: 27, text: "Do not underestimate the amount of memorization and concept review." },
+    { likes: 15, text: "Better after BIO 201 because the foundation matters." }
+  ],
+  BIO203: [
+    { likes: 36, text: "Very content heavy. It is not ideal for a first semester freshman schedule." },
+    { likes: 24, text: "The exams require detailed understanding, not just memorization." },
+    { likes: 14, text: "Good course later, but it should be planned around chemistry workload." }
+  ],
+  BIO204: [
+    { likes: 33, text: "Lab reports are the main workload, so writing readiness matters." },
+    { likes: 22, text: "Group coordination can be difficult when everyone has different schedules." },
+    { likes: 11, text: "Useful lab experience, but reserved seats can create registration stress." }
+  ],
+  CHE321: [
+    { likes: 49, text: "Organic chemistry requires consistent study from the first week." },
+    { likes: 34, text: "This should not be taken before the general chemistry sequence is complete." },
+    { likes: 23, text: "The course is central for Biochemistry, but the workload is one of the heaviest." }
+  ],
+  CHE322: [
+    { likes: 40, text: "The second organic chemistry course builds directly from CHE 321." },
+    { likes: 30, text: "Falling behind early makes the later exams much harder." },
+    { likes: 18, text: "Closed sections make backup planning important." }
+  ],
+  BCH361: [
+    { likes: 38, text: "This feels like the course where biology and chemistry finally connect." },
+    { likes: 26, text: "It is interesting, but not a course to take before the foundations are ready." },
+    { likes: 17, text: "Organic chemistry and molecular biology background are both important." }
+  ],
+  PHY131: [
+    { likes: 35, text: "Physics is much easier when calculus preparation is stronger." },
+    { likes: 25, text: "Problem solving practice is more important than reading alone." },
+    { likes: 13, text: "This can become stressful if taken with organic chemistry." }
+  ],
+  PSY103: [
+    { likes: 46, text: "A clear and manageable SBC course for balancing a heavy science schedule." },
+    { likes: 32, text: "The exams are fair if you keep up with the main concepts." },
+    { likes: 19, text: "Good option when you need a lighter course beside chemistry." }
+  ],
+  MUS105: [
+    { likes: 44, text: "Interesting and not too stressful compared with STEM courses." },
+    { likes: 28, text: "Good SBC choice if you want something different from science." },
+    { likes: 16, text: "The evening time is the main thing to consider." }
+  ],
+  PHI104: [
+    { likes: 29, text: "The discussions are useful, but readings require attention." },
+    { likes: 21, text: "Good ethics course, especially if you want balance outside STEM." },
+    { likes: 12, text: "Writing workload is moderate, so do not ignore the papers." }
+  ],
+  POL102: [
+    { likes: 27, text: "The course is manageable, but there is a steady reading load." },
+    { likes: 20, text: "Useful SBC option, though it does not support the Biochemistry sequence directly." },
+    { likes: 10, text: "The long class block can feel tiring depending on the schedule." }
+  ]
+};
+
 function makeCourse(data) {
-  return {
-    term: "Sample Fall",
+  const stats = courseEvaluationStats[data.id] || {
     enrolled: 120,
     responses: 40,
     rating: 4.0,
-    grades: { A: 40, B: 35, C: 25, DF: 10 },
+    grades: { A: 40, B: 35, C: 25, DF: 10 }
+  };
+
+  return {
+    term: "Sample Fall",
+    enrolled: stats.enrolled,
+    responses: stats.responses,
+    rating: stats.rating,
+    grades: stats.grades,
+    reviews: courseReviewData[data.id] || [
+      { likes: 12, text: "Students recommend checking prerequisites and workload before enrolling." },
+      { likes: 8, text: "The course can be useful when it fits the degree pathway." }
+    ],
     grading: "Mixed assignments and exams",
     exam: "Medium",
     group: "Low",
