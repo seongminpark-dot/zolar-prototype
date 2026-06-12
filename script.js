@@ -69,6 +69,13 @@ const statusFilters = ["All", "Available", "Caution", "Closed", "Waitlist", "Res
 const readinessFilters = ["All", "Ready", "Caution", "Blocked"];
 const workloadFilters = ["All", "Low", "Medium", "High"];
 
+const mathLevelNames = {
+  0: "No college math access",
+  1: "MAT 123 eligible",
+  2: "AMS 151 eligible",
+  3: "AMS 161 eligible"
+};
+
 const fallRecommendedCourseIds = ["AMS161", "BIO203", "BIO204", "CHE321"];
 
 function getPlanningStatus(course) {
@@ -1753,40 +1760,6 @@ function getChatReply(message) {
   }
 
   return lang("I can help with prerequisites, math level, English level, workload, SBC, pathway risk, advisor evidence, and timetable planning. Select a course first for a more specific answer.", "선수 조건, 수학 레벨, 영어 레벨, workload, SBC, 경로 위험, 상담 근거, 시간표 계획을 도와줄 수 있습니다. 더 구체적인 답변을 원하면 먼저 과목을 선택하세요.");
-}
-
-  if (currentPage === "search") {
-    return [
-      lang("Which course should I add first?", "어떤 과목을 먼저 추가해야 해?"),
-      lang("Explain the selected course", "선택한 과목 설명해줘"),
-      lang("Show workload and reviews", "workload와 리뷰 보여줘"),
-      lang("Do I need advisor help?", "어드바이저 도움이 필요해?")
-    ];
-  }
-
-  if (currentPage === "pathway") {
-    return [
-      lang("Why is AMS 161 recommended for Fall?", "왜 AMS 161이 Fall 추천이야?"),
-      lang("Which courses are already completed?", "이미 완료한 과목은 뭐야?"),
-      lang("What happens if I delay CHE 321?", "CHE 321을 늦추면 어떻게 돼?"),
-      lang("Explain my math sequence", "내 수학 sequence 설명해줘")
-    ];
-  }
-
-  if (currentPage === "advisor") {
-    return [
-      lang("Prepare advisor evidence", "상담 근거 준비해줘"),
-      lang("Explain the detected rule", "감지된 규칙 설명해줘"),
-      lang("What should I ask the coordinator?", "코디네이터에게 뭘 물어봐야 해?"),
-      lang("Show backup options", "대안 과목 보여줘")
-    ];
-  }
-
-  return [
-    lang("Explain my Fall plan", "Fall 계획 설명해줘"),
-    lang("Check prerequisites", "선수 조건 확인해줘"),
-    lang("Check workload", "workload 확인해줘")
-  ];
 }
 
 function sendChat() {
