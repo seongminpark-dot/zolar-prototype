@@ -1220,27 +1220,3 @@ button:disabled {
 .completed-focus-card {
   border-top-color: var(--green);
 }
-.chat-suggestions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 12px;
-  background: #ffffff;
-  border-top: 1px solid var(--line);
-}
-
-.suggestion-button {
-  border: 1px solid #d6dee8;
-  background: #f8fafc;
-  color: var(--ink);
-  border-radius: 999px;
-  padding: 8px 11px;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.suggestion-button:hover {
-  border-color: var(--red);
-  background: var(--red-soft);
-  color: var(--red);
-}
