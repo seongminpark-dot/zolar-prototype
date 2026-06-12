@@ -1001,7 +1001,6 @@ function showPage(page) {
   if (page === "advisor") renderAdvisor();
 
   applyTranslations();
-  renderChatSuggestions();
 }
 
 function renderDashboard() {
@@ -1755,15 +1754,6 @@ function getChatReply(message) {
 
   return lang("I can help with prerequisites, math level, English level, workload, SBC, pathway risk, advisor evidence, and timetable planning. Select a course first for a more specific answer.", "선수 조건, 수학 레벨, 영어 레벨, workload, SBC, 경로 위험, 상담 근거, 시간표 계획을 도와줄 수 있습니다. 더 구체적인 답변을 원하면 먼저 과목을 선택하세요.");
 }
-function getChatSuggestions() {
-  if (currentPage === "dashboard") {
-    return [
-      lang("What should I focus on for Fall?", "Fall에 무엇을 우선해야 해?"),
-      lang("Explain my completed courses", "완료한 과목 설명해줘"),
-      lang("Check my workload risk", "workload 위험 확인해줘"),
-      lang("What does AI Guidance mean?", "AI Guidance가 무슨 뜻이야?")
-    ];
-  }
 
   if (currentPage === "search") {
     return [
@@ -1799,14 +1789,6 @@ function getChatSuggestions() {
   ];
 }
 
-function renderChatSuggestions() {
-  const target = qs("#chatSuggestions");
-  if (!target) return;
-
-  target.innerHTML = getChatSuggestions().map(question => `
-    <button class="suggestion-button" data-chat-suggestion="${question}" type="button">${question}</button>
-  `).join("");
-}
 function sendChat() {
   const input = qs("#chatInput");
   const message = input.value.trim();
@@ -1866,9 +1848,8 @@ function bindGlobalEvents() {
     showPage(currentPage);
   });
 
- qs("#openChatButton").addEventListener("click", () => {
+qs("#openChatButton").addEventListener("click", () => {
   qs("#chatPanel").classList.toggle("hidden");
-  renderChatSuggestions();
 });
 
   qs("#closeChatButton").addEventListener("click", () => {
@@ -1888,11 +1869,6 @@ function bindGlobalEvents() {
   });
 
   document.addEventListener("click", event => {
-    const suggestionButton = event.target.closest("[data-chat-suggestion]");
-if (suggestionButton) {
-  sendSuggestedChat(suggestionButton.dataset.chatSuggestion);
-  return;
-}
     const addButton = event.target.closest("[data-add-course]");
     if (addButton) {
       addCourse(addButton.dataset.addCourse);
@@ -1950,10 +1926,6 @@ if (suggestionButton) {
     }
   });
 }
-function sendSuggestedChat(message) {
-  const input = qs("#chatInput");
-  input.value = message;
-  sendChat();
-}
+
 bindGlobalEvents();
 applyTranslations();
