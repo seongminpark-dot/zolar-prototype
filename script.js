@@ -52,13 +52,14 @@ const student = {
   name: "Kevin Ruiz",
   id: "0000000",
   major: "Biochemistry BS",
-  standing: "First Year, Fall Semester",
-  englishLevel: "WRT 102 eligible",
-  mathLevel: "MAT 123 eligible. AMS 151 is not available until MAT 123 or equivalent preparation is completed.",
-  year: 1,
-  mathAccess: 1,
-  writingAccess: 1,
-  completed: [],
+  standing: "Completed Year 1, Planning Year 2 Fall Enrollment",
+  planningTerm: "Fall 2026",
+  englishLevel: "WRT 102 completed",
+  mathLevel: "MAT 123 and AMS 151 completed. AMS 161 is now available for Fall planning.",
+  year: 2,
+  mathAccess: 3,
+  writingAccess: 2,
+  completed: ["WRT102", "MAT123", "CHE131", "CHE133", "CHE132", "CHE134", "BIO201", "BIO202", "AMS151"],
   inProgress: []
 };
 
@@ -68,12 +69,41 @@ const statusFilters = ["All", "Available", "Caution", "Closed", "Waitlist", "Res
 const readinessFilters = ["All", "Ready", "Caution", "Blocked"];
 const workloadFilters = ["All", "Low", "Medium", "High"];
 
-const mathLevelNames = {
-  0: "No college math access",
-  1: "MAT 123 eligible",
-  2: "AMS 151 eligible",
-  3: "AMS 161 eligible"
-};
+const fallRecommendedCourseIds = ["AMS161", "BIO203", "BIO204", "CHE321"];
+
+function getPlanningStatus(course) {
+  const readiness = checkReadiness(course);
+
+  if (student.completed.includes(course.id)) {
+    return {
+      code: "completed",
+      icon: "✓",
+      label: lang("Completed previous year", "이전 학기 완료")
+    };
+  }
+
+  if (fallRecommendedCourseIds.includes(course.id)) {
+    return {
+      code: "fall",
+      icon: "+",
+      label: lang("Recommended for Fall", "다가오는 Fall 추천")
+    };
+  }
+
+  if (readiness.level === "Blocked") {
+    return {
+      code: "blocked",
+      icon: "!",
+      label: lang("Needs Advisor Check", "상담 확인 필요")
+    };
+  }
+
+  return {
+    code: "future",
+    icon: "•",
+    label: lang("Future or optional", "미래 또는 선택")
+  };
+}
 
 const courseEvaluationStats = {
   WRT102: { enrolled: 155, responses: 64, rating: 4.1, grades: { A: 58, B: 54, C: 31, DF: 12 } },
@@ -839,6 +869,14 @@ function checkReadiness(course) {
   const readiness = course.readiness || {};
   const reasons = [];
 
+  if (student.completed.includes(course.id)) {
+    return {
+      level: "Ready",
+      label: lang("Completed", "완료"),
+      reasons: [lang("Kevin completed this course in a previous semester.", "Kevin이 이전 학기에 완료한 과목입니다.")]
+    };
+  }
+
   if ((readiness.year || 1) > student.year) {
     reasons.push(`Designed for Year ${readiness.year}`);
   }
@@ -881,14 +919,14 @@ function checkReadiness(course) {
     return {
       level: "Caution",
       label: lang("Caution", "주의"),
-      reasons: reasons.length ? reasons : ["High workload or seat risk should be checked before adding"]
+      reasons: reasons.length ? reasons : [lang("High workload or seat risk should be checked before adding.", "높은 workload 또는 좌석 위험을 확인해야 합니다.")]
     };
   }
 
   return {
     level: "Ready",
     label: lang("Ready", "수강 가능"),
-    reasons: ["Fits current first year Biochemistry planning"]
+    reasons: [lang("Fits Kevin's current Biochemistry Fall planning.", "Kevin의 현재 Biochemistry Fall 계획에 적합합니다.")]
   };
 }
 
@@ -964,48 +1002,68 @@ function showPage(page) {
 }
 
 function renderDashboard() {
+  const completedCodes = student.completed.map(id => getCourse(id)).filter(Boolean).map(course => course.code).join(", ");
+  const fallCodes = fallRecommendedCourseIds.map(id => getCourse(id)).filter(Boolean).map(course => course.code).join(", ");
+
   qs("#mainContent").innerHTML = `
     <section class="page-title">
       <h2>${lang("Personal Biochemistry Dashboard", "개인 Biochemistry 대시보드")}</h2>
-      <p>${lang("This page is designed as Kevin Ruiz's personal course registration support screen, not as a general student survey or persona page.", "이 페이지는 일반 페르소나 분석 페이지가 아니라 Kevin Ruiz의 개인 수강신청 지원 화면으로 설계되었습니다.")}</p>
+      <p>${lang("Kevin Ruiz has completed the first year foundation and is now planning Year 2 Fall enrollment.", "Kevin Ruiz는 1학년 foundation 과목들을 완료했고, 이제 2학년 Fall 수강신청을 계획하고 있습니다.")}</p>
     </section>
 
     <section class="card notice-card"><strong>${tr("projectNotice")}</strong></section>
 
-    <section class="card">
+    <section class="card ai-guidance" style="margin-top:20px">
+      <h3>🤖 ${lang("AI Guidance for Kevin", "Kevin을 위한 AI Guidance")}</h3>
+      <p>${lang("Kevin has already completed the Year 1 writing, math, chemistry, and biology foundation. For the coming Fall semester, ZOLAR recommends checking AMS 161, BIO 203, BIO 204, and CHE 321 together, because taking all of them at once may create workload pressure.", "Kevin은 1학년 writing, math, chemistry, biology foundation을 이미 완료했습니다. 다가오는 Fall 학기에는 AMS 161, BIO 203, BIO 204, CHE 321을 함께 검토하되, 네 과목을 모두 동시에 듣는 경우 workload 부담이 커질 수 있음을 확인해야 합니다.")}</p>
+    </section>
+
+    <section class="card" style="margin-top:20px">
       <h3>${lang("Student Profile", "학생 프로필")}</h3>
       <div class="profile-card">
         <div class="profile-item"><span>${lang("Student", "학생")}</span><strong>${student.name}</strong></div>
         <div class="profile-item"><span>${lang("Major", "전공")}</span><strong>${student.major}</strong></div>
         <div class="profile-item"><span>${lang("Standing", "학년")}</span><strong>${student.standing}</strong></div>
-        <div class="profile-item"><span>${lang("English level", "영어 레벨")}</span><strong>${student.englishLevel}</strong></div>
-        <div class="profile-item"><span>${lang("Math level", "수학 레벨")}</span><strong>${student.mathLevel}</strong></div>
+        <div class="profile-item"><span>${lang("Planning term", "계획 학기")}</span><strong>${student.planningTerm}</strong></div>
+        <div class="profile-item"><span>${lang("English status", "영어 상태")}</span><strong>${student.englishLevel}</strong></div>
+        <div class="profile-item"><span>${lang("Math status", "수학 상태")}</span><strong>${student.mathLevel}</strong></div>
+        <div class="profile-item"><span>${lang("Completed courses", "완료 과목")}</span><strong>${student.completed.length} ${lang("courses", "개")}</strong></div>
         <div class="profile-item"><span>${lang("Current planned courses", "현재 추가한 과목")}</span><strong>${plannedCourses.length} ${lang("courses", "개")}</strong></div>
-        <div class="profile-item"><span>${lang("System role", "시스템 역할")}</span><strong>${lang("Support decision, not replace advisor", "결정 지원, 어드바이저 대체 아님")}</strong></div>
-        <div class="profile-item"><span>${lang("Data type", "데이터 종류")}</span><strong>Sample prototype data</strong></div>
       </div>
+    </section>
+
+    <section class="grid two" style="margin-top:20px">
+      <article class="card">
+        <h3>${lang("Completed Previous Courses", "이전 학기 완료 과목")}</h3>
+        <p>${completedCodes}</p>
+      </article>
+      <article class="card">
+        <h3>${lang("Recommended for Coming Fall", "다가오는 Fall 추천 과목")}</h3>
+        <p>${fallCodes}</p>
+      </article>
     </section>
 
     <section class="grid three" style="margin-top:20px">
       <article class="card">
         <h3>${lang("Integrated Course Decision Hub", "통합 과목 결정 허브")}</h3>
-        <p>${lang("Course Search is the center. It connects catalog data, prerequisites, reviews, grade distribution, timetable, pathway consequences, and advising evidence.", "Course Search가 중심입니다. 카탈로그, 선수 조건, 리뷰, 성적 분포, 시간표, 수강 경로 영향, 상담 근거를 연결합니다.")}</p>
+        <p>${lang("Course Search connects catalog information, prerequisites, reviews, grade distribution, timetable, pathway consequences, and advising evidence.", "Course Search는 카탈로그, 선수 조건, 리뷰, 성적 분포, 시간표, 수강 경로 영향, 상담 근거를 연결합니다.")}</p>
       </article>
       <article class="card">
-        <h3>${lang("Placement Aware Planning", "레벨 반영 수강 계획")}</h3>
-        <p>${lang("Kevin can take WRT 102 and MAT 123, but higher calculus and advanced Biochemistry courses remain blocked until the sequence is completed.", "Kevin은 WRT 102와 MAT 123은 들을 수 있지만, 상위 미적분과 advanced Biochemistry 과목은 sequence가 끝날 때까지 제한됩니다.")}</p>
+        <h3>${lang("Pathway Highlighting", "Pathway 강조 표시")}</h3>
+        <p>${lang("Completed courses are marked in green. Fall planning courses are marked in red. Future or blocked courses stay visually separate.", "완료 과목은 초록색, Fall 계획 과목은 빨간색, 미래 또는 제한 과목은 구분되어 표시됩니다.")}</p>
       </article>
       <article class="card">
         <h3>${lang("Advisor Evidence", "상담 근거")}</h3>
-        <p>${lang("When a course is blocked, the system prepares a clear reason, possible consequences, alternatives, and a draft message for advising.", "수강이 막힌 과목은 이유, 가능한 결과, 대안, 상담용 이메일 초안을 준비합니다.")}</p>
+        <p>${lang("If a course is blocked, reserved, or risky, ZOLAR prepares the detected rule, pathway risk, alternatives, and a message draft.", "과목이 제한, reserved, risky 상태라면 ZOLAR가 감지된 규칙, 경로 위험, 대안, 메시지 초안을 준비합니다.")}</p>
       </article>
     </section>
 
     <section class="card" style="margin-top:20px">
       <h3>${lang("Start from Course Search", "Course Search에서 시작")}</h3>
-      <p>${lang("Click a course card to immediately open actions: Add to Timetable, Course Info, Reviews, Pathway Impact, and Advisor Evidence.", "과목 카드를 클릭하면 Add to Timetable, Course Info, Reviews, Pathway Impact, Advisor Evidence 선택지가 바로 열립니다.")}</p>
+      <p>${lang("Click a course card to open Add to Timetable, Course Info, Reviews, Pathway Impact, and Advisor Evidence.", "과목 카드를 클릭하면 Add to Timetable, Course Info, Reviews, Pathway Impact, Advisor Evidence가 열립니다.")}</p>
       <div class="action-row">
         <button class="primary-button" data-go="search" type="button">${lang("Open Course Search", "Course Search 열기")}</button>
+        <button class="secondary-button" data-go="pathway" type="button">${lang("Open Pathway Planner", "Pathway Planner 열기")}</button>
         <button class="secondary-button" data-open-degree type="button">${lang("Open Degree Audit Preview", "Degree Audit 미리보기 열기")}</button>
       </div>
     </section>
@@ -1021,7 +1079,12 @@ function renderSearch() {
 
     <section class="card notice-card"><strong>${lang("Sample prototype data only. This is not official course availability, degree audit, or SOLAR information.", "예시 프로토타입 데이터입니다. 공식 수강 가능 여부, degree audit, SOLAR 정보가 아닙니다.")}</strong></section>
 
-    <section class="search-panel">
+    <section class="card ai-guidance" style="margin-top:20px">
+      <h3>🤖 ${lang("AI Guidance for Course Search", "Course Search AI Guidance")}</h3>
+      <p>${lang("ZOLAR labels each course as Completed, Recommended for Fall, Future, or Needs Advisor Check based on Kevin's previous coursework, math readiness, writing status, and Biochemistry pathway position.", "ZOLAR는 Kevin의 이전 이수 과목, 수학 준비도, writing 상태, Biochemistry pathway 위치를 바탕으로 각 과목을 Completed, Recommended for Fall, Future, Needs Advisor Check로 표시합니다.")}</p>
+    </section>
+
+    <section class="search-panel" style="margin-top:20px">
       <div class="search-row">
         <div>
           <label>${lang("Search course", "과목 검색")}</label>
@@ -1055,9 +1118,15 @@ function renderSearch() {
         <div class="result-header">
           <div>
             <h3>${lang("Biochemistry Course Results", "Biochemistry 과목 결과")}</h3>
-            <p>${lang("Click a card to open actions directly below that course.", "과목 카드를 클릭하면 해당 과목 아래에 선택지가 바로 열립니다.")}</p>
+            <p>${lang("Completed and Fall priority courses are visually highlighted.", "완료 과목과 Fall 우선 과목이 시각적으로 강조됩니다.")}</p>
           </div>
           <button id="clearFiltersButton" class="small-button" type="button">${lang("Clear", "초기화")}</button>
+        </div>
+        <div class="pathway-legend">
+          <span class="status-completed">✓ ${lang("Completed", "완료")}</span>
+          <span class="status-fall">+ ${lang("Recommended for Fall", "Fall 추천")}</span>
+          <span class="status-blocked">! ${lang("Needs Advisor Check", "상담 확인")}</span>
+          <span class="status-future">• ${lang("Future or optional", "미래/선택")}</span>
         </div>
         <p id="courseCount" class="course-count"></p>
         <div id="courseList" class="result-list"></div>
@@ -1069,7 +1138,7 @@ function renderSearch() {
     <section class="grid two" style="margin-top:20px">
       <article class="card">
         <h3>${lang("Visual Timetable", "시각적 시간표")}</h3>
-        <p class="muted">${lang("Added courses appear here. Drop buttons remove them from the planned course list.", "추가된 과목이 여기에 표시됩니다. Drop 버튼을 누르면 planned course list에서 삭제됩니다.")}</p>
+        <p class="muted">${lang("Added Fall courses appear here. Drop buttons remove them from the planned course list.", "추가된 Fall 과목이 여기에 표시됩니다. Drop 버튼을 누르면 planned course list에서 삭제됩니다.")}</p>
         <div id="visualTimetable"></div>
       </article>
       <article class="card">
@@ -1118,12 +1187,14 @@ function updateCourseList() {
 
   target.innerHTML = list.map(course => {
     const state = checkReadiness(course);
+    const planning = getPlanningStatus(course);
     const added = isAdded(course.id);
     const selected = selectedCourseId === course.id;
     const blocked = state.level === "Blocked";
+    const completed = planning.code === "completed";
 
     return `
-      <div class="result-card ${selected ? "active" : ""} ${added ? "added-card" : ""}" data-course-id="${course.id}">
+      <div class="result-card ${selected ? "active" : ""} ${added ? "added-card" : ""} ${planning.code === "completed" ? "completed-card" : ""} ${planning.code === "fall" ? "fall-card" : ""}" data-course-id="${course.id}">
         <div class="course-click-area" data-select-course="${course.id}">
           <div class="result-title-row">
             <div>
@@ -1132,6 +1203,7 @@ function updateCourseList() {
             </div>
             <div class="chip-wrap" style="margin-top:0;justify-content:flex-end">
               ${added ? `<span class="badge added">✓ ${lang("Added", "추가됨")}</span>` : ""}
+              <span class="badge status-${planning.code}">${planning.icon} ${planning.label}</span>
               <span class="badge ${normalizeClass(state.level)}">${state.label}</span>
             </div>
           </div>
@@ -1147,9 +1219,11 @@ function updateCourseList() {
           <div class="quick-panel">
             <h5>${lang("Choose an action for", "선택 과목 기능")} ${course.code}</h5>
             <div class="quick-actions">
-              ${added
-                ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">✓ ${lang("Added, Drop", "추가됨, 삭제")}</button>`
-                : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked", "제한됨") : lang("Add to Timetable", "시간표 추가")}</button>`
+              ${completed
+                ? `<button class="secondary-button" disabled type="button">✓ ${lang("Completed previous year", "이전 학기 완료")}</button>`
+                : added
+                  ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">✓ ${lang("Added, Drop", "추가됨, 삭제")}</button>`
+                  : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked", "제한됨") : lang("Add to Timetable", "시간표 추가")}</button>`
               }
               <button class="small-button" data-set-tab="catalog" type="button">${lang("Course Info", "수업 정보")}</button>
               <button class="small-button" data-set-tab="evaluation" type="button">${lang("Reviews", "리뷰")}</button>
@@ -1172,15 +1246,17 @@ function renderCourseDetail() {
     target.innerHTML = `
       <div class="empty-state">
         <h3>${lang("Select a course", "과목을 선택하세요")}</h3>
-        <p>${lang("Click any Biochemistry related course card to open Add to Timetable, Course Info, Reviews, Pathway Impact, and Advisor Evidence.", "Biochemistry 관련 과목 카드를 클릭하면 Add to Timetable, Course Info, Reviews, Pathway Impact, Advisor Evidence가 열립니다.")}</p>
+        <p>${lang("Click any course card to open Add to Timetable, Course Info, Reviews, Pathway Impact, and Advisor Evidence.", "과목 카드를 클릭하면 Add to Timetable, Course Info, Reviews, Pathway Impact, Advisor Evidence가 열립니다.")}</p>
       </div>
     `;
     return;
   }
 
   const state = checkReadiness(course);
+  const planning = getPlanningStatus(course);
   const added = isAdded(course.id);
   const blocked = state.level === "Blocked";
+  const completed = planning.code === "completed";
 
   target.innerHTML = `
     <div class="detail-hero">
@@ -1188,6 +1264,7 @@ function renderCourseDetail() {
         <h3>${course.code}</h3>
         <p class="course-title">${course.title}</p>
         <div class="chip-wrap">
+          <span class="badge status-${planning.code}">${planning.icon} ${planning.label}</span>
           <span class="badge ${normalizeClass(course.status)}">${course.status}</span>
           <span class="badge ${normalizeClass(state.level)}">${state.label}</span>
           <span class="badge ${normalizeClass(course.workload)}">${course.workload} workload</span>
@@ -1195,9 +1272,11 @@ function renderCourseDetail() {
         </div>
       </div>
       <div class="detail-actions">
-        ${added
-          ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">${lang("Drop", "삭제")}</button>`
-          : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked by Requirement", "요건 때문에 제한") : lang("Add to Timetable", "시간표 추가")}</button>`
+        ${completed
+          ? `<button class="secondary-button" disabled type="button">✓ ${lang("Completed", "완료")}</button>`
+          : added
+            ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">${lang("Drop", "삭제")}</button>`
+            : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked by Requirement", "요건 때문에 제한") : lang("Add to Timetable", "시간표 추가")}</button>`
         }
       </div>
     </div>
@@ -1230,6 +1309,7 @@ function renderDetailTab(course) {
 
 function renderOverviewTab(course) {
   const state = checkReadiness(course);
+  const planning = getPlanningStatus(course);
 
   return `
     <section class="detail-section">
@@ -1238,17 +1318,22 @@ function renderOverviewTab(course) {
         <div class="metric"><strong>${course.credits}</strong><span>Credits</span></div>
         <div class="metric"><strong>${course.rating}</strong><span>Rating</span></div>
         <div class="metric"><strong>${course.responses}</strong><span>Responses</span></div>
-        <div class="metric"><strong>${state.level}</strong><span>Readiness</span></div>
+        <div class="metric"><strong>${planning.icon}</strong><span>${planning.label}</span></div>
       </div>
       <p>${course.planning}</p>
+    </section>
+
+    <section class="detail-section">
+      <h4>🤖 ${lang("AI Guidance", "AI Guidance")}</h4>
+      <p>${lang("This course is interpreted through Kevin's completed Year 1 courses, Fall planning term, math status, writing status, and Biochemistry pathway sequence.", "이 과목은 Kevin의 1학년 완료 과목, Fall 계획 학기, 수학 상태, writing 상태, Biochemistry pathway sequence를 기준으로 해석됩니다.")}</p>
     </section>
 
     <section class="detail-section">
       <h4>${lang("Prerequisite and placement check", "선수 조건과 레벨 확인")}</h4>
       <div class="catalog-grid">
         <div class="catalog-item"><span>${lang("Prerequisite", "선수 조건")}</span><strong>${course.prerequisite}</strong></div>
-        <div class="catalog-item"><span>${lang("Kevin's English level", "Kevin의 영어 레벨")}</span><strong>${student.englishLevel}</strong></div>
-        <div class="catalog-item"><span>${lang("Kevin's math level", "Kevin의 수학 레벨")}</span><strong>${mathLevelNames[student.mathAccess]}</strong></div>
+        <div class="catalog-item"><span>${lang("Kevin's English status", "Kevin의 영어 상태")}</span><strong>${student.englishLevel}</strong></div>
+        <div class="catalog-item"><span>${lang("Kevin's math status", "Kevin의 수학 상태")}</span><strong>${student.mathLevel}</strong></div>
         <div class="catalog-item"><span>${lang("Detected result", "감지된 결과")}</span><strong>${state.reasons.join(" · ")}</strong></div>
       </div>
     </section>
@@ -1455,24 +1540,35 @@ function renderPathway() {
   qs("#mainContent").innerHTML = `
     <section class="page-title">
       <h2>${lang("Biochemistry Pathway Planner", "Biochemistry 수강 경로 계획")}</h2>
-      <p>${lang("This page is fixed to Kevin Ruiz's Biochemistry plan, because the prototype should feel like a personal SOLAR style page rather than a general catalog.", "이 페이지는 Kevin Ruiz의 Biochemistry 계획으로 고정되어 있습니다. 일반 카탈로그가 아니라 개인 SOLAR형 페이지처럼 보이기 위한 구조입니다.")}</p>
+      <p>${lang("The pathway now highlights what Kevin completed in previous semesters and what he should consider for the coming Fall registration.", "이 Pathway는 Kevin이 이전 학기에 완료한 과목과 다가오는 Fall 수강신청에서 고려해야 할 과목을 강조합니다.")}</p>
     </section>
 
     <section class="card notice-card"><strong>${lang("Prototype planning guide only. Students should confirm official requirements with advising and the department.", "프로토타입 계획 가이드입니다. 공식 요건은 advising과 학과를 통해 확인해야 합니다.")}</strong></section>
 
+    <section class="card ai-guidance" style="margin-top:20px">
+      <h3>🤖 ${lang("AI Pathway Guidance", "AI Pathway Guidance")}</h3>
+      <p>${lang("Completed courses are highlighted in green. Coming Fall priorities are highlighted in red. Future courses stay gray, and courses with prerequisite or seat issues are flagged for advisor review.", "완료 과목은 초록색으로, 다가오는 Fall 우선 과목은 빨간색으로 강조됩니다. 미래 과목은 회색으로 유지되고, 선수 조건이나 좌석 문제가 있는 과목은 advisor review 대상으로 표시됩니다.")}</p>
+      <div class="pathway-legend">
+        <span class="status-completed">✓ ${lang("Completed previous year", "이전 학기 완료")}</span>
+        <span class="status-fall">+ ${lang("Recommended for Fall", "Fall 추천")}</span>
+        <span class="status-blocked">! ${lang("Needs Advisor Check", "상담 확인 필요")}</span>
+        <span class="status-future">• ${lang("Future or optional", "미래 또는 선택")}</span>
+      </div>
+    </section>
+
     <section class="card" style="margin-top:20px">
       <h3>${lang("English and Math Timing Guide", "영어와 수학 완료 시점 가이드")}</h3>
       <div class="timeline">
-        <div class="timeline-item"><strong>WRT 102</strong><div>${lang("Complete by the end of Year 1. This protects later lab reports, upper division writing, and advisor review.", "1학년 말 전까지 완료하는 것이 좋습니다. 이후 실험 보고서, 상위 writing, advisor review에 영향을 줍니다.")}</div></div>
-        <div class="timeline-item"><strong>MAT 123</strong><div>${lang("Complete in Year 1 Fall or Year 1 Spring. This unlocks AMS 151 planning.", "1학년 가을 또는 봄에 완료하는 것이 좋습니다. AMS 151 계획의 출발점입니다.")}</div></div>
-        <div class="timeline-item"><strong>AMS 151</strong><div>${lang("Complete by Year 1 Spring or early Year 2. A late start compresses calculus, physics, and science workload.", "1학년 봄 또는 늦어도 2학년 초에 완료하는 것이 좋습니다. 늦어지면 calculus, physics, science workload가 한꺼번에 몰립니다.")}</div></div>
-        <div class="timeline-item"><strong>AMS 161</strong><div>${lang("Complete by the end of Year 2 if possible. This prevents math from colliding with organic chemistry and advanced biology.", "가능하면 2학년 말 전까지 완료하는 것이 좋습니다. organic chemistry와 advanced biology 시기에 수학이 겹치는 것을 줄입니다.")}</div></div>
+        <div class="timeline-item"><strong>WRT 102</strong><div>${lang("Completed in Year 1. This supports later lab reports and upper division writing.", "1학년에 완료되었습니다. 이후 실험 보고서와 상위 writing을 지원합니다.")}</div></div>
+        <div class="timeline-item"><strong>MAT 123</strong><div>${lang("Completed in Year 1. This opened the path to AMS 151.", "1학년에 완료되었습니다. AMS 151로 이어지는 경로를 열었습니다.")}</div></div>
+        <div class="timeline-item"><strong>AMS 151</strong><div>${lang("Completed in Year 1. AMS 161 is now a realistic Year 2 Fall option.", "1학년에 완료되었습니다. 이제 AMS 161은 2학년 Fall의 현실적인 선택지입니다.")}</div></div>
+        <div class="timeline-item"><strong>AMS 161</strong><div>${lang("Recommended for Year 2 Fall. Delaying it may create pressure with physics, organic chemistry, and advanced biology.", "2학년 Fall 추천 과목입니다. 늦어지면 physics, organic chemistry, advanced biology와 부담이 겹칠 수 있습니다.")}</div></div>
       </div>
     </section>
 
     <section class="roadmap-grid" style="margin-top:20px">
       ${biochemPathway.map(year => `
-        <article class="year-card">
+        <article class="year-card ${year.year === "Year 1" ? "completed-focus-card" : ""} ${year.year === "Year 2" ? "fall-focus-card" : ""}">
           <h3>${year.year}</h3>
           <p><strong>${year.focus}</strong></p>
           ${year.semesters.map(semester => `
@@ -1480,7 +1576,16 @@ function renderPathway() {
               <h4>${semester.name}</h4>
               ${semester.courses.map(id => {
                 const course = getCourse(id);
-                return course ? `<button class="small-button ${selectedCourseId === id ? "selected-course-button" : ""}" data-select-course="${id}" type="button">${course.code} ${isAdded(id) ? "✓" : ""}</button>` : "";
+                if (!course) return "";
+                const planning = getPlanningStatus(course);
+                return `
+                  <div class="pathway-course-row">
+                    <button class="small-button status-${planning.code} ${selectedCourseId === id ? "selected-course-button" : ""}" data-select-course="${id}" type="button">
+                      ${planning.icon} ${course.code} · ${planning.label} ${isAdded(id) ? "✓ Added" : ""}
+                    </button>
+                    <small>${course.title}</small>
+                  </div>
+                `;
               }).join("")}
               <p class="muted">${semester.note}</p>
             </div>
@@ -1506,8 +1611,13 @@ function renderAdvisor() {
       <p>${lang("This page turns course confusion into advisor ready evidence. It supports human agency instead of replacing human advising.", "이 페이지는 수강 혼란을 어드바이저에게 전달 가능한 근거로 바꿉니다. 사람의 상담을 대체하지 않고 연결합니다.")}</p>
     </section>
 
+    <section class="card ai-guidance">
+      <h3>🤖 ${lang("AI Advisor Guidance", "AI Advisor Guidance")}</h3>
+      <p>${lang("If a course is completed, blocked, reserved, waitlisted, or risky for Kevin's Fall plan, ZOLAR prepares the detected rule, pathway risk, backup options, and an email draft for Academic and Transfer Advising Services and the department coordinator.", "과목이 완료, 제한, reserved, waitlist, 또는 Fall 계획에 위험한 경우 ZOLAR는 감지된 규칙, 경로 위험, 대안, Academic and Transfer Advising Services와 학과 코디네이터에게 보낼 이메일 초안을 준비합니다.")}</p>
+    </section>
+
     ${course ? renderAdvisorReport(course) : `
-      <section class="card empty-state">
+      <section class="card empty-state" style="margin-top:20px">
         <h3>${lang("No course selected", "선택된 과목 없음")}</h3>
         <p>${lang("Go to Integrated Course Search and select a course first. Then this page will show blocked course evidence, detected rule, degree path risk, alternatives, and a prepared email draft.", "먼저 Integrated Course Search에서 과목을 선택하세요. 그러면 blocked course evidence, detected rule, degree path risk, alternatives, email draft가 여기에 표시됩니다.")}</p>
         <button class="primary-button" data-go="search" type="button">${lang("Go to Course Search", "Course Search로 이동")}</button>
@@ -1558,25 +1668,30 @@ Kevin Ruiz`;
 
 function renderDegreeAudit() {
   const credits = plannedCourses.map(getCourse).filter(Boolean).reduce((sum, course) => sum + course.credits, 0);
-  const major = plannedCourses.map(getCourse).filter(course => course && course.requirementType !== "SBC").length;
+  const completedCredits = student.completed.map(getCourse).filter(Boolean).reduce((sum, course) => sum + course.credits, 0);
+  const planned = plannedCourses.map(getCourse).filter(Boolean);
 
   qs("#degreeAuditContent").innerHTML = `
     <div class="profile-card">
       <div class="profile-item"><span>Student</span><strong>${student.name}</strong></div>
       <div class="profile-item"><span>Major</span><strong>${student.major}</strong></div>
       <div class="profile-item"><span>Standing</span><strong>${student.standing}</strong></div>
-      <div class="profile-item"><span>Planned credits</span><strong>${credits}</strong></div>
+      <div class="profile-item"><span>Planning term</span><strong>${student.planningTerm}</strong></div>
+      <div class="profile-item"><span>Completed sample credits</span><strong>${completedCredits}</strong></div>
+      <div class="profile-item"><span>Planned Fall credits</span><strong>${credits}</strong></div>
+      <div class="profile-item"><span>Completed courses</span><strong>${student.completed.length}</strong></div>
+      <div class="profile-item"><span>Audit type</span><strong>Unofficial sample preview</strong></div>
     </div>
 
     <section class="detail-section">
       <h4>${lang("Prototype Degree Audit Status", "프로토타입 Degree Audit 상태")}</h4>
       <div class="catalog-grid">
-        <div class="catalog-item"><span>Writing</span><strong>${plannedCourses.includes("WRT102") ? "Planned" : "Not planned yet"}</strong></div>
-        <div class="catalog-item"><span>Math bridge</span><strong>${plannedCourses.includes("MAT123") ? "MAT 123 planned" : "MAT 123 needed"}</strong></div>
-        <div class="catalog-item"><span>Chemistry foundation</span><strong>${plannedCourses.includes("CHE131") ? "CHE 131 planned" : "CHE 131 needed"}</strong></div>
-        <div class="catalog-item"><span>Biology foundation</span><strong>${plannedCourses.includes("BIO201") ? "BIO 201 planned" : "BIO 201 needed"}</strong></div>
-        <div class="catalog-item"><span>Major related planned courses</span><strong>${major}</strong></div>
-        <div class="catalog-item"><span>Audit type</span><strong>Unofficial sample preview</strong></div>
+        <div class="catalog-item"><span>Writing</span><strong>WRT 102 completed</strong></div>
+        <div class="catalog-item"><span>Math bridge</span><strong>MAT 123 and AMS 151 completed</strong></div>
+        <div class="catalog-item"><span>Chemistry foundation</span><strong>CHE 131, CHE 133, CHE 132, CHE 134 completed</strong></div>
+        <div class="catalog-item"><span>Biology foundation</span><strong>BIO 201 and BIO 202 completed</strong></div>
+        <div class="catalog-item"><span>Recommended Fall focus</span><strong>${fallRecommendedCourseIds.map(id => getCourse(id)).filter(Boolean).map(course => course.code).join(", ")}</strong></div>
+        <div class="catalog-item"><span>Currently planned Fall courses</span><strong>${planned.length ? planned.map(course => course.code).join(", ") : "No courses added yet"}</strong></div>
       </div>
     </section>
   `;
