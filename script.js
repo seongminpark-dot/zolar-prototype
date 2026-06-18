@@ -1772,8 +1772,44 @@ function sendChat() {
   addChatMessage(getChatReply(message), "bot");
 }
 
+function clearLoginValidation() {
+  qs("#loginError").textContent = "";
+  qs("#studentId").removeAttribute("aria-invalid");
+  qs("#studentPassword").removeAttribute("aria-invalid");
+}
+
+function showLoginValidation(message, focusTarget) {
+  const idInput = qs("#studentId");
+  const passwordInput = qs("#studentPassword");
+
+  qs("#loginError").textContent = message;
+  if (idInput.value.trim()) {
+    idInput.removeAttribute("aria-invalid");
+  } else {
+    idInput.setAttribute("aria-invalid", "true");
+  }
+  passwordInput.setAttribute("aria-invalid", "true");
+  focusTarget?.focus();
+}
+
 function bindGlobalEvents() {
   qs("#signInButton").addEventListener("click", () => {
+    const idInput = qs("#studentId");
+    const passwordInput = qs("#studentPassword");
+    const hasStudentId = Boolean(idInput.value.trim());
+    const hasDemoPassword = Boolean(passwordInput.value.trim());
+
+    passwordInput.value = "";
+
+    if (!hasStudentId || !hasDemoPassword) {
+      showLoginValidation(
+        "Enter the sample ID and a demo password to continue. Do not enter a real university password.",
+        hasStudentId ? passwordInput : idInput
+      );
+      return;
+    }
+
+    clearLoginValidation();
     qs("#loginScreen").classList.add("hidden");
     qs("#app").classList.remove("hidden");
     showPage("dashboard");

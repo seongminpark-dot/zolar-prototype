@@ -17,13 +17,15 @@
       <section class="login-card">
         <p class="eyebrow">Student Course Registration Support</p>
         <h1>Personal Registration Prototype</h1>
-       <p class="login-copy">A sample personal registration view for Kevin Ruiz, a Biochemistry student planning Year 2 Fall enrollment.</p>
+        <p class="login-demo-label">Demo login for a class-project prototype</p>
+        <p class="login-copy">This sign-in screen is only a local prototype entry point for a sample student view. It is not connected to Stony Brook University, SOLAR, or any official university authentication service.</p>
 
         <label for="studentId">Stony Brook ID</label>
-        <input id="studentId" type="text" value="0000000" autocomplete="off">
+        <input id="studentId" type="text" value="0000000" autocomplete="off" required>
 
         <label for="studentPassword">Password</label>
-        <input id="studentPassword" type="password" value="zolar2026" autocomplete="off">
+        <input id="studentPassword" type="password" autocomplete="new-password" required aria-describedby="loginError" placeholder="Enter any demo password">
+        <p id="loginError" class="login-error" aria-live="polite"></p>
 
         <div class="login-actions">
           <button id="signInButton" class="primary-button" type="button">Sign In</button>
@@ -31,7 +33,7 @@
         </div>
 
         <p class="prototype-note">
-          This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.
+          This is a student class project prototype. Do not enter a real university password. This page does not verify, store, or send credentials.
         </p>
       </section>
     </main>
@@ -136,7 +138,18 @@
     </div>
   </div>
 
-  <script data-goatcounter="https://zolar-prototype.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script>
+    (() => {
+      const localHosts = new Set(["localhost", "127.0.0.1", "::1"]);
+      if (localHosts.has(window.location.hostname)) return;
+
+      const script = document.createElement("script");
+      script.async = true;
+      script.dataset.goatcounter = "https://zolar-prototype.goatcounter.com/count";
+      script.src = "https://gc.zgo.at/count.js";
+      document.head.appendChild(script);
+    })();
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
