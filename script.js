@@ -11,12 +11,10 @@ const translations = {
     emptyNotification: "No new notifications.",
     messageTitle: "Messages",
     emptyMessage: "No new messages.",
-    chatTitle: "ZOLAR AI Assistant",
     degreeTitle: "Degree Audit Preview",
     degreeIntro: "This prototype shows how Degree Works style information could support registration decisions. It is not an official degree audit.",
     projectNotice: "This is a student class project prototype. It is not an official Stony Brook University or SOLAR website.",
     searchPlaceholder: "Search by course, title, instructor, SBC, requirement, workload, or consequence",
-    chatbotWelcome: "Hi Kevin. I can explain prerequisites, English and math placement, workload, SBC, Biochemistry pathway risk, and advisor next steps.",
     sentMessage: "Draft sent to Academic and Transfer Advising Services and the department coordinator in this prototype."
   },
   ko: {
@@ -31,12 +29,10 @@ const translations = {
     emptyNotification: "새로운 알림이 없습니다.",
     messageTitle: "메시지",
     emptyMessage: "새로운 메시지가 없습니다.",
-    chatTitle: "ZOLAR AI 도우미",
     degreeTitle: "Degree Audit 미리보기",
     degreeIntro: "이 화면은 Degree Works 방식의 정보를 수강신청 결정에 활용하는 방식을 보여주는 프로토타입입니다. 공식 degree audit이 아닙니다.",
     projectNotice: "이 웹사이트는 수업 프로젝트용 프로토타입입니다. 공식 Stony Brook University 또는 SOLAR 웹사이트가 아닙니다.",
     searchPlaceholder: "과목, 제목, 교수, SBC, 요건, workload, 결과로 검색",
-    chatbotWelcome: "안녕하세요 Kevin. 선수 조건, 영어와 수학 placement, workload, SBC, Biochemistry 수강 경로 위험, 어드바이저 다음 단계를 설명할 수 있습니다.",
     sentMessage: "이 프로토타입에서는 Academic and Transfer Advising Services와 학과 코디네이터에게 초안이 전송된 것으로 표시됩니다."
   }
 };
@@ -65,7 +61,7 @@ const student = {
 
 const departments = ["All", "AMS", "BCH", "BIO", "CHE", "MAT", "MUS", "PHI", "PHY", "POL", "PSY", "WRT"];
 const requirements = ["All", "Major Foundation", "Math", "Writing", "SBC", "Advanced Major", "Lab"];
-const statusFilters = ["All", "Available", "Caution", "Closed", "Waitlist", "Reserved"];
+const statusFilters = ["All", "Available", "Closed", "Waitlist", "Reserved"];
 const readinessFilters = ["All", "Ready", "Caution", "Blocked"];
 const workloadFilters = ["All", "Low", "Medium", "High"];
 
@@ -177,7 +173,7 @@ const courseReviewData = {
     { likes: 12, text: "Not too difficult, but missing a lab section creates problems." }
   ],
   BIO201: [
-    { likes: 48, text: "Clear introduction to biology and a good first year science course." },
+    { likes: 48, text: "Clear introduction to biology and a good Year 1 science foundation." },
     { likes: 35, text: "Weekly quizzes keep you studying, which helps before exams." },
     { likes: 20, text: "Good choice with CHE 131 if you manage the schedule carefully." }
   ],
@@ -187,7 +183,7 @@ const courseReviewData = {
     { likes: 15, text: "Better after BIO 201 because the foundation matters." }
   ],
   BIO203: [
-    { likes: 36, text: "Very content heavy. It is not ideal for a first semester freshman schedule." },
+    { likes: 36, text: "Very content heavy. It is best after the foundation biology sequence is in place." },
     { likes: 24, text: "The exams require detailed understanding, not just memorization." },
     { likes: 14, text: "Good course later, but it should be planned around chemistry workload." }
   ],
@@ -292,7 +288,7 @@ const courses = [
     planning: "Kevin is eligible for WRT 102. Completing it in Year 1 protects later lab reports and upper division writing.",
     impact: "Delaying WRT 102 can make later writing intensive work and lab reports harder.",
     comments: "Students say revision feedback is helpful, but deadlines require planning.",
-    consequences: ["Writing requirement may remain unresolved after the first year.", "Upper division writing tasks may become harder without early practice.", "Advisor may ask for a writing completion plan."],
+    consequences: ["Writing requirement can remain unresolved if WRT 102 is delayed.", "Upper division writing tasks may become harder without early practice.", "Advisor may ask for a writing completion plan."],
     backups: ["WRT 101 if placement changes", "Summer WRT 102", "Advisor approved writing plan"]
   }),
   makeCourse({
@@ -331,7 +327,7 @@ const courses = [
     credits: 3,
     requirementType: "Math",
     sbc: "QPS",
-    status: "Caution",
+    status: "Available",
     workload: "Medium",
     readiness: { math: 2, writing: 0, year: 1 },
     prerequisite: "MAT 123, placement, or equivalent preparation",
@@ -341,11 +337,11 @@ const courses = [
     end: "3:20 PM",
     location: "Engineering Building 143",
     catalog: "Sample applied calculus course used by science and applied fields.",
-    planning: "Kevin should not treat AMS 151 as fully ready until MAT 123 or an equivalent placement is completed.",
+    planning: "AMS 151 is complete for Kevin and now supports AMS 161 planning.",
     impact: "Taking AMS 151 on time protects AMS 161 and later science sequencing.",
     clarity: "High",
     comments: "Students describe the course as manageable when weekly practice is consistent.",
-    consequences: ["Blocked until math preparation is cleared.", "Taking it too early could create grade risk.", "Delaying it too long may compress later STEM terms."],
+    consequences: ["AMS 151 completion keeps AMS 161 available.", "Weak calculus preparation could still create grade risk.", "Delaying the calculus sequence may compress later STEM terms."],
     backups: ["MAT 123", "Math placement retake", "Summer AMS 151 after preparation"]
   }),
   makeCourse({
@@ -368,10 +364,10 @@ const courses = [
     end: "4:50 PM",
     location: "Engineering Building 143",
     catalog: "Sample continuation of applied calculus with quantitative methods for science pathways.",
-    planning: "AMS 161 is a future course for Kevin, not a first semester choice.",
+    planning: "AMS 161 is a Year 2 Fall planning course for Kevin after completing AMS 151.",
     impact: "AMS 161 should follow AMS 151 and should ideally be completed before later science overload.",
     exam: "High",
-    consequences: ["Broken math sequence if AMS 151 is not completed.", "Waitlist status requires a backup plan.", "High workload can conflict with organic chemistry."],
+    consequences: ["Waitlist status requires a backup plan.", "High workload can conflict with organic chemistry.", "Delaying AMS 161 may create later pressure with physics and advanced biology."],
     backups: ["AMS 151", "Winter or summer AMS 161 if available", "Advisor approved equivalent"]
   }),
   makeCourse({
@@ -394,7 +390,7 @@ const courses = [
     end: "9:50 AM",
     location: "Chemistry Building 100",
     catalog: "Sample first general chemistry course covering atomic structure, bonding, stoichiometry, and equilibrium.",
-    planning: "CHE 131 is a strong first semester Biochemistry foundation course, but it should be balanced with MAT 123 workload.",
+    planning: "CHE 131 was a key Biochemistry foundation course for Kevin and should remain visible as part of the completed sequence.",
     impact: "CHE 131 opens the path to CHE 132 and later organic chemistry.",
     exam: "High",
     comments: "Students say chemistry is manageable only with steady weekly practice.",
@@ -447,7 +443,7 @@ const courses = [
     end: "11:20 AM",
     location: "Chemistry Building 100",
     catalog: "Sample second general chemistry course and key prerequisite for organic chemistry.",
-    planning: "CHE 132 should be planned after CHE 131, usually by the end of the first year.",
+    planning: "CHE 132 follows CHE 131 and is part of Kevin's completed chemistry foundation.",
     impact: "Delaying CHE 132 can push organic chemistry and upper division biochemistry later.",
     exam: "High",
     consequences: ["Organic chemistry sequence may be delayed.", "BIO and CHE workload may stack in Year 2.", "Advisor confirmation may be needed if CHE 131 is not complete."],
@@ -499,7 +495,7 @@ const courses = [
     end: "1:20 PM",
     location: "Life Sciences Building 038",
     catalog: "Sample introductory biology course covering major biological principles and scientific reasoning.",
-    planning: "BIO 201 is appropriate for Kevin's first year and supports the Biochemistry foundation.",
+    planning: "BIO 201 supports Kevin's completed Biochemistry foundation and opens later biology planning.",
     impact: "BIO 201 keeps the biology sequence open for later BIO 202 and advanced biology.",
     clarity: "High",
     comments: "Students mention clear lectures, weekly quizzes, and manageable workload.",
@@ -526,10 +522,10 @@ const courses = [
     end: "1:50 PM",
     location: "Life Sciences Building 038",
     catalog: "Sample biology course focused on molecular and cellular concepts.",
-    planning: "BIO 202 is a future course for Kevin after BIO 201 foundation work.",
+    planning: "BIO 202 is complete for Kevin and supports Year 2 biology and biochemistry planning.",
     impact: "BIO 202 supports later advanced biology and biochemistry courses.",
     exam: "High",
-    consequences: ["Taking it before BIO 201 may create concept gaps.", "Delay can affect advanced biology timing.", "High workload should be balanced with CHE 132."],
+    consequences: ["BIO 202 completion supports advanced biology timing.", "High biology workload should still be balanced with chemistry planning.", "Concept gaps can affect BIO 203 if the foundation is weak."],
     backups: ["BIO 201", "CHE 132", "Lighter SBC course"]
   }),
   makeCourse({
@@ -552,10 +548,10 @@ const courses = [
     end: "3:20 PM",
     location: "Life Sciences Building 100",
     catalog: "Sample physiology course used in the biology foundation sequence.",
-    planning: "BIO 203 is better planned after Year 1 foundation courses, not in Kevin's first fall semester.",
+    planning: "BIO 203 is a Year 2 Fall planning course that should be balanced against chemistry and math workload.",
     impact: "BIO 203 timing should be coordinated with chemistry and math workload.",
     exam: "High",
-    consequences: ["High content load may overwhelm a first semester schedule.", "Waitlist status needs a backup.", "BIO foundation should be confirmed first."],
+    consequences: ["High content load may create pressure in a Year 2 Fall plan.", "Waitlist status needs a backup.", "BIO foundation should be confirmed before adding."],
     backups: ["BIO 201", "BIO 202", "PSY 103"]
   }),
   makeCourse({
@@ -604,7 +600,7 @@ const courses = [
     end: "4:50 PM",
     location: "Chemistry Building 100",
     catalog: "Sample first organic chemistry course required for later biochemistry work.",
-    planning: "Organic chemistry is not a first semester course. Kevin should complete CHE 131 and CHE 132 first.",
+    planning: "Organic chemistry now belongs in Kevin's Year 2 Fall review because CHE 131 and CHE 132 are complete.",
     impact: "CHE 321 timing is central to the later Biochemistry sequence.",
     exam: "High",
     consequences: ["Blocked until CHE 132 is complete.", "Delay can affect CHE 322 and BCH 361.", "High workload may conflict with AMS 161."],
@@ -656,7 +652,7 @@ const courses = [
     end: "10:50 AM",
     location: "Life Sciences Building 120",
     catalog: "Sample advanced biochemistry course connecting chemistry and molecular biology foundations.",
-    planning: "BCH 361 is the major identity course, but it is not appropriate for a first semester freshman schedule.",
+    planning: "BCH 361 is the major identity course, but it should wait until Kevin reaches Year 3 readiness.",
     impact: "This course depends on earlier chemistry and biology sequencing.",
     exam: "High",
     consequences: ["Blocked by biology and organic chemistry preparation.", "Taking it early would create major academic risk.", "Should be planned around Year 3 readiness."],
@@ -682,10 +678,10 @@ const courses = [
     end: "12:50 PM",
     location: "Physics Building 117",
     catalog: "Sample physics course often planned after calculus preparation in science pathways.",
-    planning: "Physics should wait until Kevin's calculus preparation is stronger.",
+    planning: "Physics should be balanced carefully after Kevin's calculus sequence planning is confirmed.",
     impact: "Physics timing can affect later science credit completion.",
     exam: "High",
-    consequences: ["May be risky before AMS 151 readiness.", "High workload can stack with organic chemistry.", "Should be placed after math planning."],
+    consequences: ["High workload can stack with organic chemistry.", "Should be placed after math planning.", "Advisor confirmation may help if physics competes with Year 2 Fall priorities."],
     backups: ["AMS 151", "BIO 202", "Future physics sequence"]
   }),
   makeCourse({
@@ -711,7 +707,7 @@ const courses = [
     planning: "PSY 103 can protect workload balance if Kevin already has heavy chemistry and math courses.",
     impact: "This course fills an SBC area without moving the Biochemistry sequence forward.",
     clarity: "High",
-    consequences: ["Useful for workload balance.", "Does not replace BIO or CHE foundation.", "Can help avoid an overloaded STEM first semester."],
+    consequences: ["Useful for workload balance.", "Does not replace BIO or CHE foundation.", "Can help avoid an overloaded STEM term."],
     backups: ["MUS 105", "PHI 104", "POL 102"]
   }),
   makeCourse({
@@ -734,7 +730,7 @@ const courses = [
     end: "6:20 PM",
     location: "Staller Center 011",
     catalog: "Sample arts and global cultures course used as an SBC option.",
-    planning: "MUS 105 can help Kevin avoid too many heavy STEM courses in the first semester.",
+    planning: "MUS 105 can help Kevin avoid too many heavy STEM courses in the same term.",
     impact: "This course helps SBC progress but does not replace major science foundation.",
     clarity: "High",
     consequences: ["Good workload balance option.", "Evening time may affect commuting.", "Does not unlock later Biochemistry courses."],
@@ -799,7 +795,7 @@ const biochemPathway = [
     focus: "Chemistry, biology, writing, and math placement foundation",
     semesters: [
       { name: "Fall", courses: ["WRT102", "MAT123", "CHE131", "CHE133", "BIO201"], note: "Finish WRT 102 and start MAT 123, CHE 131, CHE 133, and BIO 201 early." },
-      { name: "Spring", courses: ["CHE132", "CHE134", "BIO202", "AMS151", "PSY103"], note: "Move into CHE 132 and AMS 151 only after the first semester foundation is clear." }
+      { name: "Spring", courses: ["CHE132", "CHE134", "BIO202", "AMS151", "PSY103"], note: "Move into CHE 132 and AMS 151 only after the Fall foundation is clear." }
     ]
   },
   {
@@ -815,14 +811,14 @@ const biochemPathway = [
     focus: "Advanced biochemistry and upper division biology preparation",
     semesters: [
       { name: "Fall", courses: ["BCH361"], note: "BCH 361 should wait until biology and organic chemistry foundations are ready." },
-      { name: "Spring", courses: ["BIO203", "BIO204"], note: "Advanced biology and lab planning should be checked with an advisor." }
+      { name: "Spring", courses: [], note: "Confirm remaining upper division BIO, CHE, BCH, lab, and writing requirements with an advisor." }
     ]
   },
   {
     year: "Year 4",
     focus: "Advanced electives, writing in the discipline, and graduation audit",
     semesters: [
-      { name: "Fall", courses: ["BCH361", "PHI104"], note: "Confirm remaining advanced BIO, CHE, BCH, SBC, and writing requirements." },
+      { name: "Fall", courses: [], note: "Confirm remaining advanced BIO, CHE, BCH, SBC, and writing requirements." },
       { name: "Spring", courses: ["MUS105", "POL102"], note: "Do not leave writing, lab, or advanced requirement checks until the last month." }
     ]
   }
@@ -937,6 +933,36 @@ function checkReadiness(course) {
   };
 }
 
+function needsAddCaution(course, state = checkReadiness(course)) {
+  return state.level === "Caution" ||
+    course.status === "Reserved" ||
+    course.status === "Waitlist" ||
+    course.workload === "High";
+}
+
+function getAddCourseLabel(course, state = checkReadiness(course)) {
+  return needsAddCaution(course, state)
+    ? lang("Add with Caution", "주의하고 추가")
+    : lang("Add to Timetable", "시간표 추가");
+}
+
+function renderAddCaution(course, state = checkReadiness(course), added = false) {
+  if (!needsAddCaution(course, state)) return "";
+
+  const reasons = state.reasons.join(" · ");
+  const message = added
+    ? lang("Added with caution. Review the warning before relying on this plan.", "주의 상태로 추가되었습니다. 이 계획을 확정하기 전에 경고를 확인하세요.")
+    : lang("This course can be added, but it should be reviewed before Kevin relies on the plan.", "이 과목은 추가할 수 있지만 Kevin이 계획에 의존하기 전에 검토해야 합니다.");
+
+  return `
+    <div class="info-box">
+      <strong>${lang("Caution before adding", "추가 전 주의")}</strong>
+      <p>${message}</p>
+      <p><strong>${lang("Reason", "이유")}:</strong> ${reasons}</p>
+    </div>
+  `;
+}
+
 function getFilteredCourses() {
   const query = (qs("#courseSearchInput")?.value || "").trim().toLowerCase();
   const dept = qs("#departmentFilter")?.value || "All";
@@ -981,22 +1007,12 @@ function applyTranslations() {
   const input = qs("#courseSearchInput");
   if (input) input.placeholder = tr("searchPlaceholder");
 
-  const chatInput = qs("#chatInput");
-  if (chatInput) {
-    chatInput.placeholder = lang(
-      "Ask about prerequisites, workload, SBC, pathway risk, or advisor evidence",
-      "선수 조건, workload, SBC, 경로 위험, 상담 근거를 질문하세요"
-    );
-  }
-
   qs("#englishButton")?.classList.toggle("active-lang", currentLang === "en");
   qs("#koreanButton")?.classList.toggle("active-lang", currentLang === "ko");
 }
 
 function showPage(page) {
   currentPage = page;
-
-  qs("#chatPanel")?.classList.add("hidden");
 
   qsa(".nav").forEach(button => {
     button.classList.toggle("active", button.dataset.page === page);
@@ -1201,6 +1217,8 @@ function updateCourseList() {
     const selected = selectedCourseId === course.id;
     const blocked = state.level === "Blocked";
     const completed = planning.code === "completed";
+    const cautionAdd = !completed && !blocked && needsAddCaution(course, state);
+    const addLabel = getAddCourseLabel(course, state);
 
     return `
       <div class="result-card ${selected ? "active" : ""} ${added ? "added-card" : ""} ${planning.code === "completed" ? "completed-card" : ""} ${planning.code === "fall" ? "fall-card" : ""}" data-course-id="${course.id}">
@@ -1227,12 +1245,13 @@ function updateCourseList() {
         ${selected ? `
           <div class="quick-panel">
             <h5>${lang("Choose an action for", "선택 과목 기능")} ${course.code}</h5>
+            ${cautionAdd ? renderAddCaution(course, state, added) : ""}
             <div class="quick-actions">
               ${completed
                 ? `<button class="secondary-button" disabled type="button">✓ ${lang("Completed previous year", "이전 학기 완료")}</button>`
                 : added
-                  ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">✓ ${lang("Added, Drop", "추가됨, 삭제")}</button>`
-                  : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked", "제한됨") : lang("Add to Timetable", "시간표 추가")}</button>`
+                  ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">✓ ${cautionAdd ? lang("Added with Caution, Drop", "주의 추가됨, 삭제") : lang("Added, Drop", "추가됨, 삭제")}</button>`
+                  : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked", "제한됨") : addLabel}</button>`
               }
               <button class="small-button" data-set-tab="catalog" type="button">${lang("Course Info", "수업 정보")}</button>
               <button class="small-button" data-set-tab="evaluation" type="button">${lang("Reviews", "리뷰")}</button>
@@ -1266,6 +1285,8 @@ function renderCourseDetail() {
   const added = isAdded(course.id);
   const blocked = state.level === "Blocked";
   const completed = planning.code === "completed";
+  const cautionAdd = !completed && !blocked && needsAddCaution(course, state);
+  const addLabel = getAddCourseLabel(course, state);
 
   target.innerHTML = `
     <div class="detail-hero">
@@ -1285,10 +1306,12 @@ function renderCourseDetail() {
           ? `<button class="secondary-button" disabled type="button">✓ ${lang("Completed", "완료")}</button>`
           : added
             ? `<button class="secondary-button" data-drop-course="${course.id}" type="button">${lang("Drop", "삭제")}</button>`
-            : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked by Requirement", "요건 때문에 제한") : lang("Add to Timetable", "시간표 추가")}</button>`
+            : `<button class="primary-button" data-add-course="${course.id}" type="button" ${blocked ? "disabled" : ""}>${blocked ? lang("Locked by Requirement", "요건 때문에 제한") : addLabel}</button>`
         }
       </div>
     </div>
+
+    ${cautionAdd ? renderAddCaution(course, state, added) : ""}
 
     <div class="detail-tabs">
       ${["overview", "catalog", "evaluation", "pathway", "advisor"].map(tab => `<button class="tab-button ${selectedDetailTab === tab ? "active-tab" : ""}" data-set-tab="${tab}" type="button">${tabLabel(tab)}</button>`).join("")}
@@ -1491,11 +1514,12 @@ function updateVisibleParts() {
   }
 }
 
-function parseHour(time) {
+function parseTimeToMinutes(time) {
   const match = String(time).match(/(\d+):(\d+)\s*(AM|PM)/i);
-  if (!match) return 9;
+  if (!match) return 9 * 60;
 
   let hour = Number(match[1]);
+  const minutes = Number(match[2]);
 
   if (match[3].toUpperCase() === "PM" && hour !== 12) {
     hour += 12;
@@ -1505,7 +1529,22 @@ function parseHour(time) {
     hour = 0;
   }
 
-  return hour;
+  return hour * 60 + minutes;
+}
+
+function courseMeetsOnDay(course, day) {
+  return String(course.days).split(/\s+/).includes(day);
+}
+
+function coursesOverlapOnDay(first, second, day) {
+  if (!courseMeetsOnDay(first, day) || !courseMeetsOnDay(second, day)) return false;
+
+  const firstStart = parseTimeToMinutes(first.start);
+  const firstEnd = parseTimeToMinutes(first.end);
+  const secondStart = parseTimeToMinutes(second.start);
+  const secondEnd = parseTimeToMinutes(second.end);
+
+  return firstStart < secondEnd && secondStart < firstEnd;
 }
 
 function renderTimetable() {
@@ -1522,10 +1561,15 @@ function renderTimetable() {
     html += `<div class="time">${hour <= 12 ? hour : hour - 12}:00 ${hour < 12 ? "AM" : "PM"}</div>`;
 
     days.forEach(day => {
-      const blocks = planned.filter(course => course.days.includes(day) && parseHour(course.start) === hour);
+      const slotStart = hour * 60;
+      const slotEnd = slotStart + 60;
+      const blocks = planned.filter(course => {
+        const start = parseTimeToMinutes(course.start);
+        return courseMeetsOnDay(course, day) && start >= slotStart && start < slotEnd;
+      });
 
       html += `<div class="cell">${blocks.map(course => {
-        const conflict = planned.some(other => other.id !== course.id && other.days.includes(day) && parseHour(other.start) === hour);
+        const conflict = planned.some(other => other.id !== course.id && coursesOverlapOnDay(course, other, day));
 
         return `<div class="class-block ${conflict ? "conflict" : course.workload === "High" ? "heavy" : ""}">
           <strong>${course.code}</strong><br>
@@ -1641,7 +1685,7 @@ function renderAdvisorReport(course) {
 
 Dear Academic and Transfer Advising Services and Department Coordinator,
 
-I am Kevin Ruiz, a first year Biochemistry student. I am reviewing ${course.code} ${course.title} in the ZOLAR class project prototype.
+I am Kevin Ruiz, a Biochemistry student who has completed Year 1 and is planning Year 2 Fall enrollment. I am reviewing ${course.code} ${course.title} in the ZOLAR class project prototype.
 
 The prototype detected the following issue: ${state.reasons.join("; ")}.
 
@@ -1715,63 +1759,6 @@ function closeDegreeModal() {
   qs("#degreeModal").classList.add("hidden");
 }
 
-function addChatMessage(text, type = "bot") {
-  const target = qs("#chatMessages");
-  if (!target) return;
-
-  const bubble = document.createElement("div");
-  bubble.className = `chat-bubble ${type === "user" ? "user" : "bot"}`;
-  bubble.textContent = text;
-  target.appendChild(bubble);
-  target.scrollTop = target.scrollHeight;
-}
-
-function getChatReply(message) {
-  const text = message.toLowerCase();
-  const course = getCourse();
-  const courseName = course ? `${course.code} ${course.title}` : lang("the selected course", "선택한 과목");
-
-  if (text.includes("prereq") || text.includes("선수") || text.includes("require")) {
-    return course ? `${courseName}: ${course.prerequisite}. ${checkReadiness(course).reasons.join(" ")}` : lang("Select a course first. Then I can explain its prerequisite and blocked rule.", "먼저 과목을 선택하면 선수 조건과 제한 이유를 설명할 수 있습니다.");
-  }
-
-  if (text.includes("math") || text.includes("수학") || text.includes("placement")) {
-    return lang("Kevin is currently treated as MAT 123 eligible, not AMS 151 eligible. MAT 123 should be completed by Year 1 so AMS 151 can begin by Year 1 Spring or early Year 2.", "Kevin은 현재 MAT 123 수강 가능, AMS 151은 아직 제한된 상태로 설정되어 있습니다. MAT 123은 1학년 안에 끝내야 AMS 151을 1학년 봄 또는 2학년 초에 시작할 수 있습니다.");
-  }
-
-  if (text.includes("english") || text.includes("writing") || text.includes("영어") || text.includes("wrt")) {
-    return lang("Kevin is WRT 102 eligible. WRT 102 should be completed by the end of Year 1 because later lab reports and upper division writing depend on stronger academic writing readiness.", "Kevin은 WRT 102 수강 가능 상태입니다. 이후 실험 보고서와 상위 writing을 위해 WRT 102는 1학년 말 전까지 완료하는 것이 좋습니다.");
-  }
-
-  if (text.includes("workload") || text.includes("부담") || text.includes("difficulty")) {
-    return course ? `${courseName}: workload is ${course.workload}. Student comments summary: ${course.comments}` : lang("Select a course to see workload, exam difficulty, grading style, and student comments.", "과목을 선택하면 workload, 시험 난이도, 채점 방식, 학생 의견을 볼 수 있습니다.");
-  }
-
-  if (text.includes("sbc") || text.includes("교양")) {
-    return course ? `${courseName}: SBC sample category is ${course.sbc || "not listed"}. Remember this is sample prototype data.` : lang("SBC examples are shown inside Course Search so Kevin can compare major courses and general education options together.", "SBC 예시는 Course Search 안에 있어 전공 과목과 교양 과목을 함께 비교할 수 있습니다.");
-  }
-
-  if (text.includes("advisor") || text.includes("email") || text.includes("상담") || text.includes("메일")) {
-    return lang("Use Advisor Evidence Pack after selecting a course. It prepares the blocked rule, degree path risk, alternatives, and an email draft for Academic and Transfer Advising Services and the department coordinator.", "과목을 선택한 뒤 Advisor Evidence Pack을 사용하세요. 제한 규칙, 졸업 경로 위험, 대안, Academic and Transfer Advising Services와 학과 코디네이터에게 보낼 이메일 초안을 준비합니다.");
-  }
-
-  if (text.includes("path") || text.includes("sequence") || text.includes("경로") || text.includes("로드맵")) {
-    return lang("For Biochemistry, Year 1 should protect WRT 102, MAT 123, CHE 131, CHE 133, and BIO 201. Math should not be left too late because AMS 151 and AMS 161 can collide with organic chemistry later.", "Biochemistry는 1학년에 WRT 102, MAT 123, CHE 131, CHE 133, BIO 201을 확보하는 것이 중요합니다. 수학이 늦어지면 AMS 151과 AMS 161이 나중에 organic chemistry와 겹칠 수 있습니다.");
-  }
-
-  return lang("I can help with prerequisites, math level, English level, workload, SBC, pathway risk, advisor evidence, and timetable planning. Select a course first for a more specific answer.", "선수 조건, 수학 레벨, 영어 레벨, workload, SBC, 경로 위험, 상담 근거, 시간표 계획을 도와줄 수 있습니다. 더 구체적인 답변을 원하면 먼저 과목을 선택하세요.");
-}
-
-function sendChat() {
-  const input = qs("#chatInput");
-  const message = input.value.trim();
-  if (!message) return;
-
-  addChatMessage(message, "user");
-  input.value = "";
-  addChatMessage(getChatReply(message), "bot");
-}
-
 function clearLoginValidation() {
   qs("#loginError").textContent = "";
   qs("#studentId").removeAttribute("aria-invalid");
@@ -1792,37 +1779,60 @@ function showLoginValidation(message, focusTarget) {
   focusTarget?.focus();
 }
 
-function bindGlobalEvents() {
-  qs("#signInButton").addEventListener("click", () => {
-    const idInput = qs("#studentId");
-    const passwordInput = qs("#studentPassword");
-    const hasStudentId = Boolean(idInput.value.trim());
-    const hasDemoPassword = Boolean(passwordInput.value.trim());
+function handleSignIn(event) {
+  event?.preventDefault();
 
-    passwordInput.value = "";
+  const idInput = qs("#studentId");
+  const passwordInput = qs("#studentPassword");
+  const hasStudentId = Boolean(idInput.value.trim());
+  const hasDemoPassword = Boolean(passwordInput.value.trim());
 
-    if (!hasStudentId || !hasDemoPassword) {
-      showLoginValidation(
-        "Enter the sample ID and a demo password to continue. Do not enter a real university password.",
-        hasStudentId ? passwordInput : idInput
-      );
-      return;
-    }
+  passwordInput.value = "";
 
-    clearLoginValidation();
-    qs("#loginScreen").classList.add("hidden");
-    qs("#app").classList.remove("hidden");
-    showPage("dashboard");
+  if (!hasStudentId || !hasDemoPassword) {
+    showLoginValidation(
+      "Enter the sample ID and a demo password to continue. Do not enter a real university password.",
+      hasStudentId ? passwordInput : idInput
+    );
+    return;
+  }
 
-    if (!qs("#chatMessages").children.length) {
-      addChatMessage(tr("chatbotWelcome"), "bot");
-    }
+  clearLoginValidation();
+  qs("#loginScreen").classList.add("hidden");
+  qs("#app").classList.remove("hidden");
+  showPage("dashboard");
+}
+
+function resetPrototypeSession() {
+  currentLang = "en";
+  currentPage = "dashboard";
+  selectedCourseId = null;
+  selectedDetailTab = "overview";
+  plannedCourses = [];
+  sentDraft = false;
+
+  qs("#noticePanel").classList.add("hidden");
+  qs("#messagePanel").classList.add("hidden");
+  qs("#userDropdown").classList.add("hidden");
+  qs("#degreeModal").classList.add("hidden");
+  qs("#mainContent").innerHTML = "";
+  qs("#degreeAuditContent").innerHTML = "";
+  qs("#studentId").value = student.id;
+  qs("#studentPassword").value = "";
+  qsa(".nav").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === "dashboard");
   });
+  clearLoginValidation();
+  applyTranslations();
+}
+
+function bindGlobalEvents() {
+  qs("#loginForm").addEventListener("submit", handleSignIn);
 
   qs("#signOutButton").addEventListener("click", () => {
+    resetPrototypeSession();
     qs("#app").classList.add("hidden");
     qs("#loginScreen").classList.remove("hidden");
-    qs("#userDropdown").classList.add("hidden");
   });
 
   qsa(".nav").forEach(button => {
@@ -1855,20 +1865,6 @@ function bindGlobalEvents() {
   qs("#koreanButton").addEventListener("click", () => {
     currentLang = "ko";
     showPage(currentPage);
-  });
-
-qs("#openChatButton").addEventListener("click", () => {
-  qs("#chatPanel").classList.toggle("hidden");
-});
-
-  qs("#closeChatButton").addEventListener("click", () => {
-    qs("#chatPanel").classList.add("hidden");
-  });
-
-  qs("#sendChatButton").addEventListener("click", sendChat);
-
-  qs("#chatInput").addEventListener("keydown", event => {
-    if (event.key === "Enter") sendChat();
   });
 
   qs("#closeDegreeModal").addEventListener("click", closeDegreeModal);

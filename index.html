@@ -20,17 +20,18 @@
         <p class="login-demo-label">Demo login for a class-project prototype</p>
         <p class="login-copy">This sign-in screen is only a local prototype entry point for a sample student view. It is not connected to Stony Brook University, SOLAR, or any official university authentication service.</p>
 
-        <label for="studentId">Stony Brook ID</label>
-        <input id="studentId" type="text" value="0000000" autocomplete="off" required>
+        <form id="loginForm">
+          <label for="studentId">Stony Brook ID</label>
+          <input id="studentId" type="text" value="0000000" autocomplete="off" required>
 
-        <label for="studentPassword">Password</label>
-        <input id="studentPassword" type="password" autocomplete="new-password" required aria-describedby="loginError" placeholder="Enter any demo password">
-        <p id="loginError" class="login-error" aria-live="polite"></p>
+          <label for="studentPassword">Password</label>
+          <input id="studentPassword" type="password" autocomplete="new-password" required aria-describedby="loginError" placeholder="Enter any demo password">
+          <p id="loginError" class="login-error" aria-live="polite"></p>
 
-        <div class="login-actions">
-          <button id="signInButton" class="primary-button" type="button">Sign In</button>
-          <button class="text-button" type="button">Forgot Password?</button>
-        </div>
+          <div class="login-actions">
+            <button id="signInButton" class="primary-button" type="submit">Sign In</button>
+          </div>
+        </form>
 
         <p class="prototype-note">
           This is a student class project prototype. Do not enter a real university password. This page does not verify, store, or send credentials.
@@ -104,22 +105,6 @@
 
       <main id="mainContent" class="content"></main>
     </section>
-
-    <section id="chatPanel" class="chat-panel hidden">
-      <div class="chat-head">
-        <strong data-i18n="chatTitle">ZOLAR AI Assistant</strong>
-        <button id="closeChatButton" class="icon-button" type="button">×</button>
-      </div>
-
-      <div id="chatMessages" class="chat-messages"></div>
-
-      <div class="chat-input-row">
-        <input id="chatInput" type="text" placeholder="Ask about prerequisites, workload, SBC, pathway risk, or advisor evidence">
-        <button id="sendChatButton" class="primary-button" type="button">Send</button>
-      </div>
-    </section>
-
-    <button id="openChatButton" class="chat-launch" type="button">💬</button>
 
     <div class="language-switch">
       <button id="englishButton" class="lang active-lang" type="button">EN</button>

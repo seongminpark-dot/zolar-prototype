@@ -145,6 +145,10 @@ button:disabled {
   background: #eef2f6;
 }
 
+.login-card form {
+  margin: 0;
+}
+
 .login-card input[aria-invalid="true"] {
   border-color: var(--red);
   background: var(--red-soft);
@@ -802,6 +806,11 @@ button:disabled {
   padding: 14px;
 }
 
+.quick-panel .info-box,
+.detail-hero + .info-box {
+  margin: 14px 0;
+}
+
 .success-box {
   background: var(--green-soft);
   border: 1px solid #bce4ce;
@@ -961,91 +970,9 @@ button:disabled {
   margin: 0;
 }
 
-.chat-launch {
-  position: fixed;
-  right: 26px;
-  bottom: 28px;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  border: 0;
-  background: var(--red);
-  color: #ffffff;
-  font-size: 25px;
-  box-shadow: var(--shadow);
-  z-index: 30;
-}
-
-.chat-panel {
-  position: fixed;
-  right: 26px;
-  bottom: 96px;
-  width: min(410px, calc(100vw - 40px));
-  max-height: 640px;
-  background: #ffffff;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  z-index: 31;
-  overflow: hidden;
-}
-
-.chat-head {
-  background: var(--red);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 13px 14px;
-}
-
-.chat-head .icon-button {
-  color: #ffffff;
-}
-
-.chat-messages {
-  display: grid;
-  gap: 10px;
-  padding: 14px;
-  height: 360px;
-  overflow-y: auto;
-  background: #f7f9fb;
-}
-
-.chat-bubble {
-  max-width: 88%;
-  padding: 11px 12px;
-  border-radius: 14px;
-  line-height: 1.45;
-  background: #ffffff;
-  border: 1px solid var(--line);
-}
-
-.chat-bubble.user {
-  justify-self: end;
-  background: var(--red);
-  color: #ffffff;
-  border-color: var(--red);
-}
-
-.chat-input-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
-  padding: 12px;
-  border-top: 1px solid var(--line);
-}
-
-.chat-input-row input {
-  border: 1px solid #cdd5df;
-  border-radius: 10px;
-  padding: 11px 12px;
-  min-width: 0;
-}
-
 .language-switch {
   position: fixed;
-  right: 92px;
+  right: 26px;
   bottom: 35px;
   display: flex;
   gap: 6px;
@@ -1103,6 +1030,17 @@ button:disabled {
   font-size: 20px;
 }
 
+@media (max-width: 1250px) {
+  .search-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .result-detail {
+    position: static;
+    max-height: none;
+  }
+}
+
 @media (max-width: 1050px) {
   .search-layout,
   .grid.three,
@@ -1122,8 +1060,8 @@ button:disabled {
   }
 
   .timetable {
-    grid-template-columns: 58px repeat(5,minmax(0,1fr));
-    min-width: 0;
+    grid-template-columns: 64px repeat(5,minmax(132px,1fr));
+    min-width: 760px;
   }
 }
 
@@ -1157,7 +1095,7 @@ button:disabled {
 
   .language-switch {
     right: 20px;
-    bottom: 96px;
+    bottom: 26px;
   }
 }
 
@@ -1202,7 +1140,8 @@ button:disabled {
   }
 
   .timetable {
-    grid-template-columns: 46px repeat(5,minmax(0,1fr));
+    grid-template-columns: 56px repeat(5,minmax(128px,1fr));
+    min-width: 700px;
     font-size: 11px;
   }
 
