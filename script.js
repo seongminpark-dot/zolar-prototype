@@ -1459,7 +1459,7 @@ const choiceGroups = {
     title: "Approved Advanced Elective Choice 2",
     label: "Choose one approved advanced elective",
     options: advancedElectiveOptionIds,
-    description: "Kevin's sample personalized selection is BIO 315 Microbiology. At least two approved courses totaling at least five credits are required in this sample preview.",
+    description: "Kevin's sample personalized selection is BIO 315 Microbiology. Choose at least two approved courses totaling at least five credits.",
     expandableLabel: "View all approved options"
   }
 };
@@ -1970,7 +1970,7 @@ function renderDashboard() {
     <section class="card dashboard-profile-section" style="margin-top:20px">
       <h3>${lang("Student Profile", "학생 프로필")}</h3>
       <div class="profile-card dashboard-profile-grid">
-        <div class="profile-item"><span>${lang("Student", "학생")}</span><strong>${student.name}</strong></div>
+        <div class="profile-item"><span>${lang("Student", "학생")}</span><strong>${student.name}</strong><small>${lang("Sample fictional student/persona", "샘플 가상 학생/페르소나")}</small></div>
         <div class="profile-item"><span>${lang("Major", "전공")}</span><strong>${student.major}</strong></div>
         <div class="profile-item"><span>${lang("Standing", "학년")}</span><strong>${student.standing}</strong></div>
         <div class="profile-item"><span>${lang("Planning term", "계획 학기")}</span><strong>${student.planningTerm}</strong></div>
@@ -2968,7 +2968,7 @@ function renderPathway() {
 
     <section class="card" style="margin-top:20px">
       <h3>${lang("Approved Advanced Elective Preview", "승인된 상위 선택 과목 미리보기")}</h3>
-      <p>${lang("Kevin's sample selections are", "Kevin의 샘플 선택은")} ${electiveSummary.ids.map(id => getCourse(id)).filter(Boolean).map(course => course.code).join(" and ")}. ${lang("At least two approved courses totaling at least five credits are required in this sample preview.", "이 샘플 미리보기에서는 최소 두 개의 승인 과목과 총 5학점 이상이 필요합니다.")}</p>
+      <p>${lang("Kevin's sample selections are", "Kevin의 샘플 선택은")} ${electiveSummary.ids.map(id => getCourse(id)).filter(Boolean).map(course => course.code).join(" and ")}. ${lang("Choose at least two approved courses totaling at least five credits.", "최소 두 개의 승인 과목을 선택하고 총 5학점 이상을 충족해야 합니다.")}</p>
       <p class="${electiveSummary.complete ? "success-inline" : "warning-inline"}">${electiveSummary.complete ? lang("Sample elective credit threshold met.", "샘플 선택 과목 학점 기준 충족.") : lang("Sample elective credit threshold not met.", "샘플 선택 과목 학점 기준 미충족.")} ${formatCredits(electiveSummary.credits)} ${lang("selected", "선택됨")}</p>
     </section>
 
@@ -2990,6 +2990,8 @@ function renderAdvisor() {
       <h2>${lang("Advisor Evidence Pack", "어드바이저 보고서")}</h2>
       <p>${lang("This page turns course confusion into advisor ready evidence. It supports human agency instead of replacing human advising.", "이 페이지는 수강 혼란을 어드바이저에게 전달 가능한 근거로 바꿉니다. 사람의 상담을 대체하지 않고 연결합니다.")}</p>
     </section>
+
+    <section class="card notice-card"><strong>${lang("Student class project prototype. This page is not an official Stony Brook University, SOLAR, or DegreeWorks advising record.", "학생 수업 프로젝트 프로토타입입니다. 이 페이지는 공식 Stony Brook University, SOLAR, 또는 DegreeWorks 상담 기록이 아닙니다.")}</strong></section>
 
     <section class="card ai-guidance">
       <h3>🤖 ${lang("AI Advisor Guidance", "AI Advisor Guidance")}</h3>
@@ -3142,7 +3144,7 @@ function renderDegreeAudit() {
 	    <section class="detail-section">
 	      <h4>${lang("Approved Advanced Electives", "승인된 상위 선택 과목")}</h4>
 	      <p>${electiveSummary.ids.map(id => getCourse(id)).filter(Boolean).map(course => `${course.code} ${course.title}`).join(" and ")} · ${formatCredits(electiveSummary.credits)} selected.</p>
-	      <p class="muted">${lang("At least two approved courses totaling at least five credits are represented in Kevin's sample selections.", "Kevin의 샘플 선택은 최소 두 개의 승인 과목과 총 5학점 이상을 나타냅니다.")}</p>
+	      <p class="muted">${lang("Choose at least two approved courses totaling at least five credits.", "최소 두 개의 승인 과목을 선택하고 총 5학점 이상을 충족해야 합니다.")}</p>
 	    </section>
 
 	    <section class="detail-section">
