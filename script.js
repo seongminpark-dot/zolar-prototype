@@ -1967,9 +1967,9 @@ function renderDashboard() {
       <p>${lang("Kevin has already completed the Year 1 writing, math, chemistry, and biology foundation. For the coming Fall semester, ZOLAR recommends checking AMS 161, BIO 203, BIO 204, and CHE 321 together, because taking all of them at once may create workload pressure.", "Kevin은 1학년 writing, math, chemistry, biology foundation을 이미 완료했습니다. 다가오는 Fall 학기에는 AMS 161, BIO 203, BIO 204, CHE 321을 함께 검토하되, 네 과목을 모두 동시에 듣는 경우 workload 부담이 커질 수 있음을 확인해야 합니다.")}</p>
     </section>
 
-    <section class="card" style="margin-top:20px">
+    <section class="card dashboard-profile-section" style="margin-top:20px">
       <h3>${lang("Student Profile", "학생 프로필")}</h3>
-      <div class="profile-card">
+      <div class="profile-card dashboard-profile-grid">
         <div class="profile-item"><span>${lang("Student", "학생")}</span><strong>${student.name}</strong></div>
         <div class="profile-item"><span>${lang("Major", "전공")}</span><strong>${student.major}</strong></div>
         <div class="profile-item"><span>${lang("Standing", "학년")}</span><strong>${student.standing}</strong></div>
@@ -1981,33 +1981,33 @@ function renderDashboard() {
       </div>
     </section>
 
-    <section class="grid two" style="margin-top:20px">
-      <article class="card">
+    <section class="dashboard-summary-grid" style="margin-top:20px">
+      <article class="card dashboard-summary-card">
         <h3>${lang("Completed Previous Courses", "이전 학기 완료 과목")}</h3>
         <p>${completedCodes}</p>
       </article>
-      <article class="card">
+      <article class="card dashboard-summary-card">
         <h3>${lang("Recommended for Coming Fall", "다가오는 Fall 추천 과목")}</h3>
         <p>${fallCodes}</p>
       </article>
     </section>
 
-    <section class="grid three" style="margin-top:20px">
-      <article class="card">
+    <section class="dashboard-feature-grid" style="margin-top:20px">
+      <article class="card dashboard-feature-card">
         <h3>${lang("Integrated Course Decision Hub", "통합 과목 결정 허브")}</h3>
         <p>${lang("Course Search connects catalog information, prerequisites, reviews, grade distribution, timetable, pathway consequences, and advising evidence.", "Course Search는 카탈로그, 선수 조건, 리뷰, 성적 분포, 시간표, 수강 경로 영향, 상담 근거를 연결합니다.")}</p>
       </article>
-      <article class="card">
+      <article class="card dashboard-feature-card">
         <h3>${lang("Pathway Highlighting", "Pathway 강조 표시")}</h3>
         <p>${lang("Completed courses are marked in green. Fall planning courses are marked in red. Future or blocked courses stay visually separate.", "완료 과목은 초록색, Fall 계획 과목은 빨간색, 미래 또는 제한 과목은 구분되어 표시됩니다.")}</p>
       </article>
-      <article class="card">
+      <article class="card dashboard-feature-card">
         <h3>${lang("Advisor Evidence", "상담 근거")}</h3>
         <p>${lang("If a course is blocked, reserved, or risky, ZOLAR prepares the detected rule, pathway risk, alternatives, and a message draft.", "과목이 제한, reserved, risky 상태라면 ZOLAR가 감지된 규칙, 경로 위험, 대안, 메시지 초안을 준비합니다.")}</p>
       </article>
     </section>
 
-    <section class="card" style="margin-top:20px">
+    <section class="card dashboard-start-card" style="margin-top:20px">
       <h3>${lang("Start from Course Search", "Course Search에서 시작")}</h3>
       <p>${lang("Click a course card to open Add to Timetable, Course Info, Reviews, Pathway Impact, and Advisor Evidence.", "과목 카드를 클릭하면 Add to Timetable, Course Info, Reviews, Pathway Impact, Advisor Evidence가 열립니다.")}</p>
       <div class="action-row">
@@ -2062,7 +2062,7 @@ function renderSearch() {
       </div>
     </section>
 
-    <section class="search-layout">
+    <section class="search-layout search-balanced-panels">
       <div class="result-list-panel">
         <div class="result-header">
           <div>
@@ -2731,9 +2731,17 @@ function renderPathwayCourseButton(id) {
   return `
     <div class="pathway-course-row">
       <button class="small-button status-${planning.code} ${selected ? "selected-course-button" : ""}" data-select-course="${id}" type="button">
-        ${planning.icon} ${course.code} · ${planning.label} ${isAdded(id) ? "✓ Added" : ""}
+        <span class="pathway-course-main">
+          <strong>${course.code}</strong>
+          <span>${course.title}</span>
+        </span>
+        <span class="pathway-course-meta">
+          <span>${planning.icon} ${planning.label}</span>
+          <span>${getCreditsLabel(course)}</span>
+          ${isAdded(id) ? `<span>${lang("Added", "추가됨")}</span>` : ""}
+        </span>
       </button>
-      <small>${course.title} · ${getCreditsLabel(course)}${course.noTimetable ? ` · ${lang("zero-credit co-registration", "0학점 공동 등록")}` : ""}${course.catalogOnly ? ` · ${lang("catalog option only", "카탈로그 옵션")}` : ""}</small>
+      ${(course.noTimetable || course.catalogOnly) ? `<small>${course.noTimetable ? lang("zero-credit co-registration", "0학점 공동 등록") : ""}${course.noTimetable && course.catalogOnly ? " · " : ""}${course.catalogOnly ? lang("catalog option only", "카탈로그 옵션") : ""}</small>` : ""}
     </div>
   `;
 }
@@ -2746,9 +2754,10 @@ function renderChoiceOption(groupId, id) {
 
   return `
     <div class="choice-option-row ${selected ? "selected" : ""}">
-      <div>
+      <div class="choice-option-copy">
         <strong>${course.code}</strong>
-        <small>${course.title} · ${getCreditsLabel(course)}${course.catalogOnly ? ` · ${lang("Catalog option — section and credits not selected", "카탈로그 옵션 — 분반 및 학점 미선택")}` : ""}</small>
+        <span>${course.title}</span>
+        <small>${getCreditsLabel(course)}${course.catalogOnly ? ` · ${lang("Catalog option — section and credits not selected", "카탈로그 옵션 — 분반 및 학점 미선택")}` : ""}</small>
       </div>
       <button class="${selected ? "primary-button" : "secondary-button"}" data-set-choice="${id}" data-choice-group="${groupId}" type="button" ${selected || usedBy ? "disabled" : ""}>
         ${selected ? lang("Selected for Kevin", "Kevin 선택됨") : usedBy ? `${lang("Used by", "이미 사용 중")}: ${choiceGroups[usedBy].title}` : lang("Select", "선택")}
@@ -2774,8 +2783,10 @@ function renderChoiceRequirementCard(groupId) {
         </div>
         <span>${lang("Advisor confirmation recommended", "어드바이저 확인 권장")}</span>
       </div>
-      <div class="selected-choice-row">
+      <div class="selected-choice-badge-row">
         <span>${lang("Selected for Kevin", "Kevin 선택됨")}</span>
+      </div>
+      <div class="selected-choice-row">
         ${selectedCourse ? renderPathwayCourseButton(selectedCourse.id) : `<p class="muted">${lang("No selection", "선택 없음")}</p>`}
       </div>
       <p class="muted">${group.description}</p>
@@ -2809,6 +2820,41 @@ function renderPathwayItem(item) {
       <strong>${item.title}</strong>
       <p class="muted">${item.note}</p>
     </div>
+  `;
+}
+
+function getPathwayItemSummary(item) {
+  if (item.type === "choice") {
+    const group = choiceGroups[item.groupId];
+    const selected = getCourse(getChoiceSelection(item.groupId));
+    return selected && group ? `${group.title}: ${selected.code}` : group?.title || "";
+  }
+
+  if (item.type === "bundle") {
+    return safeList(item.ids).map(id => getCourse(id)).filter(Boolean).map(course => course.code).join(" + ");
+  }
+
+  if (item.type === "course") {
+    return getCourse(item.id)?.code || "";
+  }
+
+  return item.title || "";
+}
+
+function renderPathwaySemesterAccordion(semester) {
+  const summary = semester.items.map(getPathwayItemSummary).filter(Boolean).join(" · ");
+
+  return `
+    <details class="semester-accordion">
+      <summary>
+        <span>${semester.name}</span>
+        <small>${summary}</small>
+      </summary>
+      <div class="semester-body">
+        ${semester.items.map(renderPathwayItem).join("")}
+        <p class="muted">${semester.note}</p>
+      </div>
+    </details>
   `;
 }
 
@@ -2910,18 +2956,14 @@ function renderPathway() {
 
     <section class="roadmap-grid" style="margin-top:20px">
       ${biochemPathway.map(year => `
-        <article class="year-card ${year.year === "Year 1" ? "completed-focus-card" : ""} ${year.year === "Year 2" ? "fall-focus-card" : ""}">
-          <h3>${year.year}</h3>
-          <p><strong>${year.focus}</strong></p>
-          ${year.semesters.map(semester => `
-            <div class="detail-section">
-              <h4>${semester.name}</h4>
-              ${semester.items.map(renderPathwayItem).join("")}
-              <p class="muted">${semester.note}</p>
-            </div>
-          `).join("")}
-        </article>
-      `).join("")}
+	        <article class="year-card ${year.year === "Year 1" ? "completed-focus-card" : ""} ${year.year === "Year 2" ? "fall-focus-card" : ""}">
+	          <h3>${year.year}</h3>
+	          <p class="year-summary"><strong>${year.focus}</strong></p>
+	          <div class="semester-list">
+	            ${year.semesters.map(renderPathwaySemesterAccordion).join("")}
+	          </div>
+	        </article>
+	      `).join("")}
     </section>
 
     <section class="card" style="margin-top:20px">
